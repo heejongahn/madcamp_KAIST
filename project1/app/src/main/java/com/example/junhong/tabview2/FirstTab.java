@@ -28,6 +28,10 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +42,6 @@ import java.util.List;
 public class FirstTab extends Fragment {
 
     private JSONparserTask parser;
-    private List<String> mDataSourceList = new ArrayList<String>();
     private String TAG = "FirstTab";
     private JSONArray contacts = null;
     private ArrayList<HashMap<String, String>> contactList;
@@ -66,10 +69,6 @@ public class FirstTab extends Fragment {
         super.onCreate(savedInstanceState);
 
         contactList = new ArrayList<HashMap<String, String>>();
-        lv = (ListView)getActivity().findViewById(R.id.data_list);
-
-        parser = new JSONparserTask();
-        parser.execute();
     }
 
     @Override
@@ -82,13 +81,11 @@ public class FirstTab extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //add data to ListView
-        for(int i=0, count=20; i<count; i++){
-            mDataSourceList.add("abcd" + i);
-        }
-
         lv = (ListView)getActivity().findViewById(R.id.data_list);
-        //lv.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, mDataSourceList));
+        parser = new JSONparserTask();
+        parser.execute();
+
+        Log.i(TAG, "onActivityCreated");
 
 //        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //
@@ -105,7 +102,9 @@ public class FirstTab extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            ServiceHandler sh = new ServiceHandler(_url);
+            ServiceHandler sh = null;
+            sh = new ServiceHandler(_url, getContext());
+
             String json_str = sh.loadPage();
 
             if(json_str != null){
