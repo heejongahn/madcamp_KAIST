@@ -8,12 +8,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CalendarView;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.util.Calendar;
 
 /**
  * Created by Junhong on 2015-12-26.
@@ -30,19 +34,17 @@ public class ThirdTab extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        parser = new HTMLparserTask();
+        parser.execute();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState){
-        return inflater.inflate(R.layout.third_fragment, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        parser = new HTMLparserTask();
-        parser.execute();
+                             Bundle savedInstanceState) {
+        RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.third_fragment, container, false);
+        CalendarView calendar = (CalendarView) layout.findViewById(R.id.calendar);
+        calendar.setOnDateChangeListenerㅎ(new onDateChangeListener());
+        return layout;
     }
 
     public class HTMLparserTask extends AsyncTask<Void, Void, Void> {
@@ -59,6 +61,16 @@ public class ThirdTab extends Fragment {
                 Log.i(TAG, "HTMLparserTask" + treat_data);
             }
             return null;
+        }
+    }
+
+    private class onDateChangeListener implements CalendarView.OnDateChangeListener {
+        public void onDateChangeListener() {}
+
+        public void	onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
+            Toast.makeText(ThirdTab.this.getActivity(), "" + dayOfMonth,
+                    Toast.LENGTH_SHORT).show();
+
         }
     }
 }

@@ -7,4 +7,6 @@
     <string name="first">First Fragment</string>
     <string name="second">Second Fragment</string>
     <string name="third">Third Fragment</string>
+
+    <string name="pick_date">Pick a Date!</string>
 </resources>
