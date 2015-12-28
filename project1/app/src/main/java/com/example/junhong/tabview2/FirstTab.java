@@ -1,19 +1,13 @@
 package com.example.junhong.tabview2;
 
 
-import android.app.ListFragment;
-import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -22,22 +16,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by Junhong on 2015-12-26.
  */
 public class FirstTab extends Fragment {
     private JSONparserTask parser;
-    private List<String> mDataSourceList = new ArrayList<String>();
     private String TAG = "FirstTab";
     private JSONArray contacts = null;
     private ArrayList<HashMap<String, String>> contactList;
@@ -65,7 +51,6 @@ public class FirstTab extends Fragment {
         super.onCreate(savedInstanceState);
 
         contactList = new ArrayList<HashMap<String, String>>();
-
         parser = new JSONparserTask();
         parser.execute();
     }
@@ -80,22 +65,7 @@ public class FirstTab extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        //add data to ListView
-        for(int i=0, count=20; i<count; i++){
-            mDataSourceList.add("abcd" + i);
-        }
-
         lv = (ListView)getActivity().findViewById(R.id.data_list);
-        //lv.setAdapter(new ArrayAdapter(getActivity(), android.R.layout.simple_list_item_1, mDataSourceList));
-
-//        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view,
-//                                    int position, long id) {
-//                //Item click event
-//            }
-//        });
 
     }
 
@@ -103,7 +73,9 @@ public class FirstTab extends Fragment {
 
         @Override
         protected Void doInBackground(Void... params) {
-            ServiceHandler sh = new ServiceHandler(_url);
+            ServiceHandler sh = null;
+            sh = new ServiceHandler(_url, getContext());
+
             String json_str = sh.loadPage();
 
             if(json_str != null){
