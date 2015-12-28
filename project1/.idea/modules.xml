@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jackson-annotations-2.6.0/jackson-annotations-2.6.0.iml" filepath="$PROJECT_DIR$/jackson-annotations-2.6.0/jackson-annotations-2.6.0.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jackson-core-2.6.4/jackson-core-2.6.4.iml" filepath="$PROJECT_DIR$/jackson-core-2.6.4/jackson-core-2.6.4.iml" />
-      <module fileurl="file://$PROJECT_DIR$/jackson-databind-2.6.4/jackson-databind-2.6.4.iml" filepath="$PROJECT_DIR$/jackson-databind-2.6.4/jackson-databind-2.6.4.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tabView.iml" filepath="$PROJECT_DIR$/tabView.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project1.iml" filepath="$PROJECT_DIR$/project1.iml" />
     </modules>
   </component>
 </project>
