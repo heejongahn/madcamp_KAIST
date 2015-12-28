@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">tabView</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="first">First Fragment</string>
+    <string name="second">Second Fragment</string>
+    <string name="third">Third Fragment</string>
+</resources>

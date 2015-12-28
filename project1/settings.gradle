@@ -1,0 +1,1 @@
+include ':app', ':jackson-annotations-2.6.0', ':jackson-core-2.6.4', ':jackson-databind-2.6.4'
