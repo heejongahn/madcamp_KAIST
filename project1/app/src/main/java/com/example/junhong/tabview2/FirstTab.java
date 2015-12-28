@@ -36,7 +36,6 @@ import java.util.List;
  * Created by Junhong on 2015-12-26.
  */
 public class FirstTab extends Fragment {
-
     private JSONparserTask parser;
     private List<String> mDataSourceList = new ArrayList<String>();
     private String TAG = "FirstTab";
@@ -66,7 +65,6 @@ public class FirstTab extends Fragment {
         super.onCreate(savedInstanceState);
 
         contactList = new ArrayList<HashMap<String, String>>();
-        lv = (ListView)getActivity().findViewById(R.id.data_list);
 
         parser = new JSONparserTask();
         parser.execute();

@@ -34,7 +34,6 @@ public class ServiceHandler {
             e.printStackTrace();
         }
 
-        Log.i(TAG, "doInBackground" + buffer.toString());
         return buffer.toString();
     }
 
