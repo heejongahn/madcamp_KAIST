@@ -1,6 +1,6 @@
 # Project 1
 
-Team Members: Heejong Ahn, Jonghun Kim
+Team Members: Heejong Ahn, Junhong Kim
 
 The simple application for this project is consist of three tabs.
 
