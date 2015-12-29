@@ -1,6 +1,7 @@
 package com.example.junhong.tabview2;
 
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,9 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,7 +69,25 @@ public class FirstTab extends Fragment {
         super.onActivityCreated(savedInstanceState);
 
         lv = (ListView)getActivity().findViewById(R.id.data_list);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                //Item click event
+                HashMap<String, String> hash = (HashMap<String, String>)lv.getItemAtPosition(position);
+                String email_addr = hash.get("email");
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                emailIntent.setType("message/rfc822");
+                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{(email_addr)});
+
+                try {
+                    getActivity().startActivity(emailIntent);
+                } catch(android.content.ActivityNotFoundException ex){
+                    Toast.makeText(getActivity(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public class JSONparserTask extends AsyncTask<Void, Void, Void>{
