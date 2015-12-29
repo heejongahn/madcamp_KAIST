@@ -30,4 +30,5 @@ dependencies {
     compile project(':jackson-annotations-2.6.0')
     compile project(':jackson-core-2.6.4')
     compile project(':jackson-databind-2.6.4')
+    compile 'net.htmlparser.jericho:jericho-html:3.4'
 }
