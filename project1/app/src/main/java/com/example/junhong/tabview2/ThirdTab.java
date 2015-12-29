@@ -34,6 +34,7 @@ public class ThirdTab extends Fragment {
     private String TAG = "ThirdTab";
     private HTMLparserTask parser;
     private ArrayList<TreatmentPlan> restList;
+    private ReservedPlan reserved;
 
     public ThirdTab(){
 
@@ -185,7 +186,7 @@ public class ThirdTab extends Fragment {
 
         public void	onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
             showDialog(dayOfMonth);
-
+            reserved = new ReservedPlan();
         }
     }
 
