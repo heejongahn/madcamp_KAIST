@@ -1,5 +1,7 @@
 package com.example.junhong.tabview2;
 
+import android.util.Log;
+
 /**
  * Created by Junhong on 2015-12-29.
  */
@@ -28,8 +30,65 @@ public class ReservedPlan {
         initialize_stress();
     }
 
+    public boolean isReserved(String department, int dayOfWeek, boolean morning) {
+        if (morning) {
+            switch (department) {
+                case "home_medical":
+                    return home_medical[dayOfWeek].getMorning();
+                case "internal":
+                    return internal[dayOfWeek].getMorning();
+                case "gastrointestinal":
+                    return gastrointestinal[dayOfWeek].getMorning();
+                case "stress":
+                    return stress[dayOfWeek].getMorning();
+                case "neurology":
+                    return neurology[dayOfWeek].getMorning();
+                case "eye":
+                    return eye[dayOfWeek].getMorning();
+                case "image":
+                    return image[dayOfWeek].getMorning();
+                case "ear_nose":
+                    return ear_nose[dayOfWeek].getMorning();
+                case "dental":
+                    return dental[dayOfWeek].getMorning();
+                case "skin":
+                    return skin[dayOfWeek].getMorning();
+                default:
+                    return false;
+            }
+        } else {
+            switch (department) {
+                case "home_medical":
+                    return home_medical[dayOfWeek].getAfternoon();
+                case "internal":
+                    return internal[dayOfWeek].getAfternoon();
+                case "gastrointestinal":
+                    return gastrointestinal[dayOfWeek].getAfternoon();
+                case "stress":
+                    return stress[dayOfWeek].getAfternoon();
+                case "neurology":
+                    return neurology[dayOfWeek].getAfternoon();
+                case "eye":
+                    return eye[dayOfWeek].getAfternoon();
+                case "image":
+                    return image[dayOfWeek].getAfternoon();
+                case "ear_nose":
+                    return ear_nose[dayOfWeek].getAfternoon();
+                case "dental":
+                    return dental[dayOfWeek].getAfternoon();
+                case "skin":
+                    return skin[dayOfWeek].getAfternoon();
+                default:
+                    return false;
+            }
+        }
+    }
+
     public void initialize_home(){
         home_medical = new Reserved[5];
+        for (int i=0; i<5; i++) {
+            home_medical[i] = new Reserved();
+        }
         home_medical[0].setMorning(false);
         home_medical[0].setAfternoon(true);
 
@@ -48,6 +107,9 @@ public class ReservedPlan {
 
     public void initialize_internal(){
         internal = new Reserved[5];
+        for (int i=0; i<5; i++) {
+            internal[i] = new Reserved();
+        }
         internal[0].setMorning(true);
         internal[0].setAfternoon(true);
 
@@ -66,6 +128,9 @@ public class ReservedPlan {
 
     public void initialize_gas(){
         gastrointestinal = new Reserved[5];
+        for (int i=0; i<5; i++) {
+            gastrointestinal[i] = new Reserved();
+        }
         gastrointestinal[0].setMorning(true);
         gastrointestinal[0].setAfternoon(true);
 
@@ -84,6 +149,9 @@ public class ReservedPlan {
 
     public void initialize_stress(){
         stress = new Reserved[5];
+        for (int i=0; i<5; i++) {
+            stress[i] = new Reserved();
+        }
         stress[0].setMorning(true);
         stress[0].setAfternoon(true);
 
@@ -102,6 +170,9 @@ public class ReservedPlan {
 
     public void initialize_neurology(){
         neurology = new Reserved[5];
+        for (int i=0; i<5; i++) {
+            neurology[i] = new Reserved();
+        }
         neurology[0].setMorning(false);
         neurology[0].setAfternoon(false);
 
@@ -120,6 +191,9 @@ public class ReservedPlan {
 
     public void initialize_eye(){
         eye = new Reserved[5];
+        for (int i=0; i<5; i++) {
+            eye[i] = new Reserved();
+        }
         eye[0].setMorning(false);
         eye[0].setAfternoon(false);
 
@@ -138,6 +212,9 @@ public class ReservedPlan {
 
     public void initialize_image(){
         image = new Reserved[5];
+        for (int i=0; i<5; i++) {
+            image[i] = new Reserved();
+        }
         image[0].setMorning(false);
         image[0].setAfternoon(false);
 
@@ -156,6 +233,9 @@ public class ReservedPlan {
 
     public void initialize_ear_nose(){
         ear_nose = new Reserved[5];
+        for (int i=0; i<5; i++) {
+            ear_nose[i] = new Reserved();
+        }
         ear_nose[0].setMorning(true);
         ear_nose[0].setAfternoon(true);
 
@@ -174,6 +254,9 @@ public class ReservedPlan {
 
     public void initialize_dental(){
         dental = new Reserved[5];
+        for (int i=0; i<5; i++) {
+            dental[i] = new Reserved();
+        }
         dental[0].setMorning(true);
         dental[0].setAfternoon(true);
 
@@ -192,6 +275,9 @@ public class ReservedPlan {
 
     public void initialize_skin(){
         skin = new Reserved[5];
+        for (int i=0; i<5; i++) {
+            skin[i] = new Reserved();
+        }
         skin[0].setMorning(true);
         skin[0].setAfternoon(true);
 
@@ -220,9 +306,12 @@ public class ReservedPlan {
         public void setMorning(boolean value){
             morning = value;
         }
+        public boolean getMorning() {return morning; }
 
         public void setAfternoon(boolean value){
             afternoon = value;
         }
+
+        public boolean getAfternoon() {return afternoon; }
     }
 }

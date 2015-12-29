@@ -13,17 +13,25 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 public class Dialog extends DialogFragment {
-    private int mDayofMonth;
+    private static boolean[] mSchedule;
+    private static int mYear;
+    private static int mMonth;
+    private static int mDayOfMonth;
 
     public Dialog() {
         // Required empty public constructor
     }
 
-    public static Dialog newInstance(int day) {
+    public static Dialog newInstance(boolean[] schedule, int year, int month, int dayOfMonth) {
         Dialog frag = new Dialog();
         Bundle args = new Bundle();
-        args.putInt("dayOfMonth", day);
+        args.putBooleanArray("schedule", schedule);
+        args.putInt("year", year);
+        args.putInt("month", month);
+        args.putInt("dayOfMonth", dayOfMonth);
         frag.setArguments(args);
         return frag;
     }
@@ -32,16 +40,24 @@ public class Dialog extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDayofMonth = getArguments().getInt("dayOfMonth");
+        mSchedule = getArguments().getBooleanArray("schedule");
+        mYear = getArguments().getInt("year");
+        mMonth = getArguments().getInt("month");
+        mDayOfMonth = getArguments().getInt("dayOfMonth");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        GridView gridView = (GridView) inflater.inflate(R.layout.dialog, container, false);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog, container, false);
+
+        TextView indicator = (TextView) layout.findViewById(R.id.date_indicator);
+        indicator.setText(String.format("%d년 %d월 %d일", mYear, mMonth+1, mDayOfMonth));
+
+        GridView gridView = (GridView) layout.findViewById(R.id.dialog_grid);
         gridView.setAdapter(new DepartmentAdapter(this.getActivity()));
 
-        return gridView;
+        return layout;
     }
 
     public class DepartmentAdapter extends BaseAdapter {
@@ -71,15 +87,37 @@ public class Dialog extends DialogFragment {
                     (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
             LinearLayout layout;
-            TextView title;
+            TextView title, before_noon, after_noon;
 
             if (convertView == null) {
                 // if it's not recycled, initialize some attributes
                 layout = (LinearLayout) inflater.inflate(R.layout.department, null);
-                title = (TextView) layout.findViewById(R.id.department_name);
             } else {
                 layout = (LinearLayout) convertView;
-                title = (TextView) layout.findViewById(R.id.department_name);
+            }
+
+            title = (TextView) layout.findViewById(R.id.department_name);
+            title.setTextColor(0xFF000000);
+            before_noon = (TextView) layout.findViewById(R.id.before_noon);
+
+            if (mSchedule[position*2]) {
+                before_noon.setText("진료");
+                before_noon.setTextColor(0xFF00FF00);
+            }
+            else {
+                before_noon.setText("휴진");
+                before_noon.setTextColor(0xFFFF0000);
+            }
+
+            after_noon = (TextView) layout.findViewById(R.id.after_noon);
+
+            if (mSchedule[position*2 + 1]) {
+                after_noon.setText("진료");
+                after_noon.setTextColor(0xFF00FF00);
+            }
+            else {
+                after_noon.setText("휴진");
+                after_noon.setTextColor(0xFFFF0000);
             }
 
             title.setText(mDepartments[position]);

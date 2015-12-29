@@ -10,7 +10,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="30dp"
         android:text="@string/pick_date"
-        android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="48dp"
         android:textStyle="bold|italic"
         android:textColor="#00008B"/>
