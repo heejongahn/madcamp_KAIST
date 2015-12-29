@@ -11,5 +11,6 @@
     <string name="pick_date">Pick a Date!</string>
 
 <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="before_noon">오전</string>
+    <string name="after_noon">오후</string>
 </resources>
