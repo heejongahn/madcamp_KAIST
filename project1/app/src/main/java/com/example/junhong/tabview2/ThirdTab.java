@@ -3,7 +3,9 @@ package com.example.junhong.tabview2;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +45,7 @@ public class ThirdTab extends Fragment {
                              Bundle savedInstanceState) {
         RelativeLayout layout = (RelativeLayout) inflater.inflate(R.layout.third_fragment, container, false);
         CalendarView calendar = (CalendarView) layout.findViewById(R.id.calendar);
-        calendar.setOnDateChangeListenerㅎ(new onDateChangeListener());
+        calendar.setOnDateChangeListener(new onDateChangeListener());
         return layout;
     }
 
@@ -68,9 +70,25 @@ public class ThirdTab extends Fragment {
         public void onDateChangeListener() {}
 
         public void	onSelectedDayChange(CalendarView view, int year, int month, int dayOfMonth) {
-            Toast.makeText(ThirdTab.this.getActivity(), "" + dayOfMonth,
-                    Toast.LENGTH_SHORT).show();
+            showDialog(dayOfMonth);
 
         }
+    }
+
+    void showDialog(int dayOfMonth) {
+
+        // DialogFragment.show() will take care of adding the fragment
+        // in a transaction.  We also want to remove any currently showing
+        // dialog, so make our own transaction and take care of that here.
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+        if (prev != null) {
+            ft.remove(prev);
+        }
+        ft.addToBackStack(null);
+
+        // Create and show the dialog.
+        DialogFragment newFragment = Dialog.newInstance(dayOfMonth);
+        newFragment.show(ft, "dialog");
     }
 }
