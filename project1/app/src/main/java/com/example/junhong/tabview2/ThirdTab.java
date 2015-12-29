@@ -44,6 +44,7 @@ public class ThirdTab extends Fragment {
         super.onCreate(savedInstanceState);
         parser = new HTMLparserTask();
         parser.execute();
+        restList = new ArrayList<TreatmentPlan>();
     }
 
     @Override
