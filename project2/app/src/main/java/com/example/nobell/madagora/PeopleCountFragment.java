@@ -95,7 +95,7 @@ public class PeopleCountFragment extends Fragment {
             is = conn.getInputStream();
 
             String count = readIt(is, len);
-            return String.format("현재 실습실에는 %d명이 있습니다!", count);
+            return String.format("현재 실습실에는 %s명이 있습니다!", count);
         } finally{
             if (is != null) {
                 is.close();
