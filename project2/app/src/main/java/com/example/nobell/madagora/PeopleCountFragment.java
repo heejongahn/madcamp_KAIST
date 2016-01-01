@@ -66,6 +66,7 @@ public class PeopleCountFragment extends Fragment {
             try {
                 return getPeopleCount();
             } catch (IOException e) {
+                Log.i(DEBUG_TAG, e.getMessage());
                 return "Not Connected to Internet.";
             }
         }
