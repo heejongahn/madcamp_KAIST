@@ -14,4 +14,14 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:textSize="24sp"/>
+
+    <fragment
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:name="com.example.nobell.madagora.PeopleCountFragment"
+        android:id="@+id/people_count_fragment"
+        android:layout_below="@+id/username_panel"
+        android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>

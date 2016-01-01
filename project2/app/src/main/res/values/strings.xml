@@ -3,4 +3,7 @@
     <string name="name_hint">이름을 입력하세요 :)</string>
     <string name="login">로그인</string>
     <string name="welcome">Welcome to MadAgora!</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
