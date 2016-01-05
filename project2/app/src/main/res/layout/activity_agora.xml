@@ -8,14 +8,14 @@
     tools:context="com.example.nobell.madagora.AgoraActivity">
 
     <fragment
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:name="com.example.nobell.madagora.PeopleCountFragment"
         android:id="@+id/people_count_fragment"
         android:layout_centerHorizontal="true" />
 
     <fragment
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:name="com.example.nobell.madagora.FirebaseFragment"
         android:id="@+id/firebase_fragment"
