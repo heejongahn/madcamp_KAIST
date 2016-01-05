@@ -1,11 +1,25 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.nobell.madagora.PeopleCountFragment">
+    tools:context="com.example.nobell.madagora.PeopleCountFragment"
+    android:orientation="horizontal"
+    android:gravity="center">
 
     <TextView
         android:id="@+id/people_count"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:gravity="center"/>
 
-</FrameLayout>
+    <Button
+        android:id="@+id/refresh_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/refresh"
+        android:onClick="refresh"
+        android:layout_gravity="right"/>
+
+</LinearLayout>

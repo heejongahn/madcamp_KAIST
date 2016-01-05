@@ -24,8 +24,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class PeopleCountFragment extends Fragment {
+    private ConnectivityManager mConnMgr;
+    private NetworkInfo mNetworkInfo;
     private static final String DEBUG_TAG = "DEBUG_madagora";
-    private static final String SERVER_URL = "http://143.248.38.238";
+    private static final String SERVER_URL = "http://143.248.48.148";
 
     public static PeopleCountFragment newInstance() {
         PeopleCountFragment fragment = new PeopleCountFragment();
@@ -50,11 +52,18 @@ public class PeopleCountFragment extends Fragment {
     @Override
     public void onActivityCreated (Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        mConnMgr = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        mNetworkInfo = mConnMgr.getActiveNetworkInfo();
 
-        if (networkInfo != null && networkInfo.isConnected()) {
+        if (mNetworkInfo != null && mNetworkInfo.isConnected()) {
+            new GetPeopleCountTask().execute();
+        } else {
+            Log.d(DEBUG_TAG, "Connection Failure");
+        }
+    }
+
+    public void refresh() {
+        if (mNetworkInfo != null && mNetworkInfo.isConnected()) {
             new GetPeopleCountTask().execute();
         } else {
             Log.d(DEBUG_TAG, "Connection Failure");
@@ -67,7 +76,7 @@ public class PeopleCountFragment extends Fragment {
                 return getPeopleCount();
             } catch (IOException e) {
                 Log.i(DEBUG_TAG, e.getMessage());
-                return "Not Connected to Internet.";
+                return "Server Error";
             }
         }
 
@@ -96,6 +105,7 @@ public class PeopleCountFragment extends Fragment {
             is = conn.getInputStream();
 
             String count = readIt(is, len);
+            Log.i(DEBUG_TAG, String.format("Count from server: %s", count));
             return String.format("현재 실습실에는 %s명이 있습니다!", count);
         } finally{
             if (is != null) {

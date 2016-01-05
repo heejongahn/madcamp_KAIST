@@ -3,6 +3,7 @@ package com.example.nobell.madagora;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.firebase.client.Firebase;
@@ -30,5 +31,11 @@ public class AgoraActivity extends AppCompatActivity {
 
         firebaseFrag.setUsername(mUsername);
 
+    }
+
+    public void refresh(View view) {
+        PeopleCountFragment frag = (PeopleCountFragment)
+                getSupportFragmentManager().findFragmentById(R.id.people_count_fragment);
+        frag.refresh();
     }
 }

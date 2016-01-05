@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">MadAgora</string>
-    <string name="name_hint">이름을 입력하세요 :)</string>
+    <string name="name_hint">네 이름이 무엇이냐?</string>
     <string name="login">로그인</string>
     <string name="welcome">Welcome to MadAgora!</string>
-
-<!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="refresh">새로고침</string>
 </resources>
