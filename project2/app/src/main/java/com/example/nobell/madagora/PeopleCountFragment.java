@@ -25,7 +25,7 @@ import java.net.URL;
 
 public class PeopleCountFragment extends Fragment {
     private static final String DEBUG_TAG = "DEBUG_madagora";
-    private static final String SERVER_URL = "http://bit.sparcs.org:8282";
+    private static final String SERVER_URL = "http://143.248.38.238";
 
     public static PeopleCountFragment newInstance() {
         PeopleCountFragment fragment = new PeopleCountFragment();
