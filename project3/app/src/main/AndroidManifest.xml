@@ -3,6 +3,7 @@
     package="com.example.nobell.project3" >
 
     <application
+        android:name="com.activeandroid.app.Application"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -17,6 +18,8 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="AA_DB_NAME" android:value="diary.db" />
+            <meta-data android:name="AA_DB_VERSION" android:value="1" />
         </activity>
     </application>
 

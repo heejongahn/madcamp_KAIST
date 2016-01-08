@@ -10,11 +10,14 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
+import com.activeandroid.ActiveAndroid;
+import com.example.nobell.project3.dataset.Event;
 import com.example.nobell.project3.ui.EventTabFragment;
 import com.example.nobell.project3.ui.FriendTabFragment;
 import com.example.nobell.project3.ui.TagTabFragment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -41,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.mainTabLayout);
         tabLayout.setupWithViewPager(viewPager);
+
     }
 
     private void setupViewPager (ViewPager viewPager) {
