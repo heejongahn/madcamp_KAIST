@@ -30,8 +30,6 @@ import java.util.List;
 public class EventTabFragment extends Fragment {
     public EventTabFragment() {
     }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -44,7 +42,6 @@ public class EventTabFragment extends Fragment {
 
         return layout;
     }
-
 
     public class EventAdapter extends ArrayAdapter<Event> {
         private List<Event> mEvents;

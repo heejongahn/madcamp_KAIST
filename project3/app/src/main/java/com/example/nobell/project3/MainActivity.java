@@ -6,9 +6,14 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
@@ -21,7 +26,10 @@ import com.example.nobell.project3.dataset.Friend;
 import com.example.nobell.project3.dataset.Tag;
 import com.example.nobell.project3.ui.EventTabFragment;
 import com.example.nobell.project3.ui.FriendTabFragment;
+import com.example.nobell.project3.ui.MainTabLayout;
+import com.example.nobell.project3.ui.PagerFragment;
 import com.example.nobell.project3.ui.TagTabFragment;
+import com.example.nobell.project3.ui.WriteEventFragment;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,9 +37,15 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
-    private ViewPager viewPager;
+    private PagerFragment pagerFragment;
     private TabLayout tabLayout;
-    private static Context mContext;
+
+    /* Singleton class */
+    private static MainActivity mInstance;
+
+    /* To managing fragments */
+    private FragmentManager fragmentManager;
+    // private int stackCount; /* This decides whether TabLayout is shown or not. */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +55,21 @@ public class MainActivity extends AppCompatActivity {
         /* Used when fragment transaction is needed
          * Moreover, database needs its context.
          * Assumption: there is only one MainActivity class : should be wrong. */
-        mContext = this;
+        if (mInstance != null) {
+            throw new RuntimeException("Main Activity onCreate called twice!");
+        }
+        mInstance = this;
+        fragmentManager = getSupportFragmentManager();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        viewPager = (ViewPager) findViewById(R.id.mainViewPager);
-        setupViewPager(viewPager);
+        tabLayout = (TabLayout) findViewById(R.id.maintablayout);
+        pagerFragment = new PagerFragment();
 
-        tabLayout = (TabLayout) findViewById(R.id.mainTabLayout);
-        tabLayout.setupWithViewPager(viewPager);
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.add(R.id.maincontent, pagerFragment, "PAGER");
+        ft.commit();
 
         ActiveAndroid.initialize(this);
         dummyDataSetup();
@@ -60,54 +79,52 @@ public class MainActivity extends AppCompatActivity {
         for (Appearance appearance : appearances) {
             Log.d("debug", String.format("%d", appearance.friend.getId()));
         }
-
     }
 
-    private void setupViewPager (ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new EventTabFragment(), "Events");
-        adapter.addFragment(new FriendTabFragment(mContext), "Friends" );
-        adapter.addFragment(new TagTabFragment(), "Tags");
-        viewPager.setAdapter(adapter);
-        /*  the number of pages that should be retained to either side of the current page
-         *  default value is 1 */
-        viewPager.setOffscreenPageLimit(2);
+    /*
+     * After Initialize the fragment, call this function with initialized fragment.
+     * This could be called by MainActivity.getInstance().startFragment()
+     * It removes the Tabs, hide previous fragment in R.id.maincontent in activitymain layout
+     *   and add the given new fragment to the R.id.maincontent in activitymain.
+     * Backbutton makes the transition reversed. (remove child fragment, and reveal the given fragment)
+     * This revealing has callback on onHide(boolean b=false).
+     */
+    public void startFragment(Fragment fragment) {
+        FragmentTransaction t = fragmentManager.beginTransaction();
+        t.hide(getSupportFragmentManager().findFragmentById(R.id.maincontent));
+        t.add(R.id.maincontent, fragment);
+        t.addToBackStack(null);
+        t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        t.commit();
+    }
+    //public void launchNewFragment ()
+    // Menu is for debugging purpose
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menumain, menu);
+        return true;
     }
 
-    public static Context getContext() {
-        return mContext;
+    // Menu is for debugging purpose
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        super.onOptionsItemSelected(item);
+        Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
+
+        switch (item.getItemId()) {
+            case R.id.fragmenttest:
+                supportInvalidateOptionsMenu();
+                WriteEventFragment.activate();
+                break;
+        }
+        return true;
     }
 
-    public class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<Fragment>();
-        private final List<String> mFragmentTitleList = new ArrayList<String>();
-        private int mSize = 0;
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mSize;
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-            mSize = mSize + 1;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
+    public static MainActivity getInstance() {
+        return mInstance;
     }
+    public TabLayout getTabLayout() { return tabLayout; }
 
     private void dummyDataSetup() {
         new Delete().from(Appearance.class).execute();
@@ -149,5 +166,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 }
