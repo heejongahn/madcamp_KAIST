@@ -25,6 +25,11 @@ public class TagTabFragment extends Fragment {
     }
 
     @Override
+    public void onHiddenChanged(boolean b) {
+        super.onHiddenChanged(b);
+        Log.d("TagTabFragment", "Hiddened with "+b);
+    }
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tag_tab, container, false);
@@ -32,7 +37,8 @@ public class TagTabFragment extends Fragment {
         tagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
             public void onTagClick(int position, String text) {
-
+                Log.d("TagTabFragment", "Clicked");
+                TagDetailFragment.activate(tags.get(position));
             }
 
             @Override
