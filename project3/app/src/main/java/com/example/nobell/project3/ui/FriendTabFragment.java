@@ -28,6 +28,7 @@ import java.util.List;
 public class FriendTabFragment extends Fragment {
     private ListView mListView;
     private FriendAdapter mAdapter;
+    private List<Friend> friends;
 
     public FriendTabFragment() {
     }
@@ -39,7 +40,7 @@ public class FriendTabFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_friend_tab,null);
 
         mListView = (ListView) view.findViewById(R.id.listView);
-        List<Friend> friends = new Select().all().from(Friend.class).execute();
+        friends = new Select().all().from(Friend.class).execute();
 
         mAdapter = new FriendAdapter(getContext(), R.layout.friend_combined_listview, friends);
         mAdapter.notifyDataSetChanged();
@@ -54,7 +55,7 @@ public class FriendTabFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long l_position) {
-            FriendDetailFragment.activate();
+            FriendDetailFragment.activate(friends.get(position));
         }
     };
 
