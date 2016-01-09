@@ -45,7 +45,7 @@ public class FriendTabFragment extends Fragment {
         mAdapter.notifyDataSetChanged();
 
         mListView.setAdapter(mAdapter);
-        //m_ListView.setOnItemClickListener(mItemClickListener);
+        mListView.setOnItemClickListener(mItemClickListener);
 
         return view;
     }
@@ -54,7 +54,7 @@ public class FriendTabFragment extends Fragment {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long l_position) {
-            // TODO Add this events
+            FriendDetailFragment.activate();
         }
     };
 
