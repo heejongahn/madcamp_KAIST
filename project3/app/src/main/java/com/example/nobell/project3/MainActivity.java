@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupViewPager (ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new EventTabFragment(), "Events");
-        adapter.addFragment(new FriendTabFragment(), "Friends" );
+        adapter.addFragment(new FriendTabFragment(mContext), "Friends" );
         adapter.addFragment(new TagTabFragment(), "Tags");
         viewPager.setAdapter(adapter);
         /*  the number of pages that should be retained to either side of the current page
