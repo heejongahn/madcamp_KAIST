@@ -46,7 +46,6 @@ public class Friend extends Model {
     public Friend(String name) {
         super();
         this.name = name;
-        this.setPhoto(android.R.drawable.);
     }
 
     public List<Event> getEvents() {
