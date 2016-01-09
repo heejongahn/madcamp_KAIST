@@ -9,9 +9,16 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
+import com.example.nobell.project3.dataset.Appearance;
+import com.example.nobell.project3.dataset.Description;
 import com.example.nobell.project3.dataset.Event;
+import com.example.nobell.project3.dataset.Friend;
+import com.example.nobell.project3.dataset.Tag;
 import com.example.nobell.project3.ui.EventTabFragment;
 import com.example.nobell.project3.ui.FriendTabFragment;
 import com.example.nobell.project3.ui.TagTabFragment;
@@ -45,12 +52,21 @@ public class MainActivity extends AppCompatActivity {
         tabLayout = (TabLayout) findViewById(R.id.mainTabLayout);
         tabLayout.setupWithViewPager(viewPager);
 
+        ActiveAndroid.initialize(this);
+        dummyDataSetup();
+        Log.i("debug", Integer.toString(new Select().all().from(Event.class).execute().size()));
+        List<Appearance> appearances = new Select().all().from(Appearance.class).execute();
+        Log.i("debug", Integer.toString(appearances.size()));
+        for (Appearance appearance : appearances) {
+            Log.d("debug", String.format("%d", appearance.friend.getId()));
+        }
+
     }
 
     private void setupViewPager (ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new EventTabFragment(), "Events");
-        adapter.addFragment(new FriendTabFragment(), "Friends" );
+        adapter.addFragment(new FriendTabFragment(mContext), "Friends" );
         adapter.addFragment(new TagTabFragment(), "Tags");
         viewPager.setAdapter(adapter);
         /*  the number of pages that should be retained to either side of the current page
@@ -92,4 +108,35 @@ public class MainActivity extends AppCompatActivity {
             return mFragmentTitleList.get(position);
         }
     }
+
+    private void dummyDataSetup() {
+        new Delete().from(Appearance.class).execute();
+        new Delete().from(Description.class).execute();
+        new Delete().from(Event.class).execute();
+        new Delete().from(Tag.class).execute();
+        new Delete().from(Friend.class).execute();
+
+        int i;
+        Event e;
+        Friend f;
+        Tag t;
+        Appearance a;
+        Description d;
+
+        for (i=0; i<50; i++) {
+            e = new Event(String.format("Event name %d", i), new Date());
+            e.save();
+            if (i%5 == 0) {
+                f = new Friend(String.format("Friend %d", i/5));
+                f.save();
+                e.addFriend(f);
+            }
+            if (i%5 == 2) {
+                t = new Tag(String.format("Tag %d", i/5));
+                t.save();
+                e.addTag(t);
+            }
+        }
+    }
+
 }
