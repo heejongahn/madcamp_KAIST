@@ -54,9 +54,10 @@ public class MainActivity extends AppCompatActivity {
 
         /* Used when fragment transaction is needed
          * Moreover, database needs its context.
-         * Assumption: there is only one MainActivity class : should be wrong. */
+         * Assumption: there is only one MainActivity class : should be wrong.*/
         if (mInstance != null) {
-            throw new RuntimeException("Main Activity onCreate called twice!");
+            // 2016.01.09 This part called when the screen mode is changed
+            // throw new RuntimeException("Main Activity onCreate called twice!");
         }
         mInstance = this;
         fragmentManager = getSupportFragmentManager();
