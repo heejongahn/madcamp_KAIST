@@ -26,19 +26,11 @@ import java.util.List;
 
 @SuppressLint("ValidFragment")
 public class FriendTabFragment extends Fragment {
-
-    Context mContext;
     private ListView mListView;
     private FriendAdapter mAdapter;
 
     public FriendTabFragment() {
     }
-
-    public FriendTabFragment(Context context)
-    {
-        mContext = context;
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +41,7 @@ public class FriendTabFragment extends Fragment {
         mListView = (ListView) view.findViewById(R.id.listView);
         List<Friend> friends = new Select().all().from(Friend.class).execute();
 
-        mAdapter = new FriendAdapter(getContext(),R.layout.friend_combined_listview, friends);
+        mAdapter = new FriendAdapter(getContext(), R.layout.friend_combined_listview, friends);
         mAdapter.notifyDataSetChanged();
 
         mListView.setAdapter(mAdapter);
