@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name="Tags")
 public class Tag extends Model {
     @Column(name = "name")
-    public String name;
+    public String tagName;
 
     public Tag() {
         super();
@@ -25,7 +25,7 @@ public class Tag extends Model {
 
     public Tag(String name) {
         super();
-        this.name = name;
+        this.tagName = name;
     }
 
     public List<Event> getEvents() {

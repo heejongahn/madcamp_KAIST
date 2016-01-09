@@ -36,8 +36,8 @@ public class TagTabFragment extends Fragment {
 
         int i = 0;
         for(Tag t:tags) {
-            Log.d("TagTab", "tag#"+i+" ["+t.name+"]received");
-            TagItem ti = new TagItem(t.name);
+            Log.d("TagTab", "tag#"+i+" ["+t.tagName+"]received");
+            TagItem ti = new TagItem(t.tagName);
             ti.radius = 10f;
             ti.layoutColor = Color.rgb((i*30)%256, (i*14)%256, (i*50)%256);
             ti.isDeletable = false;
@@ -48,7 +48,7 @@ public class TagTabFragment extends Fragment {
         tagView.setOnTagClickListener(new OnTagClickListener() {
             @Override
             public void onTagClick(TagItem tag, int position) {
-                Toast.makeText(getContext(), "tag#" + position + "[" + tags.get(position).name+"]", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "tag#" + position + "[" + tags.get(position).tagName+"]", Toast.LENGTH_SHORT).show();
             }
         });
         return view;
