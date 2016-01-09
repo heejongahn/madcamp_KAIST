@@ -1,6 +1,8 @@
 package com.example.nobell.project3.ui;
 
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
@@ -56,9 +59,11 @@ public class FriendDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_friend_detail, container, false);
 
-        TextView temp = (TextView) view.findViewById(R.id.friend_detail_text);
+        TextView text = (TextView) view.findViewById(R.id.friend_detail_name);
+        text.setText("Friend Id = " + friendId.toString() + " " + "Friend Name = " + friend.name);
 
-        temp.setText("Friend Id = " + friendId.toString() + " " + "Friend Name = " + friend.name);
+        ImageView photo = (ImageView) view.findViewById(R.id.friend_detail_image);
+        photo.setImageBitmap(friend.getPhoto());
 
         return view;
     }
