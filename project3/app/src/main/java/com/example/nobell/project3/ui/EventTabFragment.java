@@ -70,6 +70,7 @@ public class EventTabFragment extends Fragment {
 
         // create a new ImageView for each item referenced by the Adapter
         public View getView(int position, View convertView, ViewGroup parent) {
+            int i;
             LinearLayout item;
             if (convertView != null) {
                 item = (LinearLayout) convertView;
@@ -100,16 +101,23 @@ public class EventTabFragment extends Fragment {
 
             List<Tag> tags = event.getTags();
             if (tags.size() != 0) {
-                Button tagButton = new Button(getActivity());
-                tagButton.setLayoutParams(params);
-                tagButton.setGravity(Gravity.CENTER);
-                tagButton.setMinHeight(0);
-                tagButton.setMinWidth(0);
-                tagButton.setTextSize(8);
-
-                for (Tag tag: tags) {
-                    tagButton.setText(tag.tagName);
-                    tag_layout.addView(tagButton);
+                if (tags.size() > 3) {
+                    for (i=0; i < 3; i++) {
+                        Button tagButton = (Button) getLayoutInflater(null).inflate(R.layout.custom_small_button, null);
+                        tagButton.setText(tags.get(i).tagName);
+                        tag_layout.addView(tagButton);
+                    }
+                    TextView moreTags = new TextView(getActivity());
+                    moreTags.setText(String.format("...and %d more tags", tags.size() - 3));
+                    moreTags.setTextSize(12);
+                    tag_layout.addView(moreTags);
+                }
+                else {
+                    for (Tag tag: tags) {
+                        Button tagButton = (Button) getLayoutInflater(null).inflate(R.layout.custom_small_button, null);
+                        tagButton.setText(tag.tagName);
+                        tag_layout.addView(tagButton);
+                    }
                 }
             }
 
@@ -117,17 +125,23 @@ public class EventTabFragment extends Fragment {
 
             List<Friend> friends = event.getFriends();
             if (friends.size() != 0) {
-                Button friendButton = new Button(getActivity());
-                friendButton.setLayoutParams(params);
-                friendButton.setGravity(Gravity.CENTER);
-                friendButton.setPadding(0, 0, 0, 0);
-                friendButton.setMinHeight(0);
-                friendButton.setMinWidth(0);
-                friendButton.setTextSize(8);;
-
-                for (Friend friend: friends) {
-                    friendButton.setText(friend.name);
-                    friend_layout.addView(friendButton);
+                if (friends.size() > 3) {
+                    for (i=0; i < 3; i++) {
+                        Button friendButton = (Button) getLayoutInflater(null).inflate(R.layout.custom_small_button, null);
+                        friendButton.setText(friends.get(i).name);
+                        friend_layout.addView(friendButton);
+                    }
+                    TextView moreFriends = new TextView(getActivity());
+                    moreFriends.setText(String.format("...and %d more friends", friends.size() - 3));
+                    moreFriends.setTextSize(12);
+                    friend_layout.addView(moreFriends);
+                }
+                else {
+                    for (Friend friend : friends) {
+                        Button friendButton = (Button) getLayoutInflater(null).inflate(R.layout.custom_small_button, null);
+                        friendButton.setText(friend.name);
+                        friend_layout.addView(friendButton);
+                    }
                 }
             }
 
