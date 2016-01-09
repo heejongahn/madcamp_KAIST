@@ -21,12 +21,8 @@ public class FriendDetailFragment extends Fragment {
      * Objective: reduce activity as much as possible.
      */
     public static void activate() {
-        FragmentTransaction t = (MainActivity.getInstance()).getSupportFragmentManager().beginTransaction();
         FriendDetailFragment mFrag = new FriendDetailFragment();
-        t.replace(0, mFrag);
-        t.addToBackStack(null);
-        t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        t.commit();
+        MainActivity.getInstance().startFragment(mFrag);
     }
 
     public FriendDetailFragment() {

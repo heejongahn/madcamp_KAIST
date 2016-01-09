@@ -21,12 +21,8 @@ public class WriteEventFragment extends Fragment {
      * Objective: reduce activity as much as possible.
      */
     public static void activate() {
-        FragmentTransaction t = (MainActivity.getInstance()).getSupportFragmentManager().beginTransaction();
         WriteEventFragment mFrag = new WriteEventFragment();
-        t.replace(R.id.maincontent, mFrag);
-        t.addToBackStack(null);
-        t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        t.commit();
+        MainActivity.getInstance().startFragment(mFrag);
     }
 
     public WriteEventFragment() {
