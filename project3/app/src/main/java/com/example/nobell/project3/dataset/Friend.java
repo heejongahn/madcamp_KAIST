@@ -26,7 +26,7 @@ public class Friend extends Model {
     public String name;
 
     @Column(name = "Photo")
-    public byte[] photo;
+    public byte[] photo ;
 
     public void setPhoto(Bitmap bitmap) {
         ByteArrayOutputStream blob = new ByteArrayOutputStream();
@@ -35,7 +35,10 @@ public class Friend extends Model {
     }
 
     public Bitmap getPhoto() {
-        Bitmap bitmap = BitmapFactory.decodeByteArray(photo, 0, photo.length);
+        if (this.photo == null) {
+            return null;
+        }
+        Bitmap bitmap = BitmapFactory.decodeByteArray(this.photo, 0, this.photo.length);
         return bitmap;
     }
 
@@ -46,6 +49,7 @@ public class Friend extends Model {
     public Friend(String name) {
         super();
         this.name = name;
+        this.photo = null;
     }
 
     public List<Event> getEvents() {
