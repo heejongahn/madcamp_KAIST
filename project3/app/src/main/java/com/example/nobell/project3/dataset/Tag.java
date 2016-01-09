@@ -25,7 +25,7 @@ public class Tag extends Model {
 
     public Tag(String name) {
         super();
-        this.tagName = tagName;
+        this.tagName = name;
     }
 
     public List<Event> getEvents() {

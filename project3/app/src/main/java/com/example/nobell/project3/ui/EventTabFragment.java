@@ -5,11 +5,13 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -20,6 +22,8 @@ import com.example.nobell.project3.R;
 import com.example.nobell.project3.dataset.Appearance;
 import com.example.nobell.project3.dataset.Description;
 import com.example.nobell.project3.dataset.Event;
+import com.example.nobell.project3.dataset.Friend;
+import com.example.nobell.project3.dataset.Tag;
 
 import java.util.List;
 
@@ -66,31 +70,67 @@ public class EventTabFragment extends Fragment {
 
         // create a new ImageView for each item referenced by the Adapter
         public View getView(int position, View convertView, ViewGroup parent) {
-            LinearLayout item = (LinearLayout) convertView;
-            if (convertView == null) {
+            LinearLayout item;
+            if (convertView != null) {
+                item = (LinearLayout) convertView;
+            } else {
                 item = (LinearLayout) getLayoutInflater(null).inflate(mResource, parent, false);
             }
+
+            LinearLayout old_tags = (LinearLayout) item.findViewById(R.id.event_tags);
+            old_tags.removeAllViews();
+
+            LinearLayout old_friends = (LinearLayout) item.findViewById(R.id.event_friends);
+            old_friends.removeAllViews();
 
             Event event = mEvents.get(position);
 
             TextView body = (TextView) item.findViewById(R.id.event_body);
             body.setText(event.body);
 
-            TextView tag = (TextView) item.findViewById(R.id.event_tag);
-            int numOfTags = event.getTags().size();
-            if (numOfTags != 0) {
-                tag.setText(String.format("%d 개의 태그", numOfTags));
-            } else {
-                tag.setText("태그 없음");
+            TextView date = (TextView) item.findViewById(R.id.event_date);
+            date.setText(event.getDate());
+
+            LinearLayout.LayoutParams params =
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+
+
+            LinearLayout tag_layout = (LinearLayout) item.findViewById(R.id.event_tags);
+
+            List<Tag> tags = event.getTags();
+            if (tags.size() != 0) {
+                Button tagButton = new Button(getActivity());
+                tagButton.setLayoutParams(params);
+                tagButton.setGravity(Gravity.CENTER);
+                tagButton.setMinHeight(0);
+                tagButton.setMinWidth(0);
+                tagButton.setTextSize(8);
+
+                for (Tag tag: tags) {
+                    tagButton.setText(tag.tagName);
+                    tag_layout.addView(tagButton);
+                }
             }
 
-            TextView friend = (TextView) item.findViewById(R.id.event_friend);
-            int numOfFriends = event.getFriends().size();
-            if (numOfFriends != 0) {
-                friend.setText(String.format("%d 명의 친구", numOfFriends));
-           } else {
-                friend.setText("친구 없음");
+            LinearLayout friend_layout = (LinearLayout) item.findViewById(R.id.event_friends);
+
+            List<Friend> friends = event.getFriends();
+            if (friends.size() != 0) {
+                Button friendButton = new Button(getActivity());
+                friendButton.setLayoutParams(params);
+                friendButton.setGravity(Gravity.CENTER);
+                friendButton.setPadding(0, 0, 0, 0);
+                friendButton.setMinHeight(0);
+                friendButton.setMinWidth(0);
+                friendButton.setTextSize(8);;
+
+                for (Friend friend: friends) {
+                    friendButton.setText(friend.name);
+                    friend_layout.addView(friendButton);
+                }
             }
+
             return item;
         }
 

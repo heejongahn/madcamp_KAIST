@@ -6,20 +6,24 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/event_body" />
+        android:id="@+id/event_body"
+        android:textSize="18sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/event_date" />
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/event_friend" />
+        android:orientation="horizontal"
+        android:id="@+id/event_friends"> </LinearLayout>
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/event_tag" />
+        android:orientation="horizontal"
+        android:id="@+id/event_tags"> </LinearLayout>
+
 </LinearLayout>
