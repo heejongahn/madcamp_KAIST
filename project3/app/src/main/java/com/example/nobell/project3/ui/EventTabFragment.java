@@ -68,25 +68,22 @@ public class EventTabFragment extends Fragment {
         // create a new ImageView for each item referenced by the Adapter
         public View getView(int position, View convertView, ViewGroup parent) {
             int i;
-            LinearLayout item;
-            if (convertView != null) {
-                item = (LinearLayout) convertView;
-            } else {
-                item = (LinearLayout) getLayoutInflater(null).inflate(mResource, parent, false);
+            if (convertView == null) {
+                convertView = getLayoutInflater(null).inflate(mResource, parent, false);
             }
 
-            LinearLayout old_tags = (LinearLayout) item.findViewById(R.id.event_tags);
+            LinearLayout old_tags = (LinearLayout) convertView.findViewById(R.id.event_tags);
             old_tags.removeAllViews();
 
-            LinearLayout old_friends = (LinearLayout) item.findViewById(R.id.event_friends);
+            LinearLayout old_friends = (LinearLayout) convertView.findViewById(R.id.event_friends);
             old_friends.removeAllViews();
 
             Event event = mEvents.get(position);
 
-            TextView body = (TextView) item.findViewById(R.id.event_body);
+            TextView body = (TextView) convertView.findViewById(R.id.event_body);
             body.setText(event.body);
 
-            TextView date = (TextView) item.findViewById(R.id.event_date);
+            TextView date = (TextView) convertView.findViewById(R.id.event_date);
             date.setText(event.getDate());
 
             LinearLayout.LayoutParams params =
@@ -94,7 +91,7 @@ public class EventTabFragment extends Fragment {
                     LinearLayout.LayoutParams.WRAP_CONTENT);
 
 
-            LinearLayout tag_layout = (LinearLayout) item.findViewById(R.id.event_tags);
+            LinearLayout tag_layout = (LinearLayout) convertView.findViewById(R.id.event_tags);
 
             List<Tag> tags = event.getTags();
             if (tags.size() != 0) {
@@ -118,7 +115,7 @@ public class EventTabFragment extends Fragment {
                 }
             }
 
-            LinearLayout friend_layout = (LinearLayout) item.findViewById(R.id.event_friends);
+            LinearLayout friend_layout = (LinearLayout) convertView.findViewById(R.id.event_friends);
 
             List<Friend> friends = event.getFriends();
             if (friends.size() != 0) {
@@ -142,7 +139,7 @@ public class EventTabFragment extends Fragment {
                 }
             }
 
-            return item;
+            return convertView;
         }
 
     }
