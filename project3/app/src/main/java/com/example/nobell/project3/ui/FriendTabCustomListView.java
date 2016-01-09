@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.nobell.project3.R;
 import com.example.nobell.project3.dataset.Event;
+import com.example.nobell.project3.dataset.Friend;
 
 import java.util.List;
 
@@ -20,42 +21,42 @@ import java.util.List;
  * Created by Sia on 2016-01-09.
  */
 public class FriendTabCustomListView extends BaseAdapter{
-
     private LayoutInflater inflater;
-    private Context m_context;
-    private int layout;
-    private List<Event> mEvents;
+    private Context mContext;
+    private int mLayout;
+    private List<Friend> mFriends;
 
-    public FriendTabCustomListView(Context context, int layout, List<Event> events){
+    public FriendTabCustomListView(Context context, int layout, List<Friend> friends){
         this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.m_context = context;
-        this.layout = layout;
-        this.mEvents = events;
+        this.mContext = context;
+        this.mLayout = layout;
+        this.mFriends = friends;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
-        if(convertView == null)
-        {
-            convertView=inflater.inflate(layout,parent,false);
+        if (convertView == null) {
+            convertView = inflater.inflate(mLayout, parent, false);
         }
 
-        ImageView icon = (ImageView) convertView.findViewById(R.id.imageview);
-        Bitmap orgImage = BitmapFactory.decodeResource(m_context.getResources(), R.drawable.basic_profile);
-        Bitmap resize = Bitmap.createScaledBitmap(orgImage,100,100,true);
-        icon.setImageBitmap(resize);
+        Friend friend = mFriends.get(position);
 
-        Event event = mEvents.get(position);
-        TextView textContents = (TextView)convertView.findViewById(R.id.textview);
-        textContents.setText(event.body);
+        ImageView photo = (ImageView) convertView.findViewById(R.id.friend_image);
+        if (friend.getPhoto() == null) {
+            Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.basic_profile);
+            photo.setImageBitmap(image);
+        } else {
+            photo.setImageBitmap(friend.getPhoto());
+        }
+        TextView name = (TextView) convertView.findViewById(R.id.friend_name);
+        name.setText(friend.name);
 
         return convertView;
 
     }
 
     @Override
-    public int getCount(){return mEvents.size();}
+    public int getCount(){return mFriends.size();}
     @Override
     public String getItem(int position){return null;}
     @Override

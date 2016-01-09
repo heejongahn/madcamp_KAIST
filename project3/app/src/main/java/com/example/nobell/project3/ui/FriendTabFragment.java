@@ -15,6 +15,7 @@ import android.widget.ListView;
 import com.activeandroid.query.Select;
 import com.example.nobell.project3.R;
 import com.example.nobell.project3.dataset.Event;
+import com.example.nobell.project3.dataset.Friend;
 
 import java.util.List;
 
@@ -41,9 +42,9 @@ public class FriendTabFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_friend_tab,null);
 
         m_ListView = (ListView) view.findViewById(R.id.listView);
-        List<Event> events = new Select().all().from(Event.class).execute();
+        List<Friend> friends = new Select().all().from(Friend.class).execute();
 
-        adapter = new FriendTabCustomListView(getContext(),R.layout.friend_combined_listview, events);
+        adapter = new FriendTabCustomListView(getContext(),R.layout.friend_combined_listview, friends);
         adapter.notifyDataSetChanged();
 
         m_ListView.setAdapter(adapter);
