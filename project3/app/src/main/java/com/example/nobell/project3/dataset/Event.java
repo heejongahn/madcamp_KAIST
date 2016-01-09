@@ -47,14 +47,14 @@ public class Event extends Model {
     }
 
     public List<Friend> getFriends() {
-        return new Select("Friend")
+        return new Select()
                 .from(Appearance.class)
                 .where("Event = ?", this.getId())
                 .execute();
     }
 
     public List<Tag> getTags() {
-        return new Select("Tag")
+        return new Select()
                 .from(Description.class)
                 .where("Event = ?", this.getId())
                 .execute();
