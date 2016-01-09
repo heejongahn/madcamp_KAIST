@@ -85,6 +85,7 @@ public class FriendTabFragment extends Fragment {
             if (friend.getPhoto() == null) {
                 Bitmap image = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.basic_profile);
                 photo.setImageBitmap(image);
+                friend.setPhoto(image);
             } else {
                 photo.setImageBitmap(friend.getPhoto());
             }
