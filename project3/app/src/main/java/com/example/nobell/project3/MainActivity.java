@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         new Delete().from(Tag.class).execute();
         new Delete().from(Friend.class).execute();
 
-        int i;
+        int i, j;
         Event e;
         Friend f;
         Tag t;
@@ -124,17 +124,28 @@ public class MainActivity extends AppCompatActivity {
         Description d;
 
         for (i=0; i<50; i++) {
-            e = new Event(String.format("Event name %d", i), new Date());
+            e = new Event("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", new Date());
             e.save();
             if (i%5 == 0) {
-                f = new Friend(String.format("Friend %d", i/5));
-                f.save();
-                e.addFriend(f);
+                for (j=0; j < i / 5; j++) {
+                    f = new Friend(String.format("Friend %d", i/5));
+                    f.save();
+                    e.addFriend(f);
+                }
+                if (i%3 == 2) {
+                    for (j=0; j < (i / 3) + 1; j++) {
+                        t = new Tag(String.format("Tag %d", i/5));
+                        t.save();
+                        e.addTag(t);
+                    }
+                }
             }
-            if (i%5 == 2) {
-                t = new Tag(String.format("Tag %d", i/5));
-                t.save();
-                e.addTag(t);
+            if (i%9 == 0) {
+                for (j = 0; j < (i / 9) + 1; j++) {
+                    t = new Tag(String.format("Tag %d", i / 5));
+                    t.save();
+                    e.addTag(t);
+                }
             }
         }
     }
