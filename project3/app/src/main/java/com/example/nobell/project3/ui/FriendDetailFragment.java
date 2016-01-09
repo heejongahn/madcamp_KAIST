@@ -4,6 +4,7 @@ package com.example.nobell.project3.ui;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,7 @@ public class FriendDetailFragment extends Fragment {
      * Objective: reduce activity as much as possible.
      */
     public static void activate() {
-        FragmentTransaction t = ((MainActivity)MainActivity.getContext()).getSupportFragmentManager().beginTransaction();
+        FragmentTransaction t = (MainActivity.getInstance()).getSupportFragmentManager().beginTransaction();
         FriendDetailFragment mFrag = new FriendDetailFragment();
         t.replace(0, mFrag);
         t.addToBackStack(null);
@@ -39,6 +40,4 @@ public class FriendDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_friend_detail, container, false);
     }
-
-
 }
