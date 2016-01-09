@@ -13,8 +13,7 @@ import android.widget.Toast;
 import com.activeandroid.query.Select;
 import com.example.nobell.project3.R;
 import com.example.nobell.project3.dataset.Tag;
-import com.example.nobell.project3.lib.tag.OnTagClickListener;
-import com.example.nobell.project3.lib.tag.TagItem;
+import com.example.nobell.project3.lib.tag.TagContainerLayout;
 import com.example.nobell.project3.lib.tag.TagView;
 
 import java.util.ArrayList;
@@ -29,28 +28,24 @@ public class TagTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tag_tab, container, false);
-        TagView tagView = (TagView)view.findViewById(R.id.tags_view);
-        ArrayList<TagItem> tagItems = new ArrayList<TagItem> ();
-
-       tags = new Select().all().from(Tag.class).execute();
-
-        int i = 0;
-        for(Tag t:tags) {
-            Log.d("TagTab", "tag#"+i+" ["+t.tagName+"]received");
-            TagItem ti = new TagItem(t.tagName);
-            ti.radius = 10f;
-            ti.layoutColor = Color.rgb((i*30)%256, (i*14)%256, (i*50)%256);
-            ti.isDeletable = false;
-            tagItems.add(ti);
-            i = i+1;
-        }
-        tagView.addTags(tagItems);
-        tagView.setOnTagClickListener(new OnTagClickListener() {
+        TagContainerLayout tagContainerLayout = (TagContainerLayout) view.findViewById(R.id.tagcontainerlayout);
+        tagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
-            public void onTagClick(TagItem tag, int position) {
-                Toast.makeText(getContext(), "tag#" + position + "[" + tags.get(position).tagName+"]", Toast.LENGTH_SHORT).show();
+            public void onTagClick(int position, String text) {
+
+            }
+
+            @Override
+            public void onTagLongClick(int position, String text) {
+
             }
         });
+
+        tags = new Select().all().from(Tag.class).execute();
+        List<String> tagNames = new ArrayList<String> ();
+        for (Tag t: tags)
+            tagNames.add(t.tagName);
+        tagContainerLayout.setTags(tagNames);
         return view;
     }
 }
