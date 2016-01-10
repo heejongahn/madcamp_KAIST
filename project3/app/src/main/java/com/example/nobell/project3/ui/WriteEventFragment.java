@@ -47,7 +47,7 @@ public class WriteEventFragment extends Fragment {
             e = new Event();
             e.save();
         }
-        args.putLong(KEY_EVENT, e.getId());
+        args.putLong(KEY_EVENT, Event.getIdWithCache(e));
 
         /* Make new fragment object with given arguments. */
         Fragment frag = WriteEventFragment.instantiate(MainActivity.getInstance(), WriteEventFragment.class.getName(), args);
@@ -62,7 +62,7 @@ public class WriteEventFragment extends Fragment {
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
         long eventId = getArguments().getLong(KEY_EVENT);
-        mEvent = new Select().from(Event.class).where("Id = ?", eventId).executeSingle();
+        mEvent = Event.flushCache(eventId);
 
         mTags = mEvent.getTags();
         if (mTags == null) {
