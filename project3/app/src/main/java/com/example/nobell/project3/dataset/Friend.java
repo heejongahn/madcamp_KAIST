@@ -12,6 +12,7 @@ import com.activeandroid.query.Select;
 
 import java.io.ByteArrayOutputStream;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -57,10 +58,18 @@ public class Friend extends Model {
     }
 
     public List<Event> getEvents() {
-        return new Select("Event")
+
+        List<Appearance> appearances = new Select()
                 .from(Appearance.class)
                 .where("Friend = ?", this.getId())
                 .execute();
+
+        List<Event> events = new ArrayList<Event>();
+        for (Appearance appearance: appearances) {
+            events.add(appearance.event);
+        }
+
+        return events;
     }
 
     public static Long getIdWithCache(Friend f) {
