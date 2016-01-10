@@ -4,6 +4,7 @@ package com.example.nobell.project3.ui;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,10 @@ public class WriteEventFragment extends Fragment {
      *
      * Objective: reduce activity as much as possible.
      */
+
+    private String mOriginalToolbarTitle;
+    private Toolbar mToolbar;
+
     public static void activate() {
         WriteEventFragment mFrag = new WriteEventFragment();
         MainActivity.getInstance().startFragment(mFrag);
@@ -35,6 +40,16 @@ public class WriteEventFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_write_event, container, false);
+        mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
+        mOriginalToolbarTitle = (String) mToolbar.getTitle();
+        mToolbar.setTitle("글 쓰기");
+
         return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mToolbar.setTitle(mOriginalToolbarTitle);
     }
 }
