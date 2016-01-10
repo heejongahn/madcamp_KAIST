@@ -11,10 +11,14 @@ import java.io.FileReader;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Table(name="Events")
 public class Event extends Model {
+    private static Map<Long, Event> cache = new HashMap<Long, Event>();
+
     @Column(name = "Body")
     public String body;
 
@@ -77,5 +81,20 @@ public class Event extends Model {
         }
 
         return tags;
+    }
+
+    public static Long getIdWithCache(Event e) {
+        Long id = e.getId();
+        cache.put(id, e);
+        return id;
+    }
+    public static Event flushCache(Long id) {
+        Event e = cache.get(id);
+        if (e == null) {
+            throw new RuntimeException(Event.class.getName()
+                    + ": cache could not found in flushCache(id="+id+")");
+        }
+        cache.remove(id);
+        return e;
     }
 }

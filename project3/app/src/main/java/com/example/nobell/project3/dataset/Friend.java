@@ -13,7 +13,9 @@ import com.activeandroid.query.Select;
 import java.io.ByteArrayOutputStream;
 import java.sql.Blob;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
  * Reference:
@@ -22,6 +24,8 @@ import java.util.List;
 
 @Table(name="Friends")
 public class Friend extends Model {
+    private static Map<Long, Friend> cache = new HashMap<Long, Friend>();
+
     @Column(name = "Name")
     public String name;
 
@@ -57,5 +61,20 @@ public class Friend extends Model {
                 .from(Appearance.class)
                 .where("Friend = ?", this.getId())
                 .execute();
+    }
+
+    public static Long getIdWithCache(Friend f) {
+        Long id = f.getId();
+        cache.put(id, f);
+        return id;
+    }
+    public static Friend flushCache(Long id) {
+        Friend f = cache.get(id);
+        if (f == null) {
+            throw new RuntimeException(Friend.class.getName()
+                    + ": cache could not found in flushCache(id="+id+")");
+        }
+        cache.remove(id);
+        return f;
     }
 }

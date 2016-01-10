@@ -19,12 +19,11 @@ import com.example.nobell.project3.dataset.Tag;
 public class TagDetailFragment extends Fragment {
     private Tag tag;
     private Long tagId;
-    public Long eea;
 
     public static void activate(Tag tag) {
         /* Setting arguments to newly created fragment. */
         Bundle args = new Bundle();
-        args.putLong("tagId", tag.getId());
+        args.putLong("tagId", Tag.getIdWithCache(tag));
 
         /* Make new fragment object with given arguments. */
         Fragment frag = TagDetailFragment.instantiate(MainActivity.getInstance(), TagDetailFragment.class.getName(), args);
@@ -39,7 +38,7 @@ public class TagDetailFragment extends Fragment {
         /* After the real fragment started,
          * get arguments from the fragment. */
         tagId = getArguments().getLong("tagId", 0);
-        tag = new Select().from(Tag.class).where("Id = ?", tagId).executeSingle();
+        tag = Tag.flushCache(tagId);
     }
 
     @Override
@@ -49,7 +48,8 @@ public class TagDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_tag_detail, container, false);
         TextView tv = (TextView) view.findViewById(R.id.tagdetailtext);
 
-        tv.setText("tag Detail page: "+tag.tagName+", tagId = "+tagId);
+        tv.setText("tag Detail page: "+tag.tagName+", tagId = "+tag.getId());
+
 
         return view;
     }

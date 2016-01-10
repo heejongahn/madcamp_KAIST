@@ -7,7 +7,9 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /*
  * Reference:
@@ -16,6 +18,8 @@ import java.util.List;
 
 @Table(name="Tags")
 public class Tag extends Model {
+    private static Map<Long, Tag> cache = new HashMap<Long, Tag>();
+
     @Column(name = "name")
     public String tagName;
 
@@ -42,5 +46,20 @@ public class Tag extends Model {
             result.save();
         }
         return result;
+    }
+
+    public static Long getIdWithCache(Tag t) {
+        Long id = t.getId();
+        cache.put(id, t);
+        return id;
+    }
+    public static Tag flushCache(Long id) {
+        Tag t = cache.get(id);
+        if (t == null) {
+            throw new RuntimeException(Tag.class.getName()
+                    + ": cache could not found in flushCache(id="+id+")");
+        }
+        cache.remove(id);
+        return t;
     }
 }
