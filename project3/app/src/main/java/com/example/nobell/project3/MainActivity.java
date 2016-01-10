@@ -74,12 +74,6 @@ public class MainActivity extends AppCompatActivity {
 
         ActiveAndroid.initialize(this);
         dummyDataSetup();
-        Log.i("debug", Integer.toString(new Select().all().from(Event.class).execute().size()));
-        List<Appearance> appearances = new Select().all().from(Appearance.class).execute();
-        Log.i("debug", Integer.toString(appearances.size()));
-        for (Appearance appearance : appearances) {
-            Log.d("debug", String.format("%d", appearance.friend.getId()));
-        }
     }
 
     /*
@@ -138,8 +132,6 @@ public class MainActivity extends AppCompatActivity {
         Event e;
         Friend f;
         Tag t;
-        Appearance a;
-        Description d;
 
         for (i=0; i<50; i++) {
             e = new Event("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", new Date());
