@@ -45,14 +45,14 @@ public class PagerFragment extends Fragment {
     public void onHiddenChanged(boolean b) {
         super.onHiddenChanged(b);
         if (b)
-            MainActivity.getInstance().getTabLayout().setVisibility(View.GONE);
+            ((MainActivity)(getActivity())).getTabLayout().setVisibility(View.GONE);
         else
-            MainActivity.getInstance().getTabLayout().setVisibility(View.VISIBLE);
+            ((MainActivity)(getActivity())).getTabLayout().setVisibility(View.VISIBLE);
     }
     @Override
     public void onResume() {
         Log.d("PagerFragment", "onResume called");
-        ((MainActivity) getActivity()).getTabLayout().setupWithViewPager(viewPager);
+//        ((MainActivity) getActivity()).getTabLayout().setupWithViewPager(viewPager);
         if (viewPager == null){
             Log.d("PagerFragment", "viewPager is null");
         }
