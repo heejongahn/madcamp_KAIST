@@ -82,7 +82,7 @@ public class WriteEventFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_write_event, container, false);
         mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         mOriginalToolbarTitle = (String) mToolbar.getTitle();
-        mToolbar.setTitle("글 쓰기");g
+        mToolbar.setTitle("글 쓰기");
 
         Button tagAddButton = (Button) view.findViewById(R.id.add_tag_button);
         tagAddButton.setOnClickListener(new addTagListener());
@@ -107,6 +107,7 @@ public class WriteEventFragment extends Fragment {
             LinearLayout tagLayout = (LinearLayout) getActivity().findViewById(R.id.write_event_tags);
             EditText tagEditText = (EditText) getActivity().findViewById(R.id.write_event_tag);
             String name = tagEditText.getText().toString();
+            tagEditText.setText("");
 
             Tag t = Tag.addOrGet(name);
             mTags.add(t);
