@@ -82,10 +82,10 @@ public class WriteEventFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_write_event, container, false);
         mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
         mOriginalToolbarTitle = (String) mToolbar.getTitle();
-        mToolbar.setTitle("글 쓰기");
+        mToolbar.setTitle("글 쓰기");g
 
         Button tagAddButton = (Button) view.findViewById(R.id.add_tag_button);
-        tagAddButton.setOnClickListener(new addTagListner());
+        tagAddButton.setOnClickListener(new addTagListener());
 
         Button writeButton = (Button) view.findViewById(R.id.event_save_button);
         writeButton.setOnClickListener(new saveEventListener());
@@ -99,8 +99,8 @@ public class WriteEventFragment extends Fragment {
         mToolbar.setTitle(mOriginalToolbarTitle);
     }
 
-    public class addTagListner implements View.OnClickListener {
-        public addTagListner() {}
+    public class addTagListener implements View.OnClickListener {
+        public addTagListener() {}
 
         @Override
         public void onClick(View v) {
