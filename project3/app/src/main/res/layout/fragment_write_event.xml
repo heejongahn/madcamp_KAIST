@@ -1,10 +1,100 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" tools:context="com.example.nobell.project3.ui.WriteEventFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.nobell.project3.ui.WriteEventFragment"
+    android:padding="24dp"
+    android:gravity="center_horizontal">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment"
-        android:background="#303030"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/write_event_body_label"
+        android:id="@+id/write_event_body_label"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
-</FrameLayout>
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/write_event_body_label"
+        android:layout_marginBottom="24dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:id="@+id/write_event_body"
+        android:layout_gravity="center_horizontal" />
+
+    <TextView
+        android:layout_below="@+id/write_event_body"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/write_event_tag_label"
+        android:id="@+id/write_event_tag_label"
+        android:textStyle="bold"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/write_event_tag"
+        android:layout_below="@+id/write_event_tag_label"
+        android:layout_toLeftOf="@+id/add_tag_button"
+        android:layout_toStartOf="@+id/add_tag_button" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="추가"
+        android:id="@+id/add_tag_button"
+        android:layout_alignBottom="@+id/write_event_tag"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/write_event_tags"
+        android:layout_below="@+id/write_event_tag"
+        android:orientation="horizontal"
+        android:layout_marginBottom="24dp">
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/write_event_tags"
+        android:text="@string/write_event_friend_label"
+        android:id="@+id/write_event_friend_label"
+        android:textStyle="bold"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/write_event_friends"
+        android:layout_below="@+id/write_event_friend_label"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save"
+        android:id="@+id/event_save_button"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"/>
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/write_event_friend_label"
+        android:id="@+id/add_friend_button"
+        android:layout_below="@+id/write_event_friends"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>
