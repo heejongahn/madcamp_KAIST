@@ -33,7 +33,7 @@ public class FriendDetailFragment extends Fragment {
 
     public static void activate(Friend friend) {
         Bundle args = new Bundle();
-        args.putLong("friendId", friend.getId());
+        args.putLong("friendId", Friend.getIdWithCache(friend));
 
         Fragment frag = FriendDetailFragment.instantiate(MainActivity.getInstance(), FriendDetailFragment.class.getName(), args);
         MainActivity.getInstance().startFragment(frag);
@@ -49,7 +49,7 @@ public class FriendDetailFragment extends Fragment {
         /* After the real fragment started,
          * get arguments from the fragment. */
         friendId = getArguments().getLong("friendId", 0);
-        friend = new Select().from(Friend.class).where("Id = ?", friendId).executeSingle();
+        friend = Friend.flushCache(friendId);
     }
 
 
