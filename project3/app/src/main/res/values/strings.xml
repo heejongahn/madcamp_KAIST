@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">project3</string>
     <string name="action_settings">Settings</string>
+    <string name="write_event_title">글 쓰기</string>
+
+    <string name="write_event_body_label">글 내용</string>
+    <string name="write_event_friend_label">친구 태그</string>
+    <string name="write_event_tag_label">태그 추가</string>
 
 <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
