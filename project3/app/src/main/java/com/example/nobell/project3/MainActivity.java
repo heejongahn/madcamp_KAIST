@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.fragmenttest:
                 supportInvalidateOptionsMenu();
-                WriteEventFragment.activate();
+                WriteEventFragment.activate(null);
                 break;
         }
         return true;

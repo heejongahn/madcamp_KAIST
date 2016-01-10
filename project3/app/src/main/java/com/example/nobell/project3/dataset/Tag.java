@@ -34,4 +34,13 @@ public class Tag extends Model {
                 .where("Tag = ?", this.getId())
                 .execute();
     }
+
+    public static Tag addOrGet(String name) {
+        Tag result = new Select().from(Tag.class).where("name = ?", name).executeSingle();
+        if (result == null) {
+            result = new Tag(name);
+            result.save();
+        }
+        return result;
+    }
 }
