@@ -83,11 +83,19 @@ public class FriendDetailFragment extends Fragment {
         TextView count = (TextView) view.findViewById(R.id.friend_detail_event_count);
         count.setText("총 글 갯수 : " + String.valueOf(events.size()));
 
-        Date date = new Date(FindLastMeet(events));
-        DateFormat mediumFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
-
         TextView last_meet = (TextView) view.findViewById(R.id.friend_detail_last_meet);
-        last_meet.setText("가장 최근 만난 날 : " + mediumFormat.format(date));
+
+        if(events.size() > 0)
+        {
+            Date date = new Date(FindLastMeet(events));
+            DateFormat mediumFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
+
+            last_meet.setText("가장 최근 만난 날 : " + mediumFormat.format(date));
+        }
+        else
+            last_meet.setText("가장 최근 만날 날 : 없음");
+
+
 
         return view;
     }
