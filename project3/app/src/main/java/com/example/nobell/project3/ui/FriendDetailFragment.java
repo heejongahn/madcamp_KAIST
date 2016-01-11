@@ -73,49 +73,8 @@ public class FriendDetailFragment extends Fragment {
 
         ListView listView = (ListView) view.findViewById(R.id.friend_detail_listview);
         List<Event> events = friend.getEvents();
-        listView.setAdapter(new FriendDetailListViewAdapter(this.getActivity(), R.layout.friend_detail_event_item, events));
+        listView.setAdapter(new EventAdapter(this.getActivity(), R.layout.event_item, events));
 
         return view;
-    }
-
-    public class FriendDetailListViewAdapter extends ArrayAdapter<Event> {
-
-        private List<Event> mEvents;
-        private int mResource;
-
-        public FriendDetailListViewAdapter(Context context, int resource, List<Event> events) {
-            super(context, resource, events);
-            mEvents = events;
-            mResource = resource;
-        }
-
-        public int getCount() {
-            return mEvents.size();
-        }
-
-        public Event getItem(int position) {
-            return null;
-        }
-
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = getLayoutInflater(null).inflate(mResource, parent, false);
-            }
-
-            Event event = mEvents.get(position);
-
-            TextView body = (TextView) convertView.findViewById(R.id.friend_detail_event_body);
-            body.setText(event.body);
-
-            TextView date = (TextView) convertView.findViewById(R.id.friend_detail_event_date);
-            date.setText(event.getDate());
-
-            return convertView;
-        }
-
     }
 }
