@@ -33,6 +33,12 @@ public class Friend extends Model {
     @Column(name = "Photo")
     public byte[] photo ;
 
+    @Column(name = "PhoneNumber")
+    public String phoneNumber;
+
+    @Column(name = "Memo")
+    public String memo;
+
     public void setPhoto(Bitmap bitmap) {
         ByteArrayOutputStream blob = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, blob);
@@ -51,10 +57,12 @@ public class Friend extends Model {
         super();
     }
 
-    public Friend(String name) {
+    public Friend(String name, String phoneNumber, String memo) {
         super();
         this.name = name;
         this.photo = null;
+        this.phoneNumber = phoneNumber;
+        this.memo = memo;
     }
 
     public List<Event> getEvents() {
