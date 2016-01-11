@@ -8,7 +8,7 @@
         xmlns:android= "http://schemas.android.com/apk/res/android"
         android:orientation = "horizontal"
         android:layout_width= "match_parent"
-        android:layout_height= "200dp"
+        android:layout_height= "120dp"
         android:padding="20dp">
         <ImageView
             android:id= "@+id/friend_detail_image"
@@ -36,12 +36,51 @@
                 android:layout_height= "wrap_content"
                 android:textSize="16dip"/>
         </LinearLayout>
+    </LinearLayout>
 
+    <LinearLayout
+        xmlns:android= "http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
+        android:orientation = "vertical"
+        android:paddingTop="10dp">
+        <TextView
+            android:layout_below="@+id/write_event_body"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="메모"
+            android:paddingLeft="10dp"
+            android:textSize="18dp"
+            android:id="@+id/friend_detail_memo_name"
+            android:textStyle="bold"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:imeOptions="actionDone"
+            android:id="@+id/friend_detail_memo"/>
+
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:text="추가"
+            android:id="@+id/friend_detail_add_memo"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_marginTop="7dp"
+            android:layout_height="10dp"
+            android:background="#603080"/>
     </LinearLayout>
     <ListView
         android:id="@+id/friend_detail_listview"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
+        android:layout_height="250dp"
         android:layout_gravity="center_horizontal|bottom">
     </ListView>
 
