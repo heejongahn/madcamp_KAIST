@@ -57,7 +57,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
         LinearLayout old_friends = (LinearLayout) convertView.findViewById(R.id.event_friends);
         if (old_friends != null) {old_friends.removeAllViews();}
 
-        Event event = mEvents.get(position);
+        final Event event = mEvents.get(position);
 
         TextView body = (TextView) convertView.findViewById(R.id.event_body);
         body.setText(event.body);
@@ -117,6 +117,14 @@ public class EventAdapter extends ArrayAdapter<Event> {
                 }
             }
         }
+
+        Button editButton = (Button) convertView.findViewById(R.id.event_edit);
+        editButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WriteEventFragment.activate(event);
+            }
+        });
 
         return convertView;
     }
