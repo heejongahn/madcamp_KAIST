@@ -135,6 +135,8 @@ public class FriendDetailFragment extends Fragment {
             imm.hideSoftInputFromWindow(memo.getWindowToken(), 0);
             memo.setFocusable(false);
             memo.setFocusableInTouchMode(true);
+
+            ((MainActivity)getActivity()).notifyChangedToFragments();
         }
     }
 
