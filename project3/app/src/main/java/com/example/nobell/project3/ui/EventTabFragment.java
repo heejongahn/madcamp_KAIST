@@ -28,9 +28,8 @@ import com.example.nobell.project3.dataset.Tag;
 
 import java.util.List;
 
-public class EventTabFragment extends Fragment {
-    private EventAdapter mEventAdapter;
-
+public class EventTabFragment extends Fragment implements Updatable, Representable{
+    private boolean updated = false;
     public EventTabFragment() {
     }
 
@@ -41,6 +40,21 @@ public class EventTabFragment extends Fragment {
         mEventAdapter = new EventAdapter(this.getActivity(), R.layout.event_item, events);
     }
 
+    @Override
+    public void reactivated() {
+        if (updated) {
+            // update the UI.
+            updated = false;
+        }
+    }
+    @Override
+    public void notifyChanged() {
+        updated = true;
+    }
+    @Override
+    public String getTitle() {
+        return "일기 모아보기";
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.nobell.project3.MainActivity;
 import com.example.nobell.project3.R;
@@ -17,13 +18,34 @@ import com.example.nobell.project3.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PagerFragment extends Fragment {
+public class PagerFragment extends Fragment implements Updatable, Representable{
     private static int instanceCount = 0;
     private ViewPager viewPager;
+    private ViewPagerAdapter adapter;
+
+    /* */
+    private boolean ui_update = false;
 
     public PagerFragment() {
         // Required empty public constructor
     }
+    @Override
+    public void reactivated() {
+        ((Updatable)(adapter.getItem(0))).reactivated();
+        ((Updatable)(adapter.getItem(1))).reactivated();
+        ((Updatable)(adapter.getItem(2))).reactivated();
+    }
+    @Override
+    public void notifyChanged() {
+        ((Updatable)(adapter.getItem(0))).notifyChanged();
+        ((Updatable)(adapter.getItem(1))).notifyChanged();
+        ((Updatable)(adapter.getItem(2))).notifyChanged();
+    }
+    @Override
+    public String getTitle() {
+        return ((Representable) adapter.getCurrentFragment()).getTitle();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,7 +85,7 @@ public class PagerFragment extends Fragment {
     }
 
     private void setupViewPager (ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(new EventTabFragment(), "Events");
         adapter.addFragment(new FriendTabFragment(), "Friends" );
         adapter.addFragment(new TagTabFragment(), "Tags");
@@ -77,9 +99,14 @@ public class PagerFragment extends Fragment {
         private final List<Fragment> mFragmentList = new ArrayList<Fragment>();
         private final List<String> mFragmentTitleList = new ArrayList<String>();
         private int mSize = 0;
+        private Fragment currentFragment;
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
+        }
+
+        public Fragment getCurrentFragment() {
+            return currentFragment;
         }
 
         @Override
@@ -101,6 +128,15 @@ public class PagerFragment extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
+        }
+
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object obj) {
+            if (currentFragment != obj) {
+                currentFragment = ((Fragment) obj);
+                ((MainActivity)getActivity()).notifyTitleChanged();
+            }
+            super.setPrimaryItem(container, position, obj);
         }
     }
 }

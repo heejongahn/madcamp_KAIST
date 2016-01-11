@@ -19,16 +19,30 @@ import com.example.nobell.project3.lib.tag.TagView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TagTabFragment extends Fragment {
+public class TagTabFragment extends Fragment implements Updatable, Representable{
     private List<Tag> tags;
+    private boolean updated = false;
+
     public TagTabFragment() {
     }
 
     @Override
-    public void onHiddenChanged(boolean b) {
-        super.onHiddenChanged(b);
-        Log.d("TagTabFragment", "Hiddened with "+b);
+    public void reactivated() {
+        if (updated) {
+            // update the UI.
+            updated = false;
+        }
     }
+    @Override
+    public void notifyChanged() {
+        updated = true;
+    }
+
+    @Override
+    public String getTitle() {
+        return "태그 모아보기";
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -37,7 +51,6 @@ public class TagTabFragment extends Fragment {
         tagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
             public void onTagClick(int position, String text) {
-                Log.d("TagTabFragment", "Clicked");
                 TagDetailFragment.activate(tags.get(position));
             }
 

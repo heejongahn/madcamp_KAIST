@@ -25,12 +25,31 @@ import com.example.nobell.project3.dataset.Friend;
 import java.util.List;
 
 @SuppressLint("ValidFragment")
-public class FriendTabFragment extends Fragment {
+public class FriendTabFragment extends Fragment implements Updatable, Representable{
     private ListView mListView;
     private FriendAdapter mAdapter;
     private List<Friend> friends;
+    private boolean updated = false;
 
     public FriendTabFragment() {
+    }
+
+    @Override
+    public void reactivated() {
+        if (updated) {
+            // update the UI.
+            mAdapter.notifyDataSetChanged();
+            updated = false;
+        }
+    }
+    @Override
+    public void notifyChanged() {
+        updated = true;
+    }
+
+    @Override
+    public String getTitle() {
+        return "내 친구들";
     }
 
     @Override
@@ -91,6 +110,9 @@ public class FriendTabFragment extends Fragment {
             }
             TextView name = (TextView) convertView.findViewById(R.id.friend_name);
             name.setText(friend.name);
+
+            TextView memo = (TextView) convertView.findViewById(R.id.friend_memo);
+            memo.setText(friend.memo);
 
             return convertView;
 
