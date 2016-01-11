@@ -12,7 +12,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -95,7 +98,13 @@ public class FriendDetailFragment extends Fragment {
         else
             last_meet.setText("가장 최근 만날 날 : 없음");
 
+        if (friend.memo != null) {
+            EditText memo = (EditText) view.findViewById(R.id.friend_detail_memo);
+            memo.setText(friend.memo);
+        }
 
+        Button memoAddButton = (Button) view.findViewById(R.id.friend_detail_add_memo);
+        memoAddButton.setOnClickListener(new addMemoListener());
 
         return view;
     }
@@ -110,7 +119,23 @@ public class FriendDetailFragment extends Fragment {
         });
 
         return input_events.get(0).date;
+    }
 
+    public class addMemoListener implements View.OnClickListener {
+        public addMemoListener() {}
+
+        @Override
+        public void onClick(View v) {
+
+            EditText memo = (EditText) getActivity().findViewById(R.id.friend_detail_memo);
+            InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            String sendData = memo.getText().toString();
+            friend.memo = sendData;
+
+            imm.hideSoftInputFromWindow(memo.getWindowToken(), 0);
+            memo.setFocusable(false);
+            memo.setFocusableInTouchMode(true);
+        }
     }
 
 }
