@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
             e.save();
             if (i%5 == 0) {
                 for (j=0; j < i / 5; j++) {
-                    f = new Friend(String.format("Friend %d", i/5));
+                    f = new Friend(String.format("Friend %d", i/5), "01066796756", "너무 잘생겼고 그리고 랩도 잘하고 너무나도 완벽해");
                     f.save();
                     e.addFriend(f);
                 }
