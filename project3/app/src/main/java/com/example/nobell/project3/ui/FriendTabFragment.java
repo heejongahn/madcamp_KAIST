@@ -38,6 +38,7 @@ public class FriendTabFragment extends Fragment implements Updatable{
     public void reactivated() {
         if (updated) {
             // update the UI.
+            mAdapter.notifyDataSetChanged();
             updated = false;
         }
     }
@@ -104,6 +105,9 @@ public class FriendTabFragment extends Fragment implements Updatable{
             }
             TextView name = (TextView) convertView.findViewById(R.id.friend_name);
             name.setText(friend.name);
+
+            TextView memo = (TextView) convertView.findViewById(R.id.friend_memo);
+            memo.setText(friend.memo);
 
             return convertView;
 
