@@ -29,8 +29,18 @@ import com.example.nobell.project3.dataset.Tag;
 import java.util.List;
 
 public class EventTabFragment extends Fragment {
+    private EventAdapter mEventAdapter;
+
     public EventTabFragment() {
     }
+
+    @Override
+    public void onCreate(Bundle savedInstance) {
+        super.onCreate(savedInstance);
+        List<Event> events = new Select().all().from(Event.class).execute();
+        mEventAdapter = new EventAdapter(this.getActivity(), R.layout.event_item, events);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -38,8 +48,7 @@ public class EventTabFragment extends Fragment {
         FrameLayout layout = (FrameLayout) inflater.inflate(R.layout.fragment_event_tab, container, false);
 
         ListView listView = (ListView) layout.findViewById(R.id.event_listview);
-        List<Event> events = new Select().all().from(Event.class).execute();
-        listView.setAdapter(new EventAdapter(this.getActivity(), R.layout.event_item, events));
+        listView.setAdapter(mEventAdapter);
 
         return layout;
     }

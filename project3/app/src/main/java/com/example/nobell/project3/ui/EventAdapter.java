@@ -1,8 +1,6 @@
 package com.example.nobell.project3.ui;
 
-import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,10 +17,11 @@ import com.example.nobell.project3.dataset.Tag;
 import java.util.List;
 
 public class EventAdapter extends ArrayAdapter<Event> {
+    private EventAdapter mAdapter;
     private Context mContext;
     private List<Event> mEvents;
     private int mResource;
-    LayoutInflater mInflater;
+    private LayoutInflater mInflater;
 
     public EventAdapter(Context context, int resource, List<Event> events) {
         super(context, resource, events);
@@ -30,6 +29,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
         mEvents = events;
         mResource = resource;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mAdapter = this;
     }
 
     public int getCount() {
@@ -51,28 +51,19 @@ public class EventAdapter extends ArrayAdapter<Event> {
             convertView = mInflater.inflate(mResource, parent, false);
         }
 
-        LinearLayout old_tags = (LinearLayout) convertView.findViewById(R.id.event_tags);
-        if (old_tags != null) {old_tags.removeAllViews();}
-
-        LinearLayout old_friends = (LinearLayout) convertView.findViewById(R.id.event_friends);
-        if (old_friends != null) {old_friends.removeAllViews();}
-
-        final Event event = mEvents.get(position);
+        final Event mEvent = mEvents.get(position);
 
         TextView body = (TextView) convertView.findViewById(R.id.event_body);
-        body.setText(event.body);
+        body.setText(mEvent.body);
 
         TextView date = (TextView) convertView.findViewById(R.id.event_date);
-        date.setText(event.getDate());
+        date.setText(mEvent.getDate());
 
-        LinearLayout.LayoutParams params =
-                new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-
+        List<Tag> tags = mEvent.getTags();
 
         LinearLayout tag_layout = (LinearLayout) convertView.findViewById(R.id.event_tags);
+        if (tag_layout != null) {tag_layout.removeAllViews();}
 
-        List<Tag> tags = event.getTags();
         if (tags.size() != 0) {
             if (tags.size() > 3) {
                 for (i=0; i < 3; i++) {
@@ -94,9 +85,11 @@ public class EventAdapter extends ArrayAdapter<Event> {
             }
         }
 
-        LinearLayout friend_layout = (LinearLayout) convertView.findViewById(R.id.event_friends);
+        List<Friend> friends = mEvent.getFriends();
 
-        List<Friend> friends = event.getFriends();
+        LinearLayout friend_layout = (LinearLayout) convertView.findViewById(R.id.event_friends);
+        if (friend_layout != null) {friend_layout.removeAllViews();}
+
         if (friends.size() != 0) {
             if (friends.size() > 3) {
                 for (i=0; i < 3; i++) {
@@ -122,11 +115,20 @@ public class EventAdapter extends ArrayAdapter<Event> {
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                WriteEventFragment.activate(event);
+                WriteEventFragment.activate(mEvent);
+            }
+        });
+
+        Button deleteButton = (Button) convertView.findViewById(R.id.event_delete);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEvent.delete();
+                mEvents.remove(mEvent);
+                mAdapter.notifyDataSetChanged();
             }
         });
 
         return convertView;
     }
-
 }
