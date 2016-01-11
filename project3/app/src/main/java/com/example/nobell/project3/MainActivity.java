@@ -29,6 +29,7 @@ import com.example.nobell.project3.ui.FriendTabFragment;
 import com.example.nobell.project3.ui.MainTabLayout;
 import com.example.nobell.project3.ui.PagerFragment;
 import com.example.nobell.project3.ui.TagTabFragment;
+import com.example.nobell.project3.ui.Updatable;
 import com.example.nobell.project3.ui.WriteEventFragment;
 
 import java.sql.Date;
@@ -39,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private PagerFragment pagerFragment;
     private TabLayout tabLayout;
+
+    /* Fragment that should have some response for reactivation. */
+    private List<Fragment> fragmentStack = new ArrayList<Fragment> ();
 
     /* Singleton class */
     private static MainActivity mInstance;
@@ -67,10 +71,38 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.maintablayout);
         pagerFragment = new PagerFragment();
+        fragmentStack.add(pagerFragment);
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.add(R.id.maincontent, pagerFragment, "PAGER");
         ft.commit();
+
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                Fragment currentFragment = fragmentManager.findFragmentById(R.id.maincontent);
+//                Log.d("FragmentCallback", "current fragment "+currentFragment);
+//                String s = "fragmentstack size "+fragmentStack.size();
+//                for (Fragment f: fragmentStack) {
+//                    s = s+ " "+f;
+//                }
+//                Log.d("FragmentCallback", s);
+
+                if (fragmentStack.get(fragmentStack.size() - 1) == currentFragment) {
+                    /* New fragment was created */
+                }
+                else {
+                    /* Fragment */
+                    assert fragmentStack.get(fragmentStack.size() - 2) == currentFragment;
+                    fragmentStack.remove(fragmentStack.size() - 1);
+
+                    /* Callback function */
+                    if (currentFragment instanceof Updatable) {
+                        ((Updatable) currentFragment).reactivated();
+                    }
+                }
+            }
+        });
 
         ActiveAndroid.initialize(this);
         // dummyDataSetup();
@@ -86,12 +118,24 @@ public class MainActivity extends AppCompatActivity {
      * This revealing has callback on onHide(boolean b=false).
      */
     public void startFragment(Fragment fragment) {
+        /* To handle responsible fragment. */
+        fragmentStack.add(fragment);
+
         FragmentTransaction t = fragmentManager.beginTransaction();
         t.hide(getSupportFragmentManager().findFragmentById(R.id.maincontent));
         t.add(R.id.maincontent, fragment);
         t.addToBackStack(null);
         t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         t.commit();
+    }
+
+    /* The fragments should call this function
+     *    when the data was changed   */
+    public void notifyChangedToFragments() {
+        for (Fragment f:fragmentStack) {
+            if (f instanceof Updatable)
+                ((Updatable) f).notifyChanged();
+        }
     }
     //public void launchNewFragment ()
     // Menu is for debugging purpose

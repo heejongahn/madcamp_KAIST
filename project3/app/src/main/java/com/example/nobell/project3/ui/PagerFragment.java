@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.nobell.project3.MainActivity;
 import com.example.nobell.project3.R;
@@ -17,13 +18,30 @@ import com.example.nobell.project3.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PagerFragment extends Fragment {
+public class PagerFragment extends Fragment implements Updatable {
     private static int instanceCount = 0;
     private ViewPager viewPager;
+    private ViewPagerAdapter adapter;
+
+    /* */
+    private boolean ui_update = false;
 
     public PagerFragment() {
         // Required empty public constructor
     }
+    @Override
+    public void reactivated() {
+        ((Updatable)(adapter.getItem(0))).reactivated();
+        ((Updatable)(adapter.getItem(1))).reactivated();
+        ((Updatable)(adapter.getItem(2))).reactivated();
+    }
+    @Override
+    public void notifyChanged() {
+        ((Updatable)(adapter.getItem(0))).notifyChanged();
+        ((Updatable)(adapter.getItem(1))).notifyChanged();
+        ((Updatable)(adapter.getItem(2))).notifyChanged();
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,7 +81,7 @@ public class PagerFragment extends Fragment {
     }
 
     private void setupViewPager (ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(new EventTabFragment(), "Events");
         adapter.addFragment(new FriendTabFragment(), "Friends" );
         adapter.addFragment(new TagTabFragment(), "Tags");

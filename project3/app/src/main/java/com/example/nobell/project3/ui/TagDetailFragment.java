@@ -11,15 +11,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.nobell.project3.MainActivity;
 import com.example.nobell.project3.R;
 import com.example.nobell.project3.dataset.Event;
+import com.example.nobell.project3.dataset.Friend;
 import com.example.nobell.project3.dataset.Tag;
 import com.example.nobell.project3.lib.Utils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,6 +33,8 @@ public class TagDetailFragment extends Fragment {
     private final int friendbox_border = Color.parseColor("#22805030");
     private final int press = Color.parseColor("#33805030");
     private final float radius = 10.0f;
+
+    private List<Friend> top3friends;
 
     public static void activate(Tag tag) {
         /* Setting arguments to newly created fragment. */
@@ -64,10 +69,18 @@ public class TagDetailFragment extends Fragment {
         ListView tv_friends = (ListView) view.findViewById(R.id.tagdetailfriends);
         ListView tv_events = (ListView) view.findViewById(R.id.tagdetailotherevents);
 
-        tv_title.setText(tag.tagName);
         Context c = getContext();
-        FriendTabFragment.FriendAdapter topFriends = new FriendTabFragment().new FriendAdapter(c, R.layout.friend_combined_listview, tag.getFriendsTopThree());
+        tv_title.setText(tag.tagName);
+
+        top3friends = tag.getFriendsTopThree();
+        FriendTabFragment.FriendAdapter topFriends = new FriendTabFragment().new FriendAdapter(c, R.layout.friend_combined_listview, top3friends);;
         tv_friends.setAdapter(topFriends);
+        tv_title.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity)getActivity()).notifyChangedToFragments();
+            }
+        });
 
         List<Event> events = tag.getEventsWithOrder();
         tv_mainevent.setText(events.get(0).body);
