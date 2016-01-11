@@ -18,7 +18,7 @@ import com.example.nobell.project3.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PagerFragment extends Fragment implements Updatable {
+public class PagerFragment extends Fragment implements Updatable, Representable{
     private static int instanceCount = 0;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
@@ -40,6 +40,10 @@ public class PagerFragment extends Fragment implements Updatable {
         ((Updatable)(adapter.getItem(0))).notifyChanged();
         ((Updatable)(adapter.getItem(1))).notifyChanged();
         ((Updatable)(adapter.getItem(2))).notifyChanged();
+    }
+    @Override
+    public String getTitle() {
+        return ((Representable) adapter.getCurrentFragment()).getTitle();
     }
 
     @Override
@@ -95,9 +99,14 @@ public class PagerFragment extends Fragment implements Updatable {
         private final List<Fragment> mFragmentList = new ArrayList<Fragment>();
         private final List<String> mFragmentTitleList = new ArrayList<String>();
         private int mSize = 0;
+        private Fragment currentFragment;
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
+        }
+
+        public Fragment getCurrentFragment() {
+            return currentFragment;
         }
 
         @Override
@@ -119,6 +128,15 @@ public class PagerFragment extends Fragment implements Updatable {
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
+        }
+
+        @Override
+        public void setPrimaryItem(ViewGroup container, int position, Object obj) {
+            if (currentFragment != obj) {
+                currentFragment = ((Fragment) obj);
+                ((MainActivity)getActivity()).notifyTitleChanged();
+            }
+            super.setPrimaryItem(container, position, obj);
         }
     }
 }

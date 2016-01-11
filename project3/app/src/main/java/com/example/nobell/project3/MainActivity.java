@@ -28,6 +28,7 @@ import com.example.nobell.project3.ui.EventTabFragment;
 import com.example.nobell.project3.ui.FriendTabFragment;
 import com.example.nobell.project3.ui.MainTabLayout;
 import com.example.nobell.project3.ui.PagerFragment;
+import com.example.nobell.project3.ui.Representable;
 import com.example.nobell.project3.ui.TagTabFragment;
 import com.example.nobell.project3.ui.Updatable;
 import com.example.nobell.project3.ui.WriteEventFragment;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private PagerFragment pagerFragment;
     private TabLayout tabLayout;
+    private final String DEFAULT_TITLE = "나만의 일기장";
 
     /* Fragment that should have some response for reactivation. */
     private List<Fragment> fragmentStack = new ArrayList<Fragment> ();
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle(DEFAULT_TITLE);
 
         tabLayout = (TabLayout) findViewById(R.id.maintablayout);
         pagerFragment = new PagerFragment();
@@ -92,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                     /* New fragment was created */
                 }
                 else {
-                    /* Fragment */
+                    /* The old fragment was disappeared */
                     assert fragmentStack.get(fragmentStack.size() - 2) == currentFragment;
                     fragmentStack.remove(fragmentStack.size() - 1);
 
@@ -101,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
                         ((Updatable) currentFragment).reactivated();
                     }
                 }
+
+                changeTitleWithFragment(currentFragment);
             }
         });
 
@@ -122,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentStack.add(fragment);
 
         FragmentTransaction t = fragmentManager.beginTransaction();
-        t.hide(getSupportFragmentManager().findFragmentById(R.id.maincontent));
+        t.hide(fragmentManager.findFragmentById(R.id.maincontent));
         t.add(R.id.maincontent, fragment);
         t.addToBackStack(null);
         t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
@@ -137,6 +142,21 @@ public class MainActivity extends AppCompatActivity {
                 ((Updatable) f).notifyChanged();
         }
     }
+    /* This is only called for PagerFragment,
+     * since the fragment transition in ViewPager could not be detected at the fragmentManager's callback. */
+    public void notifyTitleChanged() {
+        Fragment currentFragment = fragmentManager.findFragmentById(R.id.maincontent);
+        changeTitleWithFragment(currentFragment);
+    }
+
+    /* */
+    private void changeTitleWithFragment(Fragment f) {
+        if (f instanceof Representable)
+            toolbar.setTitle(((Representable) f).getTitle());
+        else
+            toolbar.setTitle(DEFAULT_TITLE);
+    }
+
     //public void launchNewFragment ()
     // Menu is for debugging purpose
     @Override
