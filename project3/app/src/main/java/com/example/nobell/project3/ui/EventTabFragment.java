@@ -28,7 +28,7 @@ import com.example.nobell.project3.dataset.Tag;
 
 import java.util.List;
 
-public class EventTabFragment extends Fragment implements Updatable{
+public class EventTabFragment extends Fragment implements Updatable, Representable{
     private boolean updated = false;
     public EventTabFragment() {
     }
@@ -42,6 +42,10 @@ public class EventTabFragment extends Fragment implements Updatable{
     @Override
     public void notifyChanged() {
         updated = true;
+    }
+    @Override
+    public String getTitle() {
+        return "일기 모아보기";
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

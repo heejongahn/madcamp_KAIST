@@ -19,7 +19,7 @@ import com.example.nobell.project3.lib.tag.TagView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TagTabFragment extends Fragment implements Updatable{
+public class TagTabFragment extends Fragment implements Updatable, Representable{
     private List<Tag> tags;
     private boolean updated = false;
 
@@ -36,6 +36,11 @@ public class TagTabFragment extends Fragment implements Updatable{
     @Override
     public void notifyChanged() {
         updated = true;
+    }
+
+    @Override
+    public String getTitle() {
+        return "태그 모아보기";
     }
 
     @Override

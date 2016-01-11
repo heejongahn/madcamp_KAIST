@@ -25,7 +25,7 @@ import com.example.nobell.project3.dataset.Friend;
 import java.util.List;
 
 @SuppressLint("ValidFragment")
-public class FriendTabFragment extends Fragment implements Updatable{
+public class FriendTabFragment extends Fragment implements Updatable, Representable{
     private ListView mListView;
     private FriendAdapter mAdapter;
     private List<Friend> friends;
@@ -45,6 +45,11 @@ public class FriendTabFragment extends Fragment implements Updatable{
     @Override
     public void notifyChanged() {
         updated = true;
+    }
+
+    @Override
+    public String getTitle() {
+        return "내 친구들";
     }
 
     @Override
