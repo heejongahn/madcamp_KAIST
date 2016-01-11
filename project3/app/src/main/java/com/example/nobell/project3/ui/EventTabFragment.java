@@ -30,13 +30,15 @@ import java.util.List;
 
 public class EventTabFragment extends Fragment implements Updatable, Representable{
     private boolean updated = false;
+    private EventAdapter mEventAdapter;
+
     public EventTabFragment() {
     }
 
     @Override
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        List<Event> events = new Select().all().from(Event.class).execute();
+        List<Event> eventqs = new Select().all().from(Event.class).execute();
         mEventAdapter = new EventAdapter(this.getActivity(), R.layout.event_item, events);
     }
 
