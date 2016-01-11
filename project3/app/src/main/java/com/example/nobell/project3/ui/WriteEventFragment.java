@@ -65,15 +65,8 @@ public class WriteEventFragment extends Fragment {
         long eventId = getArguments().getLong(KEY_EVENT);
         mEvent = Event.flushCache(eventId);
 
-        mTags = mEvent.getTags();
-        if (mTags == null) {
-            mTags = new ArrayList<Tag>();
-        }
-
-        mFriends = mEvent.getFriends();
-        if (mFriends == null) {
-            mFriends = new ArrayList<Friend>();
-        }
+        mTags = new ArrayList<Tag>();
+        mFriends = new ArrayList<Friend>();
     }
 
     @Override
@@ -97,14 +90,14 @@ public class WriteEventFragment extends Fragment {
         }
 
         LinearLayout tagLayout = (LinearLayout) view.findViewById(R.id.write_event_tags);
-        for (Tag t: mTags) {
+        for (Tag t: mEvent.getTags()) {
             Button tagButton = (Button) inflater.inflate(R.layout.custom_small_button, tagLayout, false);
             tagButton.setText(t.tagName);
             tagLayout.addView(tagButton);
         }
 
         LinearLayout friendLayout = (LinearLayout) view.findViewById(R.id.write_event_friends);
-        for (Friend f: mFriends) {
+        for (Friend f: mEvent.getFriends()) {
             Button friendButton = (Button) inflater.inflate(R.layout.custom_small_button, friendLayout, false);
             friendButton.setText(f.name);
             friendLayout.addView(friendButton);
@@ -130,7 +123,9 @@ public class WriteEventFragment extends Fragment {
             tagEditText.setText("");
 
             Tag t = Tag.addOrGet(name);
-            mTags.add(t);
+            if (!mEvent.getTags().contains(t)) {
+                mTags.add(t);
+            }
 
             Button button = (Button) getLayoutInflater(null).inflate(R.layout.custom_small_button, tagLayout, false);
             button.setText(name);
