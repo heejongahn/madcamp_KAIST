@@ -70,10 +70,9 @@ public class TagDetailFragment extends Fragment {
         tv_friends.setAdapter(topFriends);
 
         List<Event> events = tag.getEventsWithOrder();
-        Log.d("ReceivedEvents", ""+events.size()+events.get(0).body);
         tv_mainevent.setText(events.get(0).body);
 
-        EventAdapter eventAdapter = new EventAdapter(getActivity(), R.layout.event_item, events);
+        EventAdapter eventAdapter = new EventAdapter(c, R.layout.event_item, events);
         tv_events.setAdapter(eventAdapter);
 
 //        tv_event.setText("eeeeeeeeeeeeeeeeeeeeeeeeeeeevvvvvvvvvvveeeeeeeeeeeeennnnnnnnnnnnnnnnnnnnnnnnnnnnnt");

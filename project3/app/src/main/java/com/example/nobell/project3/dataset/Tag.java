@@ -1,11 +1,14 @@
 package com.example.nobell.project3.dataset;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.activeandroid.Cache;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.From;
 import com.activeandroid.query.Select;
 
 import java.util.ArrayList;
@@ -68,14 +71,39 @@ public class Tag extends Model {
     }
 
     public List<Friend> getFriendsTopThree() {
-        return new Select("Friend")
-                .from(Appearance.class)
-                .innerJoin(Description.class)
-                .on("Appearances.Event = Descriptions.Event")
-                .where("Tag = ?", this.getId())
-                .groupBy("Friend")
-                .orderBy("COUNT(Friend)")
-                .execute();
+        List<Appearance> appearances = new Select()
+                    .from(Appearance.class)
+                    .innerJoin(Description.class)
+                    .on("Appearances.Event = Descriptions.Event")
+                    .where("Tag = ?", this.getId())
+                    .groupBy("Friend")
+                    .orderBy("COUNT(Friend)")
+                    .limit(3).execute();
+        Log.d("DBTest", "getfriendstop"+appearances.size());
+        List<Friend> friends = new ArrayList<Friend>();
+        for (Appearance a:appearances) {
+            friends.add(a.friend);
+        }
+        return friends;
+//        Cursor c = Cache.openDatabase().rawQuery(query.toSql(), query.getArguments());
+//        List<Friend> friends = new ArrayList<Friend>();
+//        try {
+//            if (c.moveToFirst()) {
+//                do {
+//                    c.getString("name", );
+//                }
+//                Friend f = new Friend();
+//                f.name = c.
+//                @Column(name = "Name")
+//                public String name;
+//
+//                @Column(name = "Photo")
+//                public byte[] photo ;
+//            }
+//        } finally {
+//            if (cursor != null && !cursor.isClosed())
+//                cursor.close();
+//        }
     }
 
     public static Tag addOrGet(String name) {
