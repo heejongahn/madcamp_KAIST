@@ -19,17 +19,17 @@ import com.example.nobell.project3.dataset.Tag;
 import java.util.List;
 
 public class EventAdapter extends ArrayAdapter<Event> {
-    private Activity mActivity;
+    private Context mContext;
     private List<Event> mEvents;
     private int mResource;
     LayoutInflater mInflater;
 
-    public EventAdapter(Activity activity, int resource, List<Event> events) {
-        super(activity, resource, events);
-        mActivity = activity;
+    public EventAdapter(Context context, int resource, List<Event> events) {
+        super(context, resource, events);
+        mContext = context;
         mEvents = events;
         mResource = resource;
-        mInflater = mActivity.getLayoutInflater();
+        mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     public int getCount() {
@@ -48,7 +48,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
     public View getView(int position, View convertView, ViewGroup parent) {
         int i;
         if (convertView == null) {
-            convertView = mActivity.getLayoutInflater().inflate(mResource, parent, false);
+            convertView = mInflater.inflate(mResource, parent, false);
         }
 
         LinearLayout old_tags = (LinearLayout) convertView.findViewById(R.id.event_tags);
@@ -80,7 +80,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
                     tagButton.setText(tags.get(i).tagName);
                     tag_layout.addView(tagButton);
                 }
-                TextView moreTags = new TextView(mActivity);
+                TextView moreTags = new TextView(mContext);
                 moreTags.setText(String.format("...and %d more tags", tags.size() - 3));
                 moreTags.setTextSize(12);
                 tag_layout.addView(moreTags);
@@ -104,7 +104,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
                     friendButton.setText(friends.get(i).name);
                     friend_layout.addView(friendButton);
                 }
-                TextView moreFriends = new TextView(mActivity);
+                TextView moreFriends = new TextView(mContext);
                 moreFriends.setText(String.format("...and %d more friends", friends.size() - 3));
                 moreFriends.setTextSize(12);
                 friend_layout.addView(moreFriends);

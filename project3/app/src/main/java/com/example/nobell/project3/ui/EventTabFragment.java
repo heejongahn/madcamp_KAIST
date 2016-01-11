@@ -4,6 +4,7 @@ package com.example.nobell.project3.ui;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -42,5 +43,4 @@ public class EventTabFragment extends Fragment {
 
         return layout;
     }
-
 }
