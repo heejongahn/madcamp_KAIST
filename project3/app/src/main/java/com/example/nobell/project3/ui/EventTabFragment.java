@@ -28,8 +28,20 @@ import com.example.nobell.project3.dataset.Tag;
 
 import java.util.List;
 
-public class EventTabFragment extends Fragment {
+public class EventTabFragment extends Fragment implements Updatable{
+    private boolean updated = false;
     public EventTabFragment() {
+    }
+    @Override
+    public void reactivated() {
+        if (updated) {
+            // update the UI.
+            updated = false;
+        }
+    }
+    @Override
+    public void notifyChanged() {
+        updated = true;
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
