@@ -1,24 +1,35 @@
 package com.example.nobell.project3.ui;
 
 
+import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 import android.widget.TextView;
 
-import com.activeandroid.query.Select;
 import com.example.nobell.project3.MainActivity;
 import com.example.nobell.project3.R;
+import com.example.nobell.project3.dataset.Event;
 import com.example.nobell.project3.dataset.Tag;
+import com.example.nobell.project3.lib.Utils;
+
+import java.util.List;
 
 
 public class TagDetailFragment extends Fragment {
     private Tag tag;
     private Long tagId;
+    private final int friendbox = Color.parseColor("#11805030");
+    private final int friendbox_border = Color.parseColor("#22805030");
+    private final int press = Color.parseColor("#33805030");
+    private final float radius = 10.0f;
 
     public static void activate(Tag tag) {
         /* Setting arguments to newly created fragment. */
@@ -32,6 +43,8 @@ public class TagDetailFragment extends Fragment {
 
     public TagDetailFragment() {
     }
+
+    @Override
     public void onCreate(Bundle instance) {
         super.onCreate(instance);
 
@@ -46,12 +59,52 @@ public class TagDetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tag_detail, container, false);
-        TextView tv = (TextView) view.findViewById(R.id.tagdetailtext);
+        TextView tv_title = (TextView) view.findViewById(R.id.tagdetailtitle);
+        TextView tv_mainevent = (TextView) view.findViewById(R.id.tagdetailmainevent);
+        ListView tv_friends = (ListView) view.findViewById(R.id.tagdetailfriends);
+        ListView tv_events = (ListView) view.findViewById(R.id.tagdetailotherevents);
 
-        tv.setText("tag Detail page: "+tag.tagName+", tagId = "+tag.getId());
+        tv_title.setText(tag.tagName);
+        Context c = getContext();
+        FriendTabFragment.FriendAdapter topFriends = new FriendTabFragment().new FriendAdapter(c, R.layout.friend_combined_listview, tag.getFriendsTopThree());
+        tv_friends.setAdapter(topFriends);
+
+        List<Event> events = tag.getEventsWithOrder();
+        Log.d("ReceivedEvents", ""+events.size()+events.get(0).body);
+        tv_mainevent.setText(events.get(0).body);
+
+        EventTabFragment.EventAdapter eventAdapter = new EventTabFragment().new EventAdapter(c, R.layout.event_item, events);
+        tv_events.setAdapter(eventAdapter);
+
+//        tv_event.setText("eeeeeeeeeeeeeeeeeeeeeeeeeeeevvvvvvvvvvveeeeeeeeeeeeennnnnnnnnnnnnnnnnnnnnnnnnnnnnt");
+//        makeBackground(tv_event, friendbox, friendbox_border, press, radius);
+//
+//        tv_fr1.setText("friend1");
+//        makeBackground(tv_fr1, friendbox, friendbox_border, press, radius);
+//        tv_fr2.setText("friend2");
+//        makeBackground(tv_fr2, friendbox, friendbox_border, press, radius);
+//        tv_fr3.setText("friend3");
+//        makeBackground(tv_fr3, friendbox, friendbox_border, press, radius);
 
 
         return view;
+    }
+
+    public void makeBackground(View v, int normal, int border, int press, float rad) {
+        GradientDrawable gd_normal = new GradientDrawable();
+        gd_normal.setColor(normal);
+        gd_normal.setCornerRadius(rad);
+        gd_normal.setStroke(Utils.dipToPx(getContext(), 2), border);
+
+        GradientDrawable gd_press = new GradientDrawable();
+        gd_press.setColor(press);
+        gd_press.setCornerRadius(rad);
+
+        StateListDrawable states = new StateListDrawable();
+        states.addState(new int[]{android.R.attr.state_pressed}, gd_press);
+        states.addState(new int[]{}, gd_normal);
+
+        v.setBackground(states);
     }
 
 

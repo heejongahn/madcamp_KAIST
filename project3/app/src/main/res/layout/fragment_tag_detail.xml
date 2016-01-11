@@ -3,11 +3,64 @@
     android:layout_height="match_parent"
     tools:context="com.example.nobell.project3.ui.TagDetailFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/tagdetailtext"
+    <LinearLayout
+        android:id="@+id/tagdetaillist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
+        <!--- title -->
+        <TextView
+            android:id="@+id/tagdetailtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="30dp"
+            android:layout_marginTop="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:textColor="#805030"
+            android:text="test"/>
+
+        <!-- event : 3 friends -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:orientation="horizontal"
+            android:weightSum="2"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/tagdetailmainevent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:maxLines="4"
+                android:lines="4"
+                android:layout_weight="1"
+                android:text="222ee"
+                android:textSize="13sp"
+                android:textColor="#805030"/>
+            <ListView
+                android:id="@+id/tagdetailfriends"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#603080"/>
+        <ListView
+            android:id="@+id/tagdetailotherevents"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
 </FrameLayout>
