@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.activeandroid.query.Select;
 import com.example.nobell.project3.MainActivity;
@@ -89,6 +90,25 @@ public class WriteEventFragment extends Fragment {
 
         Button writeButton = (Button) view.findViewById(R.id.event_save_button);
         writeButton.setOnClickListener(new saveEventListener());
+
+        if (mEvent.body != null) {
+            EditText bodyEditText = (EditText) view.findViewById(R.id.write_event_body);
+            bodyEditText.setText(mEvent.body);
+        }
+
+        LinearLayout tagLayout = (LinearLayout) view.findViewById(R.id.write_event_tags);
+        for (Tag t: mTags) {
+            Button tagButton = (Button) inflater.inflate(R.layout.custom_small_button, tagLayout, false);
+            tagButton.setText(t.tagName);
+            tagLayout.addView(tagButton);
+        }
+
+        LinearLayout friendLayout = (LinearLayout) view.findViewById(R.id.write_event_friends);
+        for (Friend f: mFriends) {
+            Button friendButton = (Button) inflater.inflate(R.layout.custom_small_button, friendLayout, false);
+            friendButton.setText(f.name);
+            friendLayout.addView(friendButton);
+        }
 
         return view;
     }
