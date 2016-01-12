@@ -152,6 +152,12 @@ public class WriteEventFragment extends Fragment implements Updatable, Represent
             EditText bodyEditText = (EditText) view.findViewById(R.id.write_event_body);
             String body = bodyEditText.getText().toString();
 
+            if (body.length() == 0) {
+                bodyEditText.setError("적어도 1글자 이상이어야 합니다.");
+                bodyEditText.requestFocus();
+                return;
+            }
+
             mEvent.body = body;
 
             for (Tag t: mTags) {
