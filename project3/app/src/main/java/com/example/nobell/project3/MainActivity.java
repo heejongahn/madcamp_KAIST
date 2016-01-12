@@ -141,6 +141,11 @@ public class MainActivity extends AppCompatActivity {
             if (f instanceof Updatable)
                 ((Updatable) f).notifyChanged();
         }
+        if (!fragmentStack.isEmpty()){
+            Fragment f = fragmentStack.get(fragmentStack.size()-1);
+            if (f instanceof Updatable)
+                ((Updatable) f).reactivated();
+        }
     }
     /* This is only called for PagerFragment,
      * since the fragment transition in ViewPager could not be detected at the fragmentManager's callback. */
