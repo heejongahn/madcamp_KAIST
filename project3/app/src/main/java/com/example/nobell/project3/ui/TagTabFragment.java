@@ -35,6 +35,7 @@ public class TagTabFragment extends Fragment implements Updatable, Representable
             List<String> tagNames = new ArrayList<String> ();
             for (Tag t: tags)
                 tagNames.add(t.tagName);
+            tagContainerLayout.removeAllViews();
             tagContainerLayout.setTags(tagNames);
 
             updated = false;
