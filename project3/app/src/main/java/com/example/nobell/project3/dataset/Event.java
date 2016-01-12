@@ -10,6 +10,8 @@ import com.activeandroid.query.Select;
 import java.io.FileReader;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +20,7 @@ import java.util.Map;
 @Table(name="Events")
 public class Event extends Model {
     private static Map<Long, Event> cache = new HashMap<Long, Event>();
+    private static Comparator<Event> comparator;
 
     @Column(name = "Body")
     public String body;
@@ -40,12 +43,33 @@ public class Event extends Model {
 
     public Event() {
         super();
+        init();
     }
 
     public Event(String body, Date date) {
         super();
         this.body = body;
         this.setDate(date);
+        init();
+    }
+
+    /* Initialize comparator, used in sort() */
+    public void init() {
+        if (comparator == null){
+            comparator = new Comparator<Event> () {
+                @Override
+                public int compare (Event e1, Event e2) {
+                    long dif = e1.date - e2.date;
+                    return (dif > 0)? 1: ((dif < 0)? -1 : 0);
+                }
+            };
+        }
+    }
+    /* Sort the given list. */
+    public static void sort(List<Event> list, boolean inverse) {
+        Collections.sort(list, comparator);
+        if (inverse)
+            Collections.reverse(list);
     }
 
     public void addFriend(Friend friend) {

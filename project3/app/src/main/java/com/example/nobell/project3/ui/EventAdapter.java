@@ -1,6 +1,7 @@
 package com.example.nobell.project3.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +15,12 @@ import com.example.nobell.project3.dataset.Event;
 import com.example.nobell.project3.dataset.Friend;
 import com.example.nobell.project3.dataset.Tag;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class EventAdapter extends ArrayAdapter<Event> {
+    /* Sort the given events itself. */
     private EventAdapter mAdapter;
     private Context mContext;
     private List<Event> mEvents;
@@ -26,6 +30,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
     public EventAdapter(Context context, int resource, List<Event> events) {
         super(context, resource, events);
         mContext = context;
+        Event.sort(events, true);
         mEvents = events;
         mResource = resource;
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
