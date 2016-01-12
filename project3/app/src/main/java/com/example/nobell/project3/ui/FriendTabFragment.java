@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -66,6 +67,14 @@ public class FriendTabFragment extends Fragment implements Updatable, Representa
 
         mListView.setAdapter(mAdapter);
         mListView.setOnItemClickListener(mItemClickListener);
+
+        Button friendAddButton = (Button) view.findViewById(R.id.friend_add_button);
+        friendAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FriendAddFragment.activate();
+            }
+        });
 
         return view;
     }

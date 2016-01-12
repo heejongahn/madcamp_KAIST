@@ -21,13 +21,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/friend_add_name_label"
         android:layout_marginBottom="24dp"
-        android:inputType="textMultiLine"
+        android:inputType="textShortMessage"
         android:ems="10"
-        android:id="@+id/friend_add_phone_number"
+        android:id="@+id/friend_add_name_body"
         android:layout_gravity="center_horizontal" />
 
     <TextView
-        android:layout_below="@+id/friend_add_phone_number"
+        android:layout_below="@+id/friend_add_name_body"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/friend_phone_number"
@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/friend_add_phone_number_body"
         android:layout_below="@+id/friend_add_phone_number_label"
+        android:inputType="textShortMessage"
         android:layout_marginBottom="24dp"/>
 
     <TextView
@@ -55,7 +56,7 @@
         android:layout_marginBottom="24dp"
         android:inputType="textMultiLine"
         android:ems="10"
-        android:id="@+id/friend_add_memo_label_body"
+        android:id="@+id/friend_add_memo_body"
         android:layout_gravity="center_horizontal" />
 
     <Button
@@ -68,18 +69,22 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
     <ImageView
-        android:id= "@+id/friend_detail_image"
-        android:layout_below="@+id/friend_add_memo_label_body"
+        android:id= "@+id/friend_add_image"
+        android:layout_below="@+id/friend_add_memo_body"
         android:layout_width= "150dp"
         android:layout_height= "150dp"
+        android:padding="1dp"
+        android:cropToPadding="true"
+        android:scaleType="centerCrop"
+        android:background="@drawable/image_border"
         />
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Edit"
-        android:layout_alignRight="@+id/friend_detail_image"
-        android:layout_alignBottom= "@+id/friend_detail_image"
+        android:layout_alignRight="@+id/friend_add_image"
+        android:layout_alignBottom= "@+id/friend_add_image"
         android:src = "@drawable/basic_profile"
         android:paddingBottom="10dp"
         android:id="@+id/friend_add_edit_button"/>
