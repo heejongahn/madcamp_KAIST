@@ -117,6 +117,12 @@ public class FriendAddFragment extends Fragment implements Representable{
             EditText nameEdit = (EditText) getActivity().findViewById(R.id.friend_add_name_body);
             name = nameEdit.getText().toString();
 
+            if (name.length() == 0) {
+                nameEdit.setError("이름은 적어도 1글자 이상이어야 합니다.");
+                nameEdit.requestFocus();
+                return;
+            }
+
             EditText phonoNumberEdit = (EditText) getActivity().findViewById(R.id.friend_add_phone_number_body);
             phoneNumber = phonoNumberEdit.getText().toString();
 
