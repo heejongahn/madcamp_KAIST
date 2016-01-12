@@ -153,7 +153,6 @@ public class WriteEventFragment extends Fragment implements Updatable, Represent
             String body = bodyEditText.getText().toString();
 
             mEvent.body = body;
-            mEvent.save();
 
             for (Tag t: mTags) {
                 if (!mEvent.getTags().contains(t)) {
@@ -170,6 +169,8 @@ public class WriteEventFragment extends Fragment implements Updatable, Represent
             if (mEvent.getDate() == null) {
                 mEvent.setDate(new Date());
             }
+
+            mEvent.save();
 
             MainActivity.getInstance().notifyChangedToFragments(null);
             getActivity().getSupportFragmentManager().popBackStack();
