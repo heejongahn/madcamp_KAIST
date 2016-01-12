@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -85,11 +86,26 @@ public class FriendAddFragment extends Fragment implements Representable{
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if( requestCode == 100 ) {
-            Bitmap temp = (Bitmap) data.getExtras().get("data");
-            photo = temp;
+        if( requestCode == 100 && resultCode == Activity.RESULT_OK ) {
+            /* http://stackoverflow.com/questions/6982184/camera-activity-returning-null-android */
+            Bitmap bitmap;
+            if (data.getData() == null) {
+                bitmap = (Bitmap)data.getExtras().get("data");
+            }else {
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(this.getActivity().getContentResolver(), data.getData());
+                }
+                catch (Exception e) {
+                    /* java.io.FileNotFoundException, java.io.IOException*/
+                    return;
+                }
+            }
+            photo = bitmap;
             ImageView img = (ImageView)view.findViewById(R.id.friend_add_image);
-            img.setImageBitmap(temp);
+            img.setImageBitmap(bitmap);
+        }
+        else {
+            /* Failed to receive */
         }
     }
 
@@ -100,6 +116,12 @@ public class FriendAddFragment extends Fragment implements Representable{
         public void onClick(View v) {
             EditText nameEdit = (EditText) getActivity().findViewById(R.id.friend_add_name_body);
             name = nameEdit.getText().toString();
+
+            if (name.length() == 0) {
+                nameEdit.setError("이름은 적어도 1글자 이상이어야 합니다.");
+                nameEdit.requestFocus();
+                return;
+            }
 
             EditText phonoNumberEdit = (EditText) getActivity().findViewById(R.id.friend_add_phone_number_body);
             phoneNumber = phonoNumberEdit.getText().toString();
@@ -129,7 +151,7 @@ public class FriendAddFragment extends Fragment implements Representable{
 
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
-            getActivity().startActivityForResult(intent, SELECT_PHOTO);
+            startActivityForResult(intent, SELECT_PHOTO);
         }
     }
 }

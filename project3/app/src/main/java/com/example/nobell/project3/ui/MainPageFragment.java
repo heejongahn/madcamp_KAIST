@@ -2,33 +2,29 @@ package com.example.nobell.project3.ui;
 
 
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.example.nobell.project3.MainActivity;
 import com.example.nobell.project3.R;
+import com.example.nobell.project3.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PagerFragment extends Fragment implements Updatable, Representable{
-    private static int instanceCount = 0;
+public class MainPageFragment extends Fragment implements Updatable, Representable{
+    private TabLayout tabLayout;
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
 
-    /* */
-    private boolean ui_update = false;
-
-    public PagerFragment() {
-        // Required empty public constructor
+    public MainPageFragment() {
     }
+
     @Override
     public void reactivated() {
         ((Updatable)(adapter.getItem(0))).reactivated();
@@ -41,6 +37,7 @@ public class PagerFragment extends Fragment implements Updatable, Representable{
         ((Updatable)(adapter.getItem(1))).notifyChanged(arg);
         ((Updatable)(adapter.getItem(2))).notifyChanged(arg);
     }
+
     @Override
     public String getTitle() {
         return ((Representable) adapter.getCurrentFragment()).getTitle();
@@ -49,45 +46,21 @@ public class PagerFragment extends Fragment implements Updatable, Representable{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (instanceCount >= 1) {
-            Log.e("PagerFragment", "PagerFragment onCreateView called more than one time??:"+instanceCount);
-        }
-        instanceCount += 1;
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_main,null);
 
-        View view = inflater.inflate(R.layout.fragment_pager, container, false);
-
+        tabLayout = (TabLayout) view.findViewById(R.id.maintablayout);
         viewPager = (ViewPager) view.findViewById(R.id.mainviewpager);
+
         setupViewPager(viewPager);
-        ((MainActivity) getActivity()).getTabLayout().setupWithViewPager(viewPager);
+        tabLayout.setupWithViewPager(viewPager);
 
         return view;
     }
-
-    @Override
-    public void onHiddenChanged(boolean b) {
-        super.onHiddenChanged(b);
-        if (b)
-            ((MainActivity)(getActivity())).getTabLayout().setVisibility(View.GONE);
-        else
-            ((MainActivity)(getActivity())).getTabLayout().setVisibility(View.VISIBLE);
-    }
-    @Override
-    public void onResume() {
-        Log.d("PagerFragment", "onResume called");
-//        ((MainActivity) getActivity()).getTabLayout().setupWithViewPager(viewPager);
-        if (viewPager == null){
-            Log.d("PagerFragment", "viewPager is null");
-        }
-        else {
-            Log.d("PagerFragment", "viewPager is not null, adapter is "+viewPager.getAdapter().toString());
-        }
-        super.onResume();
-    }
-
     private void setupViewPager (ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         adapter.addFragment(new EventTabFragment(), "Events");
-        adapter.addFragment(new FriendTabFragment(), "Friends" );
+        adapter.addFragment(new FriendTabFragment(), "Friends");
         adapter.addFragment(new TagTabFragment(), "Tags");
         viewPager.setAdapter(adapter);
         /*  the number of pages that should be retained to either side of the current page

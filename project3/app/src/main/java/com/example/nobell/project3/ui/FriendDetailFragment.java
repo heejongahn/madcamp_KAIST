@@ -33,7 +33,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
-public class FriendDetailFragment extends Fragment {
+public class FriendDetailFragment extends Fragment implements Representable{
     /*
      * This is not on the main tab part.
      * FriendDetailFragment.activate() makes activate this part on
@@ -55,6 +55,10 @@ public class FriendDetailFragment extends Fragment {
 
     public FriendDetailFragment() {
         // Required empty public constructor
+    }
+    @Override
+    public String getTitle() {
+        return "친구 정보 수정";
     }
 
     public void onCreate(Bundle instance) {

@@ -1,11 +1,14 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.example.nobell.project3.ui.TagDetailFragment">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context="com.example.nobell.project3.ui.TagDetailFragment"
+    android:fillViewport="true"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/tagdetaillist"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
@@ -14,7 +17,7 @@
             android:id="@+id/tagdetailtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="30dp"
+            android:textSize="30sp"
             android:layout_marginTop="10dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
@@ -25,34 +28,62 @@
             android:textColor="#805030"
             android:text="test"/>
 
-        <!-- event : 3 friends -->
-        <LinearLayout
+        <!-- MainEvent & 3 friends -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
             android:orientation="horizontal"
-            android:weightSum="2"
-            android:padding="20dp">
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/tagdetailmainevent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:maxLines="4"
-                android:lines="4"
-                android:layout_weight="1"
-                android:text="222ee"
+                android:gravity="left|center_vertical"
+                android:maxLines="6"
+                android:lines="6"
                 android:textSize="13sp"
-                android:textColor="#805030"/>
-            <ListView
-                android:id="@+id/tagdetailfriends"
-                android:layout_width="match_parent"
+                android:textColor="#308080"
+                android:background="#20808080"
+                android:layout_toLeftOf="@+id/tag_friends"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-
-        </LinearLayout>
+                android:padding="5dp"
+                android:background="#20808080"
+                android:orientation="vertical"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/tag_friends">
+                <TextView
+                    android:id="@+id/tag_friend1"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="13sp"
+                    android:background="#20808080"/>
+                <TextView
+                    android:id="@+id/tag_friend2"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="13sp"
+                    android:background="#20808080"/>
+                <TextView
+                    android:id="@+id/tag_friend3"
+                    android:layout_width="100dp"
+                    android:layout_height="30dp"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:textSize="13sp"
+                    android:background="#20808080"/>
+            </LinearLayout>
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
@@ -63,4 +94,4 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>
-</FrameLayout>
+</ScrollView>

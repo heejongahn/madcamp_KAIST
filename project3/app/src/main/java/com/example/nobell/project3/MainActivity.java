@@ -1,36 +1,25 @@
 package com.example.nobell.project3;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.RequiresPermission;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
-import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Delete;
-import com.activeandroid.query.Select;
 import com.example.nobell.project3.dataset.Appearance;
 import com.example.nobell.project3.dataset.Description;
 import com.example.nobell.project3.dataset.Event;
 import com.example.nobell.project3.dataset.Friend;
 import com.example.nobell.project3.dataset.Tag;
-import com.example.nobell.project3.ui.EventTabFragment;
-import com.example.nobell.project3.ui.FriendTabFragment;
-import com.example.nobell.project3.ui.MainTabLayout;
-import com.example.nobell.project3.ui.PagerFragment;
+import com.example.nobell.project3.ui.MainPageFragment;
 import com.example.nobell.project3.ui.Representable;
-import com.example.nobell.project3.ui.TagTabFragment;
 import com.example.nobell.project3.ui.Updatable;
 import com.example.nobell.project3.ui.WriteEventFragment;
 
@@ -39,9 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+    private MainPageFragment mainPageFragment;
     private Toolbar toolbar;
-    private PagerFragment pagerFragment;
-    private TabLayout tabLayout;
     private final String DEFAULT_TITLE = "나만의 일기장";
 
     /* Fragment that should have some response for reactivation. */
@@ -73,12 +61,11 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setTitle(DEFAULT_TITLE);
 
-        tabLayout = (TabLayout) findViewById(R.id.maintablayout);
-        pagerFragment = new PagerFragment();
-        fragmentStack.add(pagerFragment);
+        mainPageFragment = new MainPageFragment();
+        fragmentStack.add(mainPageFragment);
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.maincontent, pagerFragment, "PAGER");
+        ft.add(R.id.maincontent, mainPageFragment, "PAGER");
         ft.commit();
 
         fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
@@ -131,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
         t.hide(fragmentManager.findFragmentById(R.id.maincontent));
         t.add(R.id.maincontent, fragment);
         t.addToBackStack(null);
-        t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        //t.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         t.commit();
     }
 
@@ -143,8 +130,13 @@ public class MainActivity extends AppCompatActivity {
                 ((Updatable) f).notifyChanged(arg);
             }
         }
+        if (!fragmentStack.isEmpty()){
+            Fragment f = fragmentStack.get(fragmentStack.size()-1);
+            if (f instanceof Updatable)
+                ((Updatable) f).reactivated();
+        }
     }
-    /* This is only called for PagerFragment,
+    /* This is only called for MainPagerFragment,
      * since the fragment transition in ViewPager could not be detected at the fragmentManager's callback. */
     public void notifyTitleChanged() {
         Fragment currentFragment = fragmentManager.findFragmentById(R.id.maincontent);
@@ -186,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity getInstance() {
         return mInstance;
     }
-    public TabLayout getTabLayout() { return tabLayout; }
+    // public TabLayout getTabLayout() { return tabLayout; }
 
     private void dummyDataSetup() {
         new Delete().from(Appearance.class).execute();

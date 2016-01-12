@@ -22,6 +22,7 @@ import java.util.List;
 public class TagTabFragment extends Fragment implements Updatable, Representable{
     private List<Tag> tags;
     private boolean updated = false;
+    private TagContainerLayout tagContainerLayout;
 
     public TagTabFragment() {
     }
@@ -29,7 +30,14 @@ public class TagTabFragment extends Fragment implements Updatable, Representable
     @Override
     public void reactivated() {
         if (updated) {
-            // update the UI.
+            // updates ui.
+            tags = new Select().all().from(Tag.class).execute();
+            List<String> tagNames = new ArrayList<String> ();
+            for (Tag t: tags)
+                tagNames.add(t.tagName);
+            tagContainerLayout.removeAllViews();
+            tagContainerLayout.setTags(tagNames);
+
             updated = false;
         }
     }
@@ -47,7 +55,7 @@ public class TagTabFragment extends Fragment implements Updatable, Representable
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tag_tab, container, false);
-        TagContainerLayout tagContainerLayout = (TagContainerLayout) view.findViewById(R.id.tagcontainerlayout);
+        tagContainerLayout = (TagContainerLayout) view.findViewById(R.id.tagcontainerlayout);
         tagContainerLayout.setOnTagClickListener(new TagView.OnTagClickListener() {
             @Override
             public void onTagClick(int position, String text) {

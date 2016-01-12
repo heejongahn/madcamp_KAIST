@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class WriteEventFragment extends Fragment implements Updatable {
+public class WriteEventFragment extends Fragment implements Updatable, Representable {
     /*
      * This is not on the main tab part.
      * WriteEventFragment.activate() makes activate this part on
@@ -30,8 +30,11 @@ public class WriteEventFragment extends Fragment implements Updatable {
      *
      * Objective: reduce activity as much as possible.
      */
-
-    private String mOriginalToolbarTitle;
+    View view;  /* Used in listener */
+    @Override
+    public String getTitle() {
+        return "글쓰기";
+    }
     private Toolbar mToolbar;
     private Event mEvent;
     private List<Tag> mTags;
@@ -87,10 +90,7 @@ public class WriteEventFragment extends Fragment implements Updatable {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_write_event, container, false);
-        mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        mOriginalToolbarTitle = (String) mToolbar.getTitle();
-        mToolbar.setTitle("글 쓰기");
+        view = inflater.inflate(R.layout.fragment_write_event, container, false);
 
         Button tagAddButton = (Button) view.findViewById(R.id.add_tag_button);
         tagAddButton.setOnClickListener(new addTagListener());
@@ -117,30 +117,28 @@ public class WriteEventFragment extends Fragment implements Updatable {
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mToolbar.setTitle(mOriginalToolbarTitle);
-    }
-
     public class addTagListener implements View.OnClickListener {
         public addTagListener() {}
 
         @Override
         public void onClick(View v) {
-            LinearLayout tagLayout = (LinearLayout) getActivity().findViewById(R.id.write_event_tags);
-            EditText tagEditText = (EditText) getActivity().findViewById(R.id.write_event_tag);
+            LinearLayout tagLayout = (LinearLayout) view.findViewById(R.id.write_event_tags);
+            EditText tagEditText = (EditText) view.findViewById(R.id.write_event_tag);
             String name = tagEditText.getText().toString();
             if (name.length()>0) {
                 tagEditText.setText("");
 
                 Tag t = Tag.addOrGet(name);
-                mTags.add(t);
+                if (!mTags.contains(t)) { /* Surprisingly, equals() might be implemented on the ActivteAndroid data objects */
+                    /* Add tag button */
+                    mTags.add(t);
 
-                Button button = (Button) getLayoutInflater(null).inflate(R.layout.custom_small_button, tagLayout, false);
-                button.setText(name);
+                    Button button = (Button) getLayoutInflater(null).inflate(R.layout.custom_small_button, tagLayout, false);
+                    button.setText(name);
 
-                tagLayout.addView(button);
+                    tagLayout.addView(button);
+                }
+
             }
             refreshTags(null);
         }
@@ -151,11 +149,16 @@ public class WriteEventFragment extends Fragment implements Updatable {
 
         @Override
         public void onClick(View v) {
-            EditText bodyEditText = (EditText) getActivity().findViewById(R.id.write_event_body);
+            EditText bodyEditText = (EditText) view.findViewById(R.id.write_event_body);
             String body = bodyEditText.getText().toString();
 
+            if (body.length() == 0) {
+                bodyEditText.setError("적어도 1글자 이상이어야 합니다.");
+                bodyEditText.requestFocus();
+                return;
+            }
+
             mEvent.body = body;
-            mEvent.save();
 
             for (Tag t: mTags) {
                 if (!mEvent.getTags().contains(t)) {
@@ -173,6 +176,8 @@ public class WriteEventFragment extends Fragment implements Updatable {
                 mEvent.setDate(new Date());
             }
 
+            mEvent.save();
+
             MainActivity.getInstance().notifyChangedToFragments(null);
             getActivity().getSupportFragmentManager().popBackStack();
         }
@@ -183,7 +188,7 @@ public class WriteEventFragment extends Fragment implements Updatable {
         if (parent != null) {
             tag_layout = (LinearLayout) parent.findViewById(R.id.write_event_tags);
         } else {
-            tag_layout = (LinearLayout) getActivity().findViewById(R.id.write_event_tags);
+            tag_layout = (LinearLayout) view.findViewById(R.id.write_event_tags);
         }
         if (tag_layout != null) {tag_layout.removeAllViews();}
 
@@ -214,7 +219,7 @@ public class WriteEventFragment extends Fragment implements Updatable {
         if (parent != null) {
             friend_layout = (LinearLayout) parent.findViewById(R.id.write_event_friends);
         } else {
-            friend_layout = (LinearLayout) getActivity().findViewById(R.id.write_event_friends);
+            friend_layout = (LinearLayout) view.findViewById(R.id.write_event_friends);
         }
 
         if (friend_layout != null) {friend_layout.removeAllViews();}
