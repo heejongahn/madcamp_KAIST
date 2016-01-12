@@ -63,10 +63,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save"
-        android:id="@+id/event_save_button"
+        android:id="@+id/friend_add_save_button"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"/>
+    <ImageView
+        android:id= "@+id/friend_detail_image"
+        android:layout_below="@+id/friend_add_memo_label_body"
+        android:layout_width= "150dp"
+        android:layout_height= "150dp"
+        />
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit"
+        android:layout_alignRight="@+id/friend_detail_image"
+        android:layout_alignBottom= "@+id/friend_detail_image"
+        android:src = "@drawable/basic_profile"
+        android:paddingBottom="10dp"
+        android:id="@+id/friend_add_edit_button"/>
+
 
 
 </RelativeLayout>
