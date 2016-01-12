@@ -38,7 +38,7 @@ public class EventTabFragment extends Fragment implements Updatable, Representab
     @Override
     public void onCreate(Bundle savedInstance) {
         super.onCreate(savedInstance);
-        List<Event> eventqs = new Select().all().from(Event.class).execute();
+        List<Event> events = new Select().all().from(Event.class).execute();
         mEventAdapter = new EventAdapter(this.getActivity(), R.layout.event_item, events);
     }
 
