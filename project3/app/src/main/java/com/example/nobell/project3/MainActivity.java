@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
         ActiveAndroid.initialize(this);
         // dummyDataSetup();
-        newDummySetup();
+        // newDummySetup();
     }
 
     /*
@@ -164,12 +164,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         super.onOptionsItemSelected(item);
-        Toast.makeText(this, "clicked", Toast.LENGTH_SHORT).show();
-
         switch (item.getItemId()) {
             case R.id.fragmenttest:
-                supportInvalidateOptionsMenu();
-                WriteEventFragment.activate(null);
+                newDummySetup();
                 break;
         }
         return true;

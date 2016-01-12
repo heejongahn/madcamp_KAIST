@@ -2,8 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/fragmenttest"
-        android:title="Fragment1Activate"/>
-    <item
-        android:id="@+id/fragmenttest2"
-        android:title="ShowTablayout"/>
+        android:title="db비우고dummyload"/>
 </menu>
