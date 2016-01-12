@@ -114,7 +114,7 @@ public class FriendAddFragment extends Fragment implements Representable{
 
             friend.save();
 
-            ((MainActivity)getActivity()).notifyChangedToFragments();
+            ((MainActivity)getActivity()).notifyChangedToFragments(null);
             getActivity().getSupportFragmentManager().popBackStack();
         }
     }

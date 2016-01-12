@@ -7,11 +7,9 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,7 +20,6 @@ import com.example.nobell.project3.dataset.Friend;
 import com.example.nobell.project3.dataset.Tag;
 import com.example.nobell.project3.lib.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -73,12 +70,12 @@ public class TagDetailFragment extends Fragment {
         tv_title.setText(tag.tagName);
 
         top3friends = tag.getFriendsTopThree();
-        FriendTabFragment.FriendAdapter topFriends = new FriendTabFragment().new FriendAdapter(c, R.layout.friend_combined_listview, top3friends);;
+        FriendAdapter topFriends = new FriendAdapter(c, R.layout.friend_item, top3friends);;
         tv_friends.setAdapter(topFriends);
         tv_title.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).notifyChangedToFragments();
+                ((MainActivity)getActivity()).notifyChangedToFragments(null);
             }
         });
 
