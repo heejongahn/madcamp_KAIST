@@ -13,6 +13,8 @@ import com.activeandroid.query.Select;
 import java.io.ByteArrayOutputStream;
 import java.sql.Blob;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +28,7 @@ import java.util.Map;
 @Table(name="Friends")
 public class Friend extends Model {
     private static Map<Long, Friend> cache = new HashMap<Long, Friend>();
+    private static Comparator<Friend> comparator;
 
     @Column(name = "Name")
     public String name;
@@ -55,6 +58,7 @@ public class Friend extends Model {
 
     public Friend() {
         super();
+        init();
     }
 
     public Friend(String name, String phoneNumber, String memo) {
@@ -63,6 +67,22 @@ public class Friend extends Model {
         this.photo = null;
         this.phoneNumber = phoneNumber;
         this.memo = memo;
+        init();
+    }
+    private void init() {
+        if (comparator==null) {
+            comparator = new Comparator<Friend> () {
+                @Override
+                public int compare(Friend a, Friend b) {
+                    return a.name.compareTo(b.name);
+                }
+            };
+        }
+    }
+    public static void sort(List<Friend> list, boolean reverse) {
+        Collections.sort(list, comparator);
+        if (reverse)
+            Collections.reverse(list);
     }
 
     public List<Event> getEvents() {

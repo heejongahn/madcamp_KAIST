@@ -25,6 +25,7 @@ public class FriendAdapter extends BaseAdapter {
         this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.mContext = context;
         this.mLayout = layout;
+        Friend.sort(friends, false);
         this.mFriends = friends;
     }
 
