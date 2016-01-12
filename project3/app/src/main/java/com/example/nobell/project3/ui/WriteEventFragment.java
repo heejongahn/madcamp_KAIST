@@ -22,6 +22,7 @@ import com.example.nobell.project3.dataset.Friend;
 import com.example.nobell.project3.dataset.Tag;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -151,8 +152,13 @@ public class WriteEventFragment extends Fragment {
             for (Friend f: mFriends) {
                 mEvent.addFriend(f);
             }
+
+            if (mEvent.getDate() == null) {
+                mEvent.setDate(new Date());
+            }
+
+            MainActivity.getInstance().notifyChangedToFragments();
             getActivity().getSupportFragmentManager().popBackStack();
-            // TODO: 메인 탭의 이벤트 리스트, 태그 리스트을 다시 refresh 해줘야 함
         }
     }
 }

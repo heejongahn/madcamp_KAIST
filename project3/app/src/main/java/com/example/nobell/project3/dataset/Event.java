@@ -30,6 +30,9 @@ public class Event extends Model {
     }
 
     public String getDate() {
+        if (this.date == null) {
+            return null;
+        }
         Date date = new Date(this.date);
         DateFormat mediumFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
         return mediumFormat.format(date);
