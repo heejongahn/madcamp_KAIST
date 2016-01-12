@@ -59,6 +59,10 @@ public class Event extends Model {
             comparator = new Comparator<Event> () {
                 @Override
                 public int compare (Event e1, Event e2) {
+                    if (e1 == null)
+                        return -1;
+                    if (e2 == null)
+                        return 1;
                     long dif = e1.date - e2.date;
                     return (dif > 0)? 1: ((dif < 0)? -1 : 0);
                 }

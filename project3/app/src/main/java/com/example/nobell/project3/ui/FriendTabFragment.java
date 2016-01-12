@@ -32,7 +32,11 @@ public class FriendTabFragment extends Fragment implements Updatable, Representa
     public void reactivated() {
         if (updated) {
             // update the UI.
-            mAdapter.notifyDataSetChanged();
+            friends = new Select().all().from(Friend.class).execute();
+            mAdapter = new FriendAdapter(getContext(), R.layout.friend_item, friends);
+
+            mListView.setAdapter(mAdapter);
+            mListView.setOnItemClickListener(mItemClickListener);
             updated = false;
         }
     }

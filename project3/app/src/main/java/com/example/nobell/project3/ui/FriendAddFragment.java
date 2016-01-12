@@ -25,6 +25,7 @@ import com.example.nobell.project3.R;
 import com.example.nobell.project3.dataset.Friend;
 import android.provider.MediaStore.Images.Media;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 /**
@@ -132,6 +133,9 @@ public class FriendAddFragment extends Fragment implements Representable{
             Friend friend = new Friend();
             friend.name = name;
             friend.phoneNumber = phoneNumber;
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            photo.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+            friend.photo = stream.toByteArray();
             friend.memo = memo;
 
             friend.save();
