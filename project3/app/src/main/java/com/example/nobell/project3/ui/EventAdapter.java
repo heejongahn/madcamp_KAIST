@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.nobell.project3.MainActivity;
 import com.example.nobell.project3.R;
 import com.example.nobell.project3.dataset.Event;
 import com.example.nobell.project3.dataset.Friend;
@@ -132,6 +133,7 @@ public class EventAdapter extends ArrayAdapter<Event> {
                 mEvent.delete();
                 mEvents.remove(mEvent);
                 mAdapter.notifyDataSetChanged();
+                MainActivity.getInstance().notifyChangedToFragments(null);
             }
         });
         

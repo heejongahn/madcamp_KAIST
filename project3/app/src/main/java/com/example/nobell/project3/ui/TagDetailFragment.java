@@ -132,6 +132,7 @@ public class TagDetailFragment extends Fragment implements Representable, Updata
             }
             else {
                 /* There are some friends less than three. */
+                tv_friends[i].setText("");
                 tv_friends[i].setBackgroundColor(Color.TRANSPARENT);
             }
         }
