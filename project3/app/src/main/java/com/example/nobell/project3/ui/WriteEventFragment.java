@@ -128,12 +128,16 @@ public class WriteEventFragment extends Fragment implements Updatable, Represent
                 tagEditText.setText("");
 
                 Tag t = Tag.addOrGet(name);
-                mTags.add(t);
+                if (!mTags.contains(t)) { /* Surprisingly, equals() might be implemented on the ActivteAndroid data objects */
+                    /* Add tag button */
+                    mTags.add(t);
 
-                Button button = (Button) getLayoutInflater(null).inflate(R.layout.custom_small_button, tagLayout, false);
-                button.setText(name);
+                    Button button = (Button) getLayoutInflater(null).inflate(R.layout.custom_small_button, tagLayout, false);
+                    button.setText(name);
 
-                tagLayout.addView(button);
+                    tagLayout.addView(button);
+                }
+
             }
             refreshTags(null);
         }
