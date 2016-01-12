@@ -26,7 +26,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
 
-public class WriteEventFragment extends Fragment {
+public class WriteEventFragment extends Fragment implements Updatable {
     /*
      * This is not on the main tab part.
      * WriteEventFragment.activate() makes activate this part on
@@ -40,7 +40,9 @@ public class WriteEventFragment extends Fragment {
     private Event mEvent;
     private List<Tag> mTags;
     private List<Friend> mFriends;
+    private List<Friend> mAddedFriends;
     private static final String KEY_EVENT = "eventID";
+    private boolean updated = false;
 
     public static void activate(Event e) {
         Bundle args = new Bundle();
@@ -58,6 +60,24 @@ public class WriteEventFragment extends Fragment {
 
     public WriteEventFragment() {
         // Required empty public constructor
+    }
+
+    public void notifyChanged(Object arg) {
+        mAddedFriends = (ArrayList<Friend>) arg;
+        updated = true;
+    }
+
+    public void reactivated() {
+        if (updated) {
+            for (Friend f: mAddedFriends) {
+                LinearLayout friendLayout = (LinearLayout) getActivity().findViewById(R.id.write_event_friends);
+                Button friendButton = (Button) getLayoutInflater(null).inflate(R.layout.custom_small_button, friendLayout, false);
+                friendButton.setText(f.name);
+                friendLayout.addView(friendButton);
+            }
+            mAddedFriends = new ArrayList<Friend>();
+            updated = false;
+        }
     }
 
     @Override
@@ -84,6 +104,14 @@ public class WriteEventFragment extends Fragment {
 
         Button writeButton = (Button) view.findViewById(R.id.event_save_button);
         writeButton.setOnClickListener(new saveEventListener());
+
+        Button frinedAddButton = (Button) view.findViewById(R.id.add_friend_button);
+        frinedAddButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FriendSelectFragment.activate();
+            }
+        });
 
         if (mEvent.body != null) {
             EditText bodyEditText = (EditText) view.findViewById(R.id.write_event_body);
@@ -157,7 +185,7 @@ public class WriteEventFragment extends Fragment {
                 mEvent.setDate(new Date());
             }
 
-            MainActivity.getInstance().notifyChangedToFragments();
+            MainActivity.getInstance().notifyChangedToFragments(null);
             getActivity().getSupportFragmentManager().popBackStack();
         }
     }

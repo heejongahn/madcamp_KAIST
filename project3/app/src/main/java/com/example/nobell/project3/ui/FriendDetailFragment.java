@@ -136,7 +136,7 @@ public class FriendDetailFragment extends Fragment {
             memo.setFocusable(false);
             memo.setFocusableInTouchMode(true);
 
-            ((MainActivity)getActivity()).notifyChangedToFragments();
+            ((MainActivity)getActivity()).notifyChangedToFragments(null);
         }
     }
 

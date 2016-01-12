@@ -41,7 +41,7 @@ public class TagTabFragment extends Fragment implements Updatable, Representable
         }
     }
     @Override
-    public void notifyChanged() {
+    public void notifyChanged(Object arg) {
         updated = true;
     }
 

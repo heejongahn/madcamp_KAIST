@@ -56,7 +56,7 @@ public class EventTabFragment extends Fragment implements Updatable, Representab
         }
     }
     @Override
-    public void notifyChanged() {
+    public void notifyChanged(Object arg) {
         updated = true;
     }
     @Override

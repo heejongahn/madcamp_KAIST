@@ -36,10 +36,10 @@ public class PagerFragment extends Fragment implements Updatable, Representable{
         ((Updatable)(adapter.getItem(2))).reactivated();
     }
     @Override
-    public void notifyChanged() {
-        ((Updatable)(adapter.getItem(0))).notifyChanged();
-        ((Updatable)(adapter.getItem(1))).notifyChanged();
-        ((Updatable)(adapter.getItem(2))).notifyChanged();
+    public void notifyChanged(Object arg) {
+        ((Updatable)(adapter.getItem(0))).notifyChanged(arg);
+        ((Updatable)(adapter.getItem(1))).notifyChanged(arg);
+        ((Updatable)(adapter.getItem(2))).notifyChanged(arg);
     }
     @Override
     public String getTitle() {

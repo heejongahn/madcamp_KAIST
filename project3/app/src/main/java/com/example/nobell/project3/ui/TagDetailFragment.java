@@ -7,11 +7,9 @@ import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,7 +20,6 @@ import com.example.nobell.project3.dataset.Friend;
 import com.example.nobell.project3.dataset.Tag;
 import com.example.nobell.project3.lib.Utils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -49,7 +46,7 @@ public class TagDetailFragment extends Fragment implements Representable, Updata
 
 
     @Override
-    public void notifyChanged() {
+    public void notifyChanged(Object o) {
         changed = true;
     }
 
@@ -94,7 +91,6 @@ public class TagDetailFragment extends Fragment implements Representable, Updata
         ListView tv_events = (ListView) view.findViewById(R.id.tagdetailotherevents);
 
         tv_title.setText(tag.tagName);
-
 
         EventAdapter eventAdapter = new EventAdapter(getContext(), R.layout.event_item, initializeData());
         tv_events.setAdapter(eventAdapter);

@@ -6,5 +6,5 @@ public interface Updatable {
     public void reactivated();
 
     /* MainActivity calls this function of all Updatable Fragments in the fragmentStack. */
-    public void notifyChanged();
+    public void notifyChanged(Object arg);
 }

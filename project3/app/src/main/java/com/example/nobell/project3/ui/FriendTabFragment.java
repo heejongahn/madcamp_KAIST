@@ -2,28 +2,21 @@ package com.example.nobell.project3.ui;
 
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.activeandroid.query.Select;
 import com.example.nobell.project3.R;
-import com.example.nobell.project3.dataset.Event;
 import com.example.nobell.project3.dataset.Friend;
 
 import java.util.List;
+import java.util.Objects;
 
 @SuppressLint("ValidFragment")
 public class FriendTabFragment extends Fragment implements Updatable, Representable{
@@ -44,7 +37,7 @@ public class FriendTabFragment extends Fragment implements Updatable, Representa
         }
     }
     @Override
-    public void notifyChanged() {
+    public void notifyChanged(Object arg) {
         updated = true;
     }
 
@@ -62,7 +55,7 @@ public class FriendTabFragment extends Fragment implements Updatable, Representa
         mListView = (ListView) view.findViewById(R.id.listView);
         friends = new Select().all().from(Friend.class).execute();
 
-        mAdapter = new FriendAdapter(getContext(), R.layout.friend_combined_listview, friends);
+        mAdapter = new FriendAdapter(getContext(), R.layout.friend_item, friends);
         mAdapter.notifyDataSetChanged();
 
         mListView.setAdapter(mAdapter);

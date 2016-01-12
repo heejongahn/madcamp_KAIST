@@ -2,6 +2,7 @@ package com.example.nobell.project3;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.RequiresPermission;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -136,10 +137,11 @@ public class MainActivity extends AppCompatActivity {
 
     /* The fragments should call this function
      *    when the data was changed   */
-    public void notifyChangedToFragments() {
+    public void notifyChangedToFragments(Object arg) {
         for (Fragment f:fragmentStack) {
-            if (f instanceof Updatable)
-                ((Updatable) f).notifyChanged();
+            if (f instanceof Updatable) {
+                ((Updatable) f).notifyChanged(arg);
+            }
         }
         if (!fragmentStack.isEmpty()){
             Fragment f = fragmentStack.get(fragmentStack.size()-1);
