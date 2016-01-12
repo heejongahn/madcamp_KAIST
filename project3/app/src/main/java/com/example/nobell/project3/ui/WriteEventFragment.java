@@ -30,6 +30,7 @@ public class WriteEventFragment extends Fragment implements Updatable, Represent
      *
      * Objective: reduce activity as much as possible.
      */
+    View view;  /* Used in listener */
     @Override
     public String getTitle() {
         return "글쓰기";
@@ -89,7 +90,7 @@ public class WriteEventFragment extends Fragment implements Updatable, Represent
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_write_event, container, false);
+        view = inflater.inflate(R.layout.fragment_write_event, container, false);
 
         Button tagAddButton = (Button) view.findViewById(R.id.add_tag_button);
         tagAddButton.setOnClickListener(new addTagListener());
@@ -121,8 +122,8 @@ public class WriteEventFragment extends Fragment implements Updatable, Represent
 
         @Override
         public void onClick(View v) {
-            LinearLayout tagLayout = (LinearLayout) getActivity().findViewById(R.id.write_event_tags);
-            EditText tagEditText = (EditText) getActivity().findViewById(R.id.write_event_tag);
+            LinearLayout tagLayout = (LinearLayout) view.findViewById(R.id.write_event_tags);
+            EditText tagEditText = (EditText) view.findViewById(R.id.write_event_tag);
             String name = tagEditText.getText().toString();
             if (name.length()>0) {
                 tagEditText.setText("");
@@ -148,7 +149,7 @@ public class WriteEventFragment extends Fragment implements Updatable, Represent
 
         @Override
         public void onClick(View v) {
-            EditText bodyEditText = (EditText) getActivity().findViewById(R.id.write_event_body);
+            EditText bodyEditText = (EditText) view.findViewById(R.id.write_event_body);
             String body = bodyEditText.getText().toString();
 
             mEvent.body = body;
@@ -180,7 +181,7 @@ public class WriteEventFragment extends Fragment implements Updatable, Represent
         if (parent != null) {
             tag_layout = (LinearLayout) parent.findViewById(R.id.write_event_tags);
         } else {
-            tag_layout = (LinearLayout) getActivity().findViewById(R.id.write_event_tags);
+            tag_layout = (LinearLayout) view.findViewById(R.id.write_event_tags);
         }
         if (tag_layout != null) {tag_layout.removeAllViews();}
 
@@ -211,7 +212,7 @@ public class WriteEventFragment extends Fragment implements Updatable, Represent
         if (parent != null) {
             friend_layout = (LinearLayout) parent.findViewById(R.id.write_event_friends);
         } else {
-            friend_layout = (LinearLayout) getActivity().findViewById(R.id.write_event_friends);
+            friend_layout = (LinearLayout) view.findViewById(R.id.write_event_friends);
         }
 
         if (friend_layout != null) {friend_layout.removeAllViews();}
