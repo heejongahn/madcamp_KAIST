@@ -35,6 +35,9 @@ public class TagDetailFragment extends Fragment implements Representable, Updata
 //    private final float radius = 10.0f;
 
     private List<Friend> top3friends;
+    private List<Event> events;
+    private EventAdapter adapter;
+    private ListView tv_events;
 
     @Override
     public void reactivated() {
@@ -88,12 +91,11 @@ public class TagDetailFragment extends Fragment implements Representable, Updata
         tv_friends = new TextView[] {(TextView) view.findViewById(R.id.tag_friend1),
                                        (TextView) view.findViewById(R.id.tag_friend2),
                                        (TextView) view.findViewById(R.id.tag_friend3)};
-        ListView tv_events = (ListView) view.findViewById(R.id.tagdetailotherevents);
+        tv_events = (ListView) view.findViewById(R.id.tagdetailotherevents);
 
         tv_title.setText(tag.tagName);
 
-        EventAdapter eventAdapter = new EventAdapter(getContext(), R.layout.event_item, initializeData());
-        tv_events.setAdapter(eventAdapter);
+        initializeData();
 
 //        tv_event.setText("eeeeeeeeeeeeeeeeeeeeeeeeeeeevvvvvvvvvvveeeeeeeeeeeeennnnnnnnnnnnnnnnnnnnnnnnnnnnnt");
 //        makeBackground(tv_event, friendbox, friendbox_border, press, radius);
@@ -120,7 +122,7 @@ public class TagDetailFragment extends Fragment implements Representable, Updata
                 FriendDetailFragment.activate(f);
         }
     }
-    public List<Event> initializeData() {
+    public void initializeData() {
         top3friends = tag.getFriendsTopThree();
         for (int i = 0; i < 3; i++) {
             if(i < top3friends.size()) {
@@ -133,12 +135,13 @@ public class TagDetailFragment extends Fragment implements Representable, Updata
                 tv_friends[i].setBackgroundColor(Color.TRANSPARENT);
             }
         }
-        List<Event> events = tag.getEventsWithOrder();
+        events = tag.getEventsWithOrder();
         if (events.size() == 0)
             tv_mainevent.setText("아직 작성된 이벤트가 없습니다");
         else
             tv_mainevent.setText(events.get(0).body);
-        return events;
+        adapter = new EventAdapter(getContext(), R.layout.event_item, events);
+        tv_events.setAdapter(adapter);
     }
 //    public void makeBackground(View v, int normal, int border, int press, float rad) {
 //        GradientDrawable gd_normal = new GradientDrawable();
