@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class WriteEventFragment extends Fragment implements Updatable {
+public class WriteEventFragment extends Fragment implements Updatable, Representable {
     /*
      * This is not on the main tab part.
      * WriteEventFragment.activate() makes activate this part on
@@ -30,8 +30,10 @@ public class WriteEventFragment extends Fragment implements Updatable {
      *
      * Objective: reduce activity as much as possible.
      */
-
-    private String mOriginalToolbarTitle;
+    @Override
+    public String getTitle() {
+        return "글쓰기";
+    }
     private Toolbar mToolbar;
     private Event mEvent;
     private List<Tag> mTags;
@@ -88,9 +90,6 @@ public class WriteEventFragment extends Fragment implements Updatable {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_write_event, container, false);
-        mToolbar = (Toolbar) getActivity().findViewById(R.id.toolbar);
-        mOriginalToolbarTitle = (String) mToolbar.getTitle();
-        mToolbar.setTitle("글 쓰기");
 
         Button tagAddButton = (Button) view.findViewById(R.id.add_tag_button);
         tagAddButton.setOnClickListener(new addTagListener());
@@ -115,12 +114,6 @@ public class WriteEventFragment extends Fragment implements Updatable {
         refreshFriend(view);
 
         return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mToolbar.setTitle(mOriginalToolbarTitle);
     }
 
     public class addTagListener implements View.OnClickListener {
