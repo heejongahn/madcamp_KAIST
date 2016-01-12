@@ -124,8 +124,17 @@ public class EventAdapter extends ArrayAdapter<Event> {
             }
         });
 
-       
 
+        Button deleteButton = (Button) convertView.findViewById(R.id.event_delete);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mEvent.delete();
+                mEvents.remove(mEvent);
+                mAdapter.notifyDataSetChanged();
+            }
+        });
+        
         return convertView;
     }
 }
