@@ -7,13 +7,15 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listView"
-        android:layout_gravity="bottom" />
+        android:layout_gravity="bottom"
+        android:paddingBottom="40dp"/>
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:text="선택 완료"
         android:id="@+id/friend_select"
         android:layout_gravity="right|bottom" />
 
 </FrameLayout>
+ga 
