@@ -26,15 +26,32 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class TagDetailFragment extends Fragment {
+public class TagDetailFragment extends Fragment implements Representable, Updatable{
     private Tag tag;
     private Long tagId;
-    private final int friendbox = Color.parseColor("#11805030");
-    private final int friendbox_border = Color.parseColor("#22805030");
-    private final int press = Color.parseColor("#33805030");
-    private final float radius = 10.0f;
+    private TextView tv_friends[];
+    private TextView tv_mainevent;
+    private boolean changed;
+//    private final int friendbox = Color.parseColor("#11805030");
+//    private final int friendbox_border = Color.parseColor("#22805030");
+//    private final int press = Color.parseColor("#33805030");
+//    private final float radius = 10.0f;
 
     private List<Friend> top3friends;
+
+    @Override
+    public void reactivated() {
+        if (changed) {
+            initializeData();
+            changed = false;
+        }
+    }
+
+
+    @Override
+    public void notifyChanged() {
+        changed = true;
+    }
 
     public static void activate(Tag tag) {
         /* Setting arguments to newly created fragment. */
@@ -47,6 +64,11 @@ public class TagDetailFragment extends Fragment {
     }
 
     public TagDetailFragment() {
+    }
+
+    @Override
+    public String getTitle() {
+        return "태그 살펴보기";
     }
 
     @Override
@@ -65,27 +87,16 @@ public class TagDetailFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_tag_detail, container, false);
         TextView tv_title = (TextView) view.findViewById(R.id.tagdetailtitle);
-        TextView tv_mainevent = (TextView) view.findViewById(R.id.tagdetailmainevent);
-        ListView tv_friends = (ListView) view.findViewById(R.id.tagdetailfriends);
+        tv_mainevent = (TextView) view.findViewById(R.id.tagdetailmainevent);
+        tv_friends = new TextView[] {(TextView) view.findViewById(R.id.tag_friend1),
+                                       (TextView) view.findViewById(R.id.tag_friend2),
+                                       (TextView) view.findViewById(R.id.tag_friend3)};
         ListView tv_events = (ListView) view.findViewById(R.id.tagdetailotherevents);
 
-        Context c = getContext();
         tv_title.setText(tag.tagName);
 
-        top3friends = tag.getFriendsTopThree();
-        FriendTabFragment.FriendAdapter topFriends = new FriendTabFragment().new FriendAdapter(c, R.layout.friend_combined_listview, top3friends);;
-        tv_friends.setAdapter(topFriends);
-        tv_title.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ((MainActivity)getActivity()).notifyChangedToFragments();
-            }
-        });
 
-        List<Event> events = tag.getEventsWithOrder();
-        tv_mainevent.setText(events.get(0).body);
-
-        EventAdapter eventAdapter = new EventAdapter(c, R.layout.event_item, events);
+        EventAdapter eventAdapter = new EventAdapter(getContext(), R.layout.event_item, initializeData());
         tv_events.setAdapter(eventAdapter);
 
 //        tv_event.setText("eeeeeeeeeeeeeeeeeeeeeeeeeeeevvvvvvvvvvveeeeeeeeeeeeennnnnnnnnnnnnnnnnnnnnnnnnnnnnt");
@@ -102,22 +113,53 @@ public class TagDetailFragment extends Fragment {
         return view;
     }
 
-    public void makeBackground(View v, int normal, int border, int press, float rad) {
-        GradientDrawable gd_normal = new GradientDrawable();
-        gd_normal.setColor(normal);
-        gd_normal.setCornerRadius(rad);
-        gd_normal.setStroke(Utils.dipToPx(getContext(), 2), border);
-
-        GradientDrawable gd_press = new GradientDrawable();
-        gd_press.setColor(press);
-        gd_press.setCornerRadius(rad);
-
-        StateListDrawable states = new StateListDrawable();
-        states.addState(new int[]{android.R.attr.state_pressed}, gd_press);
-        states.addState(new int[]{}, gd_normal);
-
-        v.setBackground(states);
+    private class FriendListener implements View.OnClickListener {
+        private Friend f;
+        public FriendListener(Friend f) {
+            this.f = f;
+        }
+        @Override
+        public void onClick(View v) {
+            if (f != null)
+                FriendDetailFragment.activate(f);
+        }
     }
+    public List<Event> initializeData() {
+        top3friends = tag.getFriendsTopThree();
+        for (int i = 0; i < 3; i++) {
+            if(i < top3friends.size()) {
+                /* Fill with friend */
+                tv_friends[i].setText(top3friends.get(i).name);
+                tv_friends[i].setOnClickListener(new FriendListener(top3friends.get(i)));
+            }
+            else {
+                /* There are some friends less than three. */
+                tv_friends[i].setBackgroundColor(Color.TRANSPARENT);
+            }
+        }
+        List<Event> events = tag.getEventsWithOrder();
+        if (events.size() == 0)
+            tv_mainevent.setText("아직 작성된 이벤트가 없습니다");
+        else
+            tv_mainevent.setText(events.get(0).body);
+        return events;
+    }
+//    public void makeBackground(View v, int normal, int border, int press, float rad) {
+//        GradientDrawable gd_normal = new GradientDrawable();
+//        gd_normal.setColor(normal);
+//        gd_normal.setCornerRadius(rad);
+//        gd_normal.setStroke(Utils.dipToPx(getContext(), 2), border);
+//
+//        GradientDrawable gd_press = new GradientDrawable();
+//        gd_press.setColor(press);
+//        gd_press.setCornerRadius(rad);
+//
+//        StateListDrawable states = new StateListDrawable();
+//        states.addState(new int[]{android.R.attr.state_pressed}, gd_press);
+//        states.addState(new int[]{}, gd_normal);
+//
+//        v.setBackground(states);
+//    }
 
 
 }
