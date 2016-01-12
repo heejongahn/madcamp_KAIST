@@ -1,23 +1,22 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.example.nobell.project3.ui.FriendTabFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <LinearLayout
-        xmlns:android= "http://schemas.android.com/apk/res/android"
-        android:orientation = "horizontal"
-        android:layout_width= "match_parent"
-        android:layout_height= "60dp">
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Add Friend"
-            android:id="@+id/friend_add_button"
-            android:layout_gravity="left|center"/>
-    </LinearLayout>
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="새 친구 추가하기"
+        android:id="@+id/friend_add_button"
+        android:textColor="#FFFFFF"
+        android:background="#99ccFF"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:gravity="center_horizontal"
+        android:padding="12dp"/>
 
     <ListView
         android:layout_width="fill_parent"
@@ -26,4 +25,4 @@
         android:id="@+id/listView"
         android:layout_gravity="bottom" />
 
-</FrameLayout>
+</LinearLayout>
