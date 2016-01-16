@@ -1,0 +1,21 @@
+{
+  "name": "madcamp_final",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Heejong Ahn <heejongahn@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/heejongahn/madcamp_KAIST",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "base": "~2.7.2"
+  }
+}
