@@ -8,13 +8,6 @@
   "license": "MIT",
   "homepage": "https://github.com/heejongahn/madcamp_KAIST",
   "moduleType": [],
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
   "dependencies": {
     "base": "~2.7.2"
   }
