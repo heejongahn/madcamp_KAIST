@@ -9,7 +9,10 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 
 // mongoose (https://github.com/Automattic/mongoose)
-var db = require('./models/db');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/test');
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
 
 var app = express();
 
