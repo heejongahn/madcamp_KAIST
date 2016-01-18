@@ -8,7 +8,7 @@ var sassMiddleware = require('node-sass-middleware');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var account = require('./routes/account');
+var shop = require('./routes/shop');
 
 // mongoose (https://github.com/Automattic/mongoose)
 var mongoose = require('mongoose');
@@ -46,7 +46,7 @@ app.use(cookieParser());
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/account/', account);
+app.use('/shop/', shop);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
