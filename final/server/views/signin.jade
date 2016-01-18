@@ -2,10 +2,11 @@ extends layout
 
 block content
   h1 Sign in
-  form(action="POST")
+  form(action="/account/signin", method="POST")
     .form-group
       label(for="accountid") 계정 이름
-      input(type="text")#accountid.form-control
+      input(type="text", name="accountid")#accountid.form-control
     .form-group
       label(for="password") 비밀번호
-      input(type="password")#password.form-control
+      input(type="password", name="password")#password.form-control
+    input(type="submit").btn.btn-default
