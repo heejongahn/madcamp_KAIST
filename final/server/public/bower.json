@@ -9,6 +9,6 @@
   "homepage": "https://github.com/heejongahn/madcamp_KAIST",
   "moduleType": [],
   "dependencies": {
-    "base": "~2.7.2"
+    "bootswatch": "~3.3.6+1"
   }
 }

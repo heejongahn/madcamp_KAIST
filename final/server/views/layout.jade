@@ -1,7 +1,20 @@
 doctype html
 html
   head
+    meta(charset="utf-8")
+    meta(http-equiv="X-UA-Compatible", content="IE-edge")
+    meta(name="viewport", content="width=device-width, initial-scale=1")
     title= title
-    link(rel='stylesheet', href='/bower_components/base/dist/style.css')
-  body.container
-    block content
+    link(rel='stylesheet', href='/bower_components/bootswatch/simplex/bootstrap.min.css')
+  body
+    nav.navbar.navbar-fixed-top
+      .container
+        .navber-header
+          a.navbar-brand(href="#") O2O2O
+        ul.nav.navbar-nav
+          li
+            a 나의 상점
+          li
+            a 유저 관리
+    .container
+      block content
