@@ -9,10 +9,12 @@ var shopSchema = new Schema({
   password: { type: String, required: true },
   shopname: { type: String, required: true },
   phonenum: { type: String, required: true },
+  /*
   location: {
     lon: {type: Number},
     lat: {type: Number},
     required: true},
+  */
   userIds: [{type: ObjectId, ref: 'User'}]
 });
 
@@ -21,11 +23,13 @@ shopSchema.pre('save', function(next) {
 
     bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
         if (err) {
+          console.log('Error saving password');
           return next(err);
         }
 
         bcrypt.hash(shop.password, salt, function(err, hash) {
             if (err) {
+              console.log('Error saving password');
               return next(err);
             }
 

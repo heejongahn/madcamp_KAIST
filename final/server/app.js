@@ -15,6 +15,11 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function() {
+  console.log('db connected!');
+  console.log('host:  ' + mongoose.connection.host);
+  console.log('port:  ' + mongoose.connection.port);
+});
 
 var app = express();
 
@@ -27,7 +32,6 @@ app.use(
   sassMiddleware({
     src: path.join(__dirname,'sass'),
     dest: path.join(__dirname, 'public/stylesheets'),
-    debug: true,
     outputStyle: 'compressed',
     prefix: '/stylesheets',
   }),
