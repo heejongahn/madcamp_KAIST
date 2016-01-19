@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_feeds) {
-            
+
             Fragment fragment;
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragment = new FeedFragment();
@@ -96,7 +96,13 @@ public class MainActivity extends AppCompatActivity
 
             Toast.makeText(this, "nav_search is clicked", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_myshops) {
-            Toast.makeText(this, "nav_myshops is clicked", Toast.LENGTH_SHORT).show();
+            Fragment fragment;
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragment = new ShopListFragment();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
+            Toast.makeText(this, "nav_my shops is clicked", Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
