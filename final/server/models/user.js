@@ -7,7 +7,7 @@ var mongoose = require('mongoose'),
 var UserSchema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
-  shopIds: [{type: ObjectId, ref: 'Shop'}]
+  shopIds: [{type: ObjectId, ref: 'Shop', default: []}]
 });
 
 UserSchema.pre('save', function(next) {
@@ -37,6 +37,20 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
         }
         cb(null, isMatch);
     });
+};
+
+UserSchema.methods.subscribe = function(shop, cb) {
+  this.shopIds.push(shop.id);
+  this.save();
+  shop.userIds.push(this.id);
+  shop.save();
+};
+
+UserSchema.methods.unsubscribe = function(shop, cb) {
+  this.shopIds.splice(this.shopIds.indexOf(shop.id), 1);
+  this.save();
+  shop.userIds.splice(shop.userIds.indexOf(this.id), 1);
+  shop.save();
 };
 
 module.exports = mongoose.model('User', UserSchema);

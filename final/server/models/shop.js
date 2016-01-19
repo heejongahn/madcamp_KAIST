@@ -15,7 +15,7 @@ var shopSchema = new Schema({
     lat: {type: Number},
     required: true},
   */
-  userIds: [{type: ObjectId, ref: 'User'}]
+  userIds: [{type: ObjectId, ref: 'User', default: []}]
 });
 
 shopSchema.pre('save', function(next) {

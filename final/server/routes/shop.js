@@ -1,6 +1,17 @@
 var express = require('express');
 var Shop = require('../models/shop');
+var User = require('../models/user');
 var router = express.Router();
+
+router.route('/test')
+  .get(function(req, res, next) {
+    User.findOne(function(err, user) {
+      Shop.findOne(function(err, shop) {
+        user.subscribe(shop);
+        res.redirect('/');
+      });
+    });
+  });
 
 router.route('/signin')
   .get(function(req, res, next) {
@@ -15,7 +26,7 @@ router.route('/signin')
           shop.comparePassword(req.body.password, function(err, isMatch) {
             if (err) { res.send({'error': err}); }
             else if (isMatch) {
-              req.session.user = req.body.accountid;
+              req.session.user = shop;
               console.log('password match');
               res.redirect('/');
             } else {
