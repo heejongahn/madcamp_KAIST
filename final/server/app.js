@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var sassMiddleware = require('node-sass-middleware');
+var session = require('express-session');
+var fileStore = require('session-file-store')(session);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -15,11 +17,6 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/test');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('db connected!');
-  console.log('host:  ' + mongoose.connection.host);
-  console.log('port:  ' + mongoose.connection.port);
-});
 
 var app = express();
 
@@ -36,6 +33,18 @@ app.use(
     prefix: '/stylesheets',
   }),
   express.static(path.join(__dirname, 'public')));
+
+// Session
+app.use(session({
+  store: new fileStore(),
+  resave: false,
+  secret: 'supersecret'}));
+
+app.use(function(req,res,next){
+    res.locals.session = req.session;
+    next();
+});
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));

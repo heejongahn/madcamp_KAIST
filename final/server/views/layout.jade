@@ -1,3 +1,4 @@
+- var user = session.user
 doctype html
 html
   head
@@ -13,9 +14,15 @@ html
         .navber-header
           a.navbar-brand(href="#") O2O2O
         ul.nav.navbar-nav
-          li
-            a 나의 상점
-          li
-            a 유저 관리
+          if user
+            li
+              a 나의 상점
+            li
+              a 유저 관리
+            li
+              a(href="/shop/signout") 로그아웃
+          else
+            li
+              a(href="/shop/signin") 로그인
     .container
       block content
