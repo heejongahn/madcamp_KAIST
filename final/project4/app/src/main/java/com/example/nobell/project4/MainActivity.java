@@ -84,7 +84,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_feeds) {
-            
+
             Fragment fragment;
             FragmentManager fragmentManager = getSupportFragmentManager();
             fragment = new FeedFragment();

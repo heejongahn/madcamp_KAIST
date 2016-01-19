@@ -2,11 +2,15 @@ package com.example.nobell.project4;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,44 +21,52 @@ import org.json.simple.parser.ParseException;
  * Created by daeseongkim on 2015. 11. 29..
  */
 public class FeedFragment extends Fragment {
-    ListView _listView ;
+    RecyclerView recyclerView;
+    List<Feed_item> items;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_feed, container, false);
-        _listView = (ListView)rootView.findViewById(R.id.listView);
-        String jsondata = "{\"items\":{\"itemlist\":[{\"name\":\"서울\",\"age\":\"10\"},{\"name\":\"대전\",\"age\":\"20\"}]}}";
-        get_list(jsondata);
+
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview);
+        LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(layoutManager);
+
+        items = new ArrayList<>();
+        Feed_item[] item=new Feed_item[5];
+        item[0]=new Feed_item(R.drawable.a,"#1");
+        item[1]=new Feed_item(R.drawable.b,"#2");
+        item[2]=new Feed_item(R.drawable.c,"#3");
+        item[3]=new Feed_item(R.drawable.d,"#4");
+        item[4]=new Feed_item(R.drawable.e,"#5");
+
+        for(int i=0;i<5;i++) items.add(item[i]);
+
+        swipeRefreshLayout= (SwipeRefreshLayout) rootView.findViewById(R.id.refreshView);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                get_list();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+        swipeRefreshLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                get_list();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
 
         return rootView;
     }
 
-    public void get_list (String jsondata) {
-        ArrayList<String> list = new ArrayList<>();
-        list.clear();
-
-        JSONParser jsonParser = new JSONParser();
-
-        try {
-            JSONObject jsonObject = (JSONObject) jsonParser.parse(jsondata);
-            JSONObject items = (JSONObject) jsonObject.get("items");
-            JSONArray itemlist = (JSONArray) items.get("itemlist");
-
-            for (int i=0; i<itemlist.size(); i++) {
-                JSONObject obj = (JSONObject) itemlist.get(i);
-                String name = (String) obj.get("name");
-                String age = (String) obj.get("age");
-                list.add("name: " + name + " age: " + age);
-            }
-        }
-        catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        FeedAdapter adapter = new FeedAdapter(getActivity(), list, getResources());
-        _listView.setAdapter(adapter);
+    public void get_list () {
+        recyclerView.setAdapter(new FeedAdapter(getContext(),items,R.layout.fragment_feed));
     }
 }
 
