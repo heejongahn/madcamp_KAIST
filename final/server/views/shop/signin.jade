@@ -1,12 +1,20 @@
 extends ../layout
 
+block style
+  style.
+    form.signin {
+      padding-bottom: 2em;
+    }
+
 block content
-  h1 Sign in
-  form(action="/shop/signin", method="POST")
-    .form-group
-      label(for="accountid") 계정 이름
-      input(type="text", name="accountid")#accountid.form-control
-    .form-group
-      label(for="password") 비밀번호
-      input(type="password", name="password")#password.form-control
-    input(type="submit").btn.btn-default
+  .col-md-6.col-lg-6.col-md-offset-3.col-lg-offset-3
+    h1 환영합니다!
+    form(action="/shop/signin", method="POST").signin
+      .form-group
+        label(for="accountid") 계정 이름
+        input(type="text", name="accountid")#accountid.form-control
+      .form-group
+        label(for="password") 비밀번호
+        input(type="password", name="password")#password.form-control
+      input(type="submit", value="로그인").btn.btn-default
+    a(href="/shop/signup") 아이디가 없다면 회원가입하세요!
