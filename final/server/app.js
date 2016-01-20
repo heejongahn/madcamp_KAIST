@@ -10,7 +10,7 @@ var fileStore = require('session-file-store')(session);
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
-var shop = require('./routes/shop');
+var shops = require('./routes/shops');
 
 // mongoose (https://github.com/Automattic/mongoose)
 var mongoose = require('mongoose');
@@ -55,7 +55,7 @@ app.use(cookieParser());
 
 app.use('/', routes);
 app.use('/users', users);
-app.use('/shop/', shop);
+app.use('/shops/', shops);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

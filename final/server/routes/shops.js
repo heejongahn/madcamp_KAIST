@@ -15,7 +15,7 @@ router.route('/test')
 
 router.route('/signin')
   .get(function(req, res, next) {
-    res.render('shop/signin', { title: 'Sign In' });
+    res.render('shops/signin', { title: 'Sign In' });
   })
   .post(function(req, res, next) {
     Shop.findOne({accountid: req.body.accountid},
@@ -27,11 +27,9 @@ router.route('/signin')
             if (err) { res.send({'error': err}); }
             else if (isMatch) {
               req.session.user = shop;
-              console.log('password match');
               res.redirect('/');
             } else {
-              console.log('invalid password');
-              res.redirect('/shop/signin');
+              res.redirect('/shops/signin');
             }
           });
         }
@@ -48,7 +46,7 @@ router.route('/signout')
 
 router.route('/signup')
   .get(function(req, res, next) {
-    res.render('shop/signup', { title: 'Sign Up' });
+    res.render('shops/signup', { title: 'Sign Up' });
   })
   .post(function(req, res, next) {
     var shop = new Shop();
@@ -57,8 +55,6 @@ router.route('/signup')
     shop.password = req.body.password;
     shop.shopname = req.body.shopname;
     shop.phonenum = req.body.phonenum;
-
-    console.log(shop);
 
     /*
       'accountid': req.body.accountid,
@@ -71,7 +67,7 @@ router.route('/signup')
         if (err) { res.send({'error' : err}); }
     });
 
-    res.redirect('/shop/signin');
+    res.redirect('/shops/signin');
   });
 
 
