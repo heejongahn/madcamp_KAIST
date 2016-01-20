@@ -33,8 +33,8 @@ public class ShopListFragment extends Fragment {
 
         items = new ArrayList<>();
         Shop_item[] item=new Shop_item[2];
-        item[0]=new Shop_item(R.drawable.d,"#4");
-        item[1]=new Shop_item(R.drawable.e,"#5");
+        item[0]=new Shop_item(R.drawable.d2,"#4");
+        item[1]=new Shop_item(R.drawable.e2,"#5");
 
         for(int i=0;i<2;i++) items.add(item[i]);
 

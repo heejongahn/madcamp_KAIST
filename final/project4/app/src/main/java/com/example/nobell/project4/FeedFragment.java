@@ -8,14 +8,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 /**
  * Created by daeseongkim on 2015. 11. 29..
@@ -36,11 +31,12 @@ public class FeedFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
+
         items = new ArrayList<>();
         Feed_item[] item=new Feed_item[3];
-        item[0]=new Feed_item(R.drawable.a,"#1");
-        item[1]=new Feed_item(R.drawable.b,"#2");
-        item[2]=new Feed_item(R.drawable.c,"#3");
+        item[0]=new Feed_item(R.drawable.a2,"#1");
+        item[1]=new Feed_item(R.drawable.b2,"#2");
+        item[2]=new Feed_item(R.drawable.c2,"#3");
 
         for(int i=0;i<3;i++) items.add(item[i]);
 

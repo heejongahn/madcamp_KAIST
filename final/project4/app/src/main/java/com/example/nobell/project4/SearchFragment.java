@@ -34,11 +34,11 @@ public class SearchFragment extends Fragment {
 
         items = new ArrayList<>();
         Shop_item[] item=new Shop_item[5];
-        item[0]=new Shop_item(R.drawable.a,"#1");
-        item[1]=new Shop_item(R.drawable.b,"#2");
-        item[2]=new Shop_item(R.drawable.c,"#3");
-        item[3]=new Shop_item(R.drawable.d,"#4");
-        item[4]=new Shop_item(R.drawable.e,"#5");
+        item[0]=new Shop_item(R.drawable.a2,"#1");
+        item[1]=new Shop_item(R.drawable.b2,"#2");
+        item[2]=new Shop_item(R.drawable.c2,"#3");
+        item[3]=new Shop_item(R.drawable.d2,"#4");
+        item[4]=new Shop_item(R.drawable.e2,"#5");
 
         for(int i=0;i<item.length;i++) items.add(item[i]);
 
