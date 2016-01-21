@@ -36,37 +36,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="20dp"
-                    android:background="#FFFFFF">
+                    android:background="#FFFFFF"
+                    android:layout_gravity="center_vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                         android:text="Starbucks"
-                        android:id="@+id/shopname_textview2" />
+                        android:id="@+id/shopname_textview2"
+                        android:textColor="#27B4E7" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Coffee"
-                        android:id="@+id/shopcategory_textview2" />
+                        android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+                        android:text="2016.1.22 10:10"
+                        android:id="@+id/feeddate_textview2" />
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="right"
-                    android:paddingRight="20dp">
-
-                    <CheckBox android:id="@+id/star"
-                        style="?android:attr/starStyle"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_gravity="center_vertical|right"
-                        android:gravity="right" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -78,9 +65,9 @@
                 android:id="@+id/body_textView2"
                 android:layout_gravity="center_horizontal"
                 android:background="#FFFFFF"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:paddingTop="25dp"
+                android:paddingLeft="25dp"
+                android:paddingTop="20dp"
+                android:paddingRight="25dp"
                 android:paddingBottom="25dp" />
 
 

@@ -56,6 +56,11 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ShopPageActivity.class);
+                i.putExtra("logo", item.getImage());
+                i.putExtra("shopname", item.getName());
+                i.putExtra("shopcategory", item.getCategory());
+                i.putExtra("shopphone", item.getPhone());
+                i.putExtra("location", item.getLocation());
                 context.startActivity(i);
 
                 Toast.makeText(context, item.getName(), Toast.LENGTH_SHORT).show();

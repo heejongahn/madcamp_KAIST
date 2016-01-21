@@ -1,5 +1,6 @@
 package com.example.nobell.project4;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,12 +23,14 @@ public class ShopPageActivity extends AppCompatActivity {
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView mShopname, mShopcategory, mShopphone, mShoploc;
     private ImageView mLogo;
+    Shop_item shop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("샵앤샵 (#&#)");
         setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
@@ -40,6 +43,20 @@ public class ShopPageActivity extends AppCompatActivity {
         mShopphone = (TextView) findViewById(R.id.shopphone_textview);
         mShoploc = (TextView) findViewById(R.id.shoploc_textview);
         mLogo = (ImageView) findViewById(R.id.logo_imageview);
+
+        Intent i = getIntent();
+
+        shop = new Shop_item(i.getIntExtra("logo", -1),
+                i.getStringExtra("shopname"),
+                i.getStringExtra("shopcategory"),
+                i.getStringExtra("shopphone"),
+                i.getStringExtra("location"));
+
+        mShopname.setText(shop.getName());
+        mShopcategory.setText(shop.getCategory());
+        mShopphone.setText(shop.getPhone());
+        mShoploc.setText(shop.getLocation());
+        mLogo.setImageResource(shop.getImage());
 
         swipeRefreshLayout= (SwipeRefreshLayout) findViewById(R.id.refreshView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -61,18 +78,15 @@ public class ShopPageActivity extends AppCompatActivity {
     public void get_list () {
         items = new ArrayList<>();
         Feed_item[] item = new Feed_item[2];
-        Shop_item[] shop = new Shop_item[2];
-        shop[0] = new Shop_item(R.drawable.starbucks, "Starbucks", "Cafe", "010-3062-4019", "대전광역시 유성구 구성동 한국과학기술원");
-        item[0] = new Feed_item(shop[0], "20% 할인 진행 중", "2016.1.21 10:10");
+
+        item[0] = new Feed_item(shop, "20% 할인 진행 중입니다.\n" +
+                "사랑은 점!점!점!점! 그렇게!\n" +
+                "떠나가 버렸지만!!!\n" +
+                "눈물은 가슴속에 묻었다!\n" +
+                "슬픈 체리보이!", "2016.1.21 10:10");
         item[1] = item[0];
         for(int i=0;i<2;i++) items.add(item[i]);
 
-        mShopname.setText(shop[0].getName());
-        mShopcategory.setText(shop[0].getCategory());
-        mShopphone.setText(shop[0].getPhone());
-        mShoploc.setText(shop[0].getLocation());
-        mLogo.setImageResource(shop[0].getImage());
-
-        recyclerView.setAdapter(new FeedAdapter(this,items,R.layout.fragment_feed));
+        recyclerView.setAdapter(new FeedAdapter(this,items, R.layout.fragment_feed));
     }
 }

@@ -39,7 +39,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
         holder.mLogo.setImageResource(item.get_shop().getImage());
         holder.mShopname.setText(item.get_shop().getName());
-        holder.mShopcategory.setText(item.get_shop().getCategory());
+        holder.mFeeddate.setText(item.get_date());
 //        holder.mShopphone.setText(item.get_shop().getPhone());
         holder.mBody.setText(item.get_body());
         holder.cardview.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +56,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mShopname, mShopcategory, mBody;
+        TextView mShopname, mFeeddate, mBody;
         ImageView mLogo;
         CardView cardview;
 
@@ -64,8 +64,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             super(itemView);
 
             mShopname = (TextView) itemView.findViewById(R.id.shopname_textview2);
-            mShopcategory = (TextView) itemView.findViewById(R.id.shopcategory_textview2);
-//            mShopphone = (TextView) itemView.findViewById(R.id.shopphone_textview2);
+            mFeeddate = (TextView) itemView.findViewById(R.id.feeddate_textview2);
             mLogo = (ImageView) itemView.findViewById(R.id.logo_imageview2);
             mBody = (TextView) itemView.findViewById(R.id.body_textView2);
 

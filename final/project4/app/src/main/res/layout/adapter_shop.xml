@@ -44,7 +44,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Starbucks"
-                    android:id="@+id/shopname_textview3" />
+                    android:id="@+id/shopname_textview3"
+                        android:textColor="#27B4E7" />
 
                     <TextView
                     android:layout_width="wrap_content"
@@ -67,14 +68,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="right"
-                    android:paddingRight="20dp">
+                    android:paddingRight="15dp">
 
                     <CheckBox android:id="@+id/star"
-                        style="?android:attr/starStyle"
+                        style="@android:style/Widget.Holo.CompoundButton.Star"
                         android:layout_width="40dp"
                         android:layout_height="40dp"
                         android:layout_gravity="center_vertical|right"
-                        android:gravity="right" />
+                        android:gravity="right"
+                        android:checked="false" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -84,12 +86,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            android:paddingBottom="20dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
 
             <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="대전광역시 유성구 구성동 한국과학기술원 사랑관 231호"
             android:id="@+id/shoploc_textview3"
                 android:maxWidth="280dp" />
@@ -97,17 +101,17 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:gravity="right"
                     android:paddingRight="30dp">
 
                     <ImageView
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:id="@+id/imageView3"
-                android:src="@drawable/location"
-                android:foregroundGravity="right"
-                android:layout_gravity="center_vertical" />
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/imageView3"
+                    android:src="@drawable/location"
+                    android:foregroundGravity="right"
+                    android:layout_gravity="center_vertical" />
                 </LinearLayout>
 
             </LinearLayout>
