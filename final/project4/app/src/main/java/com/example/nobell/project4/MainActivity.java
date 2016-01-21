@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("샵앤샵 (#&#)");
+        toolbar.setTitle("Shop & Shop");
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -157,8 +157,6 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                             .commit();
-            Toast.makeText(this, "nav_feeds is clicked", Toast.LENGTH_SHORT).show();
-
         } else if (id == R.id.nav_search) {
             isSearch =1;
             this.invalidateOptionsMenu();
@@ -168,9 +166,6 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment_search)
                     .commit();
-            Toast.makeText(this, "nav_search is clicked", Toast.LENGTH_SHORT).show();
-
-
         } else if (id == R.id.nav_myshops) {
             isSearch=0;
             this.invalidateOptionsMenu();
@@ -181,7 +176,6 @@ public class MainActivity extends AppCompatActivity
             fragmentManager.beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();
-            Toast.makeText(this, "nav_my shops is clicked", Toast.LENGTH_SHORT).show();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -30,7 +30,7 @@ public class ShopPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_page);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("샵앤샵 (#&#)");
+        toolbar.setTitle("Shop & Shop");
         setSupportActionBar(toolbar);
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview2);
@@ -80,6 +80,8 @@ public class ShopPageActivity extends AppCompatActivity {
         item[0] = new Feed_item(shop, "20% 할인 진행 중입니다.\n사랑은 점!점!점!점! 그렇게!\n떠나가 버렸지만!!!\n눈물은 가슴속에 묻었다!\n슬픈 체리보이!", "2016.1.21 10:10");
         item[1] = new Feed_item(shop, "삼성보다 싸게 파는 중 \n세상에 많고 많은 인연도\n나만은 비켜간다 믿었다\n하지만 니가 날린 아픈 실연에\n두눈을 감았다\n마음을 닫았다\n베이베", "2016.1.22 3:00");
         item[2] = new Feed_item(shop, "모니터 할인 판매 중\n날 데리러 오거든\n못 간다고 전해라", "2016.1.23 16:42");
+
+        for (int i=0; i<3; i++) items.add(item[i]);
 
         recyclerView.setAdapter(new FeedAdapter(this,items, R.id.recyclerview2));
     }
