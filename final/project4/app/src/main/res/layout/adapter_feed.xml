@@ -7,25 +7,88 @@
     <android.support.v7.widget.CardView
         android:id="@+id/cardview"
         card_view:cardCornerRadius="3dp"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp">
+        android:layout_margin="5dp"
+        android:background="#FFFFFF">
 
         <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <ImageView
-                android:layout_width="355dp"
-                android:layout_height="210dp"
-                android:id="@+id/image"/>
-            <TextView
-                android:id="@+id/title"
+            android:background="#FFFFFF">
+
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="ddd"/>
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/logo_imageview2"
+                    android:src="@drawable/starbucks"
+                    android:layout_gravity="center" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:background="#FFFFFF">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:text="Starbucks"
+                        android:id="@+id/shopname_textview2" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Coffee"
+                        android:id="@+id/shopcategory_textview2" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:paddingRight="20dp">
+
+                    <CheckBox android:id="@+id/star"
+                        style="?android:attr/starStyle"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical|right"
+                        android:gravity="right" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Body"
+                android:id="@+id/body_textView2"
+                android:layout_gravity="center_horizontal"
+                android:background="#FFFFFF"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:paddingTop="25dp"
+                android:paddingBottom="25dp" />
+
+
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
 </LinearLayout>
+
+
+
+

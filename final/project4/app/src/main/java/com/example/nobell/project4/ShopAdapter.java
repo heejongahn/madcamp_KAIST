@@ -46,16 +46,19 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Shop_item item=items.get(position);
-        Drawable drawable=context.getResources().getDrawable(item.getImage());
-        holder.image.setBackground(drawable);
-        holder.title.setText(item.getTitle());
+        holder.mLogo.setImageResource(item.getImage());
+        holder.mShopname.setText(item.getName());
+        holder.mShopcategory.setText(item.getCategory());
+        holder.mShopphone.setText(item.getPhone());
+        holder.mLocation.setText(item.getLocation());
+
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context, ShopPageActivity.class);
                 context.startActivity(i);
 
-                Toast.makeText(context, item.getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, item.getName(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -67,16 +70,20 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView image;
-        TextView title;
+        TextView mShopname, mShopcategory, mShopphone, mLocation;
+        ImageView mLogo;
         CardView cardview;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            image=(ImageView)itemView.findViewById(R.id.image);
-            title=(TextView)itemView.findViewById(R.id.title);
+
+            mShopname = (TextView) itemView.findViewById(R.id.shopname_textview3);
+            mShopcategory = (TextView) itemView.findViewById(R.id.shopcategory_textview3);
+            mShopphone = (TextView) itemView.findViewById(R.id.shopphone_textview3);
+            mLogo = (ImageView) itemView.findViewById(R.id.logo_imageview3);
+            mLocation = (TextView) itemView.findViewById(R.id.shoploc_textview3);
+
             cardview=(CardView)itemView.findViewById(R.id.cardview);
         }
-
     }
 }

@@ -40,11 +40,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         final Shop_item item=items.get(position);
         Drawable drawable=context.getResources().getDrawable(item.getImage());
         holder.image.setBackground(drawable);
-        holder.title.setText(item.getTitle());
+        holder.title.setText(item.getName());
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, item.getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, item.getName(), Toast.LENGTH_SHORT).show();
             }
         });
     }

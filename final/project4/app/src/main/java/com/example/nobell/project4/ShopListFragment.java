@@ -31,12 +31,6 @@ public class ShopListFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-        items = new ArrayList<>();
-        Shop_item[] item=new Shop_item[2];
-        item[0]=new Shop_item(R.drawable.d2,"#4");
-        item[1]=new Shop_item(R.drawable.e2,"#5");
-
-        for(int i=0;i<2;i++) items.add(item[i]);
 
         swipeRefreshLayout= (SwipeRefreshLayout) rootView.findViewById(R.id.refreshView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -58,6 +52,13 @@ public class ShopListFragment extends Fragment {
     }
 
     public void get_list () {
+        items = new ArrayList<>();
+        Shop_item[] shop = new Shop_item[2];
+        shop[0] = new Shop_item(R.drawable.starbucks, "Starbucks", "Cafe", "010-3062-4019", "대전광역시 유성구 구성동 한국과학기술원");
+        shop[1] = shop[0];
+
+        for(int i=0;i<2;i++) items.add(shop[i]);
+
         recyclerView.setAdapter(new ShopAdapter(getContext(),items,R.layout.fragment_shop_list));
     }
 }

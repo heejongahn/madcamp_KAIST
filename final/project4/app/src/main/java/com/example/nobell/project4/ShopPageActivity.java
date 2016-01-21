@@ -1,5 +1,6 @@
 package com.example.nobell.project4;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -40,8 +41,6 @@ public class ShopPageActivity extends AppCompatActivity {
         mShoploc = (TextView) findViewById(R.id.shoploc_textview);
         mLogo = (ImageView) findViewById(R.id.logo_imageview);
 
-        get_shop_info();
-
         swipeRefreshLayout= (SwipeRefreshLayout) findViewById(R.id.refreshView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -59,19 +58,20 @@ public class ShopPageActivity extends AppCompatActivity {
         });
     }
 
-    public void get_shop_info () {
-        //mShopname.set()
-        // ...
-    }
-
     public void get_list () {
         items = new ArrayList<>();
-        Feed_item[] item=new Feed_item[3];
-        item[0]=new Feed_item(R.drawable.a2,"#1");
-        item[1]=new Feed_item(R.drawable.b2,"#2");
-        item[2]=new Feed_item(R.drawable.c2,"#3");
+        Feed_item[] item = new Feed_item[2];
+        Shop_item[] shop = new Shop_item[2];
+        shop[0] = new Shop_item(R.drawable.starbucks, "Starbucks", "Cafe", "010-3062-4019", "대전광역시 유성구 구성동 한국과학기술원");
+        item[0] = new Feed_item(shop[0], "20% 할인 진행 중", "2016.1.21 10:10");
+        item[1] = item[0];
+        for(int i=0;i<2;i++) items.add(item[i]);
 
-        for(int i=0;i<3;i++) items.add(item[i]);
+        mShopname.setText(shop[0].getName());
+        mShopcategory.setText(shop[0].getCategory());
+        mShopphone.setText(shop[0].getPhone());
+        mShoploc.setText(shop[0].getLocation());
+        mLogo.setImageResource(shop[0].getImage());
 
         recyclerView.setAdapter(new FeedAdapter(this,items,R.layout.fragment_feed));
     }

@@ -32,14 +32,6 @@ public class FeedFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
 
-        items = new ArrayList<>();
-        Feed_item[] item=new Feed_item[3];
-        item[0]=new Feed_item(R.drawable.a2,"#1");
-        item[1]=new Feed_item(R.drawable.b2,"#2");
-        item[2]=new Feed_item(R.drawable.c2,"#3");
-
-        for(int i=0;i<3;i++) items.add(item[i]);
-
         swipeRefreshLayout= (SwipeRefreshLayout) rootView.findViewById(R.id.refreshView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -60,6 +52,14 @@ public class FeedFragment extends Fragment {
     }
 
     public void get_list () {
+        items = new ArrayList<>();
+        Feed_item[] item = new Feed_item[2];
+        Shop_item[] shop = new Shop_item[1];
+        shop[0] = new Shop_item(R.drawable.starbucks, "Starbucks", "Cafe", "010-3062-4019", "대전광역시 유성구 구성동 한국과학기술원");
+        item[0] = new Feed_item(shop[0], "20% 할인 진행 중", "2016.1.21 10:10");
+        item[1] = item[0];
+
+        for(int i=0;i<2;i++) items.add(item[i]);
         recyclerView.setAdapter(new FeedAdapter(getContext(),items,R.layout.fragment_feed));
     }
 }

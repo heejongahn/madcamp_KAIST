@@ -33,14 +33,11 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         items = new ArrayList<>();
-        Shop_item[] item=new Shop_item[5];
-        item[0]=new Shop_item(R.drawable.a2,"#1");
-        item[1]=new Shop_item(R.drawable.b2,"#2");
-        item[2]=new Shop_item(R.drawable.c2,"#3");
-        item[3]=new Shop_item(R.drawable.d2,"#4");
-        item[4]=new Shop_item(R.drawable.e2,"#5");
+        Shop_item[] shop = new Shop_item[2];
+        shop[0] = new Shop_item(R.drawable.starbucks, "Starbucks", "Cafe", "010-3062-4019", "대전광역시 유성구 구성동 한국과학기술원");
+        shop[1] = shop[0];
 
-        for(int i=0;i<item.length;i++) items.add(item[i]);
+        for(int i=0;i<2;i++) items.add(shop[i]);
 
         swipeRefreshLayout= (SwipeRefreshLayout) rootView.findViewById(R.id.refreshView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -69,7 +66,7 @@ public class SearchFragment extends Fragment {
         List<Shop_item> result_items = new ArrayList<Shop_item>(items_all);
         target = target.toLowerCase();
         for (Shop_item unit: items_all){
-            String title = unit.title.toLowerCase();
+            String title = unit.getName().toLowerCase();
             if (!title.contains(target)){
                 result_items.remove(unit);
             }
