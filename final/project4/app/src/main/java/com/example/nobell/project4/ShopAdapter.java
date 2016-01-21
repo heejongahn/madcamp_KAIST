@@ -40,6 +40,8 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         return new ViewHolder(v);
     }
 
+
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
@@ -50,7 +52,11 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(context, ShopPageActivity.class);
+                context.startActivity(i);
+
                 Toast.makeText(context, item.getTitle(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }
@@ -71,5 +77,6 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             title=(TextView)itemView.findViewById(R.id.title);
             cardview=(CardView)itemView.findViewById(R.id.cardview);
         }
+
     }
 }
