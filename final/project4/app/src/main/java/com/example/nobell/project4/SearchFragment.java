@@ -33,14 +33,15 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         items = new ArrayList<>();
-        Shop_item[] item=new Shop_item[5];
-        item[0]=new Shop_item(R.drawable.a,"#1");
-        item[1]=new Shop_item(R.drawable.b,"#2");
-        item[2]=new Shop_item(R.drawable.c,"#3");
-        item[3]=new Shop_item(R.drawable.d,"#4");
-        item[4]=new Shop_item(R.drawable.e,"#5");
+        Shop_item[] shop = new Shop_item[6];
+        shop[0] = new Shop_item(R.drawable.starbucks, "Starbucks", "Cafe", "010-3062-4019", "대전광역시 유성구 구성동 한국과학기술원");
+        shop[1] = new Shop_item(R.drawable.apple, "Apple Store", "Appliance", "010-4494-4019", "부산광역시 남구 수영동 39-24");
+        shop[2] = new Shop_item(R.drawable.dell, "Dell", "Computer", "010-2730-4522", "강원도 삼척시 사직로 4-11");
+        shop[3] = new Shop_item(R.drawable.hnm, "H&M", "Fashion", "042-141-4395", "인천광역시 부평구 항동로 46번길 38-3");
+        shop[4] = new Shop_item(R.drawable.kfc, "KFC", "Chicken", "123-4566-7875", "우리은하 태양계 화성 마아션");
+        shop[5] = new Shop_item(R.drawable.twitter, "Twitter", "SNS", "421-124-4214", "미쿡 샌프란시스코 어딘가");
 
-        for(int i=0;i<item.length;i++) items.add(item[i]);
+        for(int i=0;i<6;i++) items.add(shop[i]);
 
         swipeRefreshLayout= (SwipeRefreshLayout) rootView.findViewById(R.id.refreshView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -62,14 +63,14 @@ public class SearchFragment extends Fragment {
     }
 
     public void get_list (List<Shop_item> target_items) {
-        recyclerView.setAdapter(new SearchAdapter(getContext(),target_items,R.layout.fragment_shop_list));
+        recyclerView.setAdapter(new ShopAdapter(getContext(),target_items,R.layout.fragment_shop_list));
     }
 
     public List<Shop_item> get_target_items(String target, List<Shop_item> items_all){
         List<Shop_item> result_items = new ArrayList<Shop_item>(items_all);
         target = target.toLowerCase();
         for (Shop_item unit: items_all){
-            String title = unit.title.toLowerCase();
+            String title = unit.getName().toLowerCase();
             if (!title.contains(target)){
                 result_items.remove(unit);
             }
