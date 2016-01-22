@@ -1,10 +1,8 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = Schema.Types.ObjectId,
-    bcrypt = require('bcrypt'),
-    SALT_WORK_FACTOR = 10;
 
-var UserSchema = new Schema({
+var PostSchema = new Schema({
   username: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
   shopIds: [{type: ObjectId, ref: 'Shop', default: []}]
@@ -51,20 +49,6 @@ UserSchema.methods.unsubscribe = function(shop, cb) {
   this.save();
   shop.userIds.splice(shop.userIds.indexOf(this.id), 1);
   shop.save();
-};
-
-UserSchema.methods.getShops = function(cb) {
-  var posts = [];
-  Shop.find({_id: { $in: this.shopIds }}, function (err, shops) {
-    if (err) { cb(err); }
-    for each (shop in shops) {
-      for each (post in shop.posts) {
-        posts.push(post);
-      }
-    }
-  });
-
-  cb(null, posts);
 };
 
 module.exports = mongoose.model('User', UserSchema);
