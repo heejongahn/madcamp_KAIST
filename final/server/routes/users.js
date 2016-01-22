@@ -4,6 +4,22 @@ var Shop = require('../models/shop');
 var User = require('../models/user');
 var router = express.Router();
 
+router.route('/subscribe')
+  .post(function(req, res, next) {
+    var user = req.session.user;
+    Shop.findOne({_id: req.body.shopid}, function(err, shop) {
+      user.subscribe(shop);
+    });
+  });
+
+router.route('/unsubscribe')
+  .post(function(req, res, next) {
+    var user = req.session.user;
+    Shop.findOne({_id: req.body.shopid}, function(err, shop) {
+      user.unsubscribe(shop);
+    });
+  });
+
 router.route('/signin')
   .post(function(req, res, next) {
     User.findOne({username: req.body.username},
