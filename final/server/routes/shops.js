@@ -3,14 +3,18 @@ var Shop = require('../models/shop');
 var User = require('../models/user');
 var router = express.Router();
 
-router.route('/test')
+router.route('/posts')
   .get(function(req, res, next) {
-    User.findOne(function(err, user) {
-      Shop.findOne(function(err, shop) {
-        user.subscribe(shop);
-        res.redirect('/');
+    var shopId = res.query.shopid;
+
+    Shop.findOne({_id: shopId},
+      function(err, shop) {
+        if (err) { res.json({'error': err}); }
+        else if (shop == undefined) { res.json({'ok': false}); }
+        else {
+          res.json({'ok': true, 'posts': shop.posts});
+        }
       });
-    });
   });
 
 router.route('/signin')
@@ -21,10 +25,10 @@ router.route('/signin')
     Shop.findOne({accountid: req.body.accountid},
       function (err, shop) {
         if (err) {
-          res.send({'error': err});
+          res.json({'error': err});
         } else if (shop) {
           shop.comparePassword(req.body.password, function(err, isMatch) {
-            if (err) { res.send({'error': err}); }
+            if (err) { res.json({'error': err}); }
             else if (isMatch) {
               req.session.user = shop;
               res.redirect('/');
@@ -64,7 +68,7 @@ router.route('/signup')
     */
 
     shop.save(function (err) {
-        if (err) { res.send({'error' : err}); }
+        if (err) { res.json({'error' : err}); }
     });
 
     res.redirect('/shops/signin');

@@ -54,8 +54,16 @@ UserSchema.methods.unsubscribe = function(shop, cb) {
 };
 
 UserSchema.methods.getShops = function(cb) {
-  var posts = [];
   Shop.find({_id: { $in: this.shopIds }}, function (err, shops) {
+    if (err) { cb(err); }
+    cb(null, shops);
+  });
+};
+
+
+UserSchema.methods.getPosts = function(cb) {
+  var posts = [];
+  this.getShops(function (err, shops) {
     if (err) { cb(err); }
     for each (shop in shops) {
       for each (post in shop.posts) {

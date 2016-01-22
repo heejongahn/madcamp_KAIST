@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;
 
-var shopSchema = new Schema({
+var ShopSchema = new Schema({
   accountid: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
   shopname: { type: String, required: true },
@@ -15,10 +15,11 @@ var shopSchema = new Schema({
     lat: {type: Number},
     required: true},
   */
-  userIds: [{type: ObjectId, ref: 'User', default: []}]
+  userIds: [{type: ObjectId, ref: 'User', default: []}],
+  posts: [{type: postSchema, default: []}]
 });
 
-shopSchema.pre('save', function(next) {
+ShopSchema.pre('save', function(next) {
     var shop = this;
 
     bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
@@ -39,8 +40,7 @@ shopSchema.pre('save', function(next) {
     });
 });
 
-
-shopSchema.methods.comparePassword = function(candidatePassword, cb) {
+ShopSchema.methods.comparePassword = function(candidatePassword, cb) {
     bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
         if (err) {
           return cb(err);
@@ -49,4 +49,4 @@ shopSchema.methods.comparePassword = function(candidatePassword, cb) {
     });
 };
 
-module.exports = mongoose.model('Shop', shopSchema);
+module.exports = mongoose.model('Shop', ShopSchema);

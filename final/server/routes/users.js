@@ -8,7 +8,9 @@ router.route('/subscribe')
   .post(function(req, res, next) {
     var user = req.session.user;
     Shop.findOne({_id: req.body.shopid}, function(err, shop) {
+      if (err) { res.json({'error': err}); }
       user.subscribe(shop);
+      res.json({'ok': true});
     });
   });
 
@@ -16,7 +18,27 @@ router.route('/unsubscribe')
   .post(function(req, res, next) {
     var user = req.session.user;
     Shop.findOne({_id: req.body.shopid}, function(err, shop) {
+      if (err) { res.json({'error': err}); }
       user.unsubscribe(shop);
+      res.json({'ok': true});
+    });
+  });
+
+router.route('/posts')
+  .get(function(req, res, next) {
+    var user = req.session.user;
+    user.getPosts(function (err, posts) {
+      if (err) { res.json({'error': err}); }
+      else { res.json({'ok': true, 'posts': posts}); }
+    });
+  });
+
+router.route('/shops')
+  .get(function(req, res, next) {
+    var user = req.session.user;
+    user.getShops(function (err, shops) {
+      if (err) { res.json({'error': err}); }
+      else { res.json({'ok': true, 'shops': shops}); }
     });
   });
 
@@ -25,18 +47,18 @@ router.route('/signin')
     User.findOne({username: req.body.username},
       function (err, user) {
         if (err) { // Error
-          res.send({'error': err});
+          res.json({'error': err});
         } else if (user) {
           user.comparePassword(req.body.password, function(err, isMatch) {
-            if (err) { res.send({'error': err}); }
+            if (err) { res.json({'error': err}); }
             else if (isMatch) { // Login success
               req.session.user = user;
-              res.send(
+              res.json(
                 {'ok': true,
                  'connect.sid': 's:' + signature.sign(req.session.id, 'supersecret')
                 });
             } else { // Login failure
-              res.send({'ok': false});
+              res.json({'ok': false});
             }
           });
         }
@@ -46,8 +68,8 @@ router.route('/signin')
 router.route('/signout')
   .get(function(req, res, next) {
     req.session.destroy(function(err) {
-      if (err) { res.send({'error': err}) };
-      res.send({'ok': true});
+      if (err) { res.json({'error': err}) };
+      res.json({'ok': true});
     });
   });
 
@@ -62,10 +84,10 @@ router.route('/signup')
     user.password = req.body.password;
 
     user.save(function (err) {
-        if (err) { res.send({'error' : err}); }
+        if (err) { res.json({'error' : err}); }
     });
 
-    res.send({'ok': true});
+    res.json({'ok': true});
   });
 
 
