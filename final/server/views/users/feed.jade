@@ -1,0 +1,15 @@
+extends ../layout
+
+block content
+  .col-md-6.col-lg-6.col-md-offset-3.col-lg-offset-3
+    h1 My Posts
+    form(action="/shop/feed", method="POST").newpost
+      .form-group
+        label(for="body") 새 글 작성
+        textarea(name="body")#body.form-control
+      input(type="submit", value="작성").btn.btn-default
+    br
+    each post in posts
+      .panel.panel-default
+        .panel-heading= post.date
+        .panel-body= post.body

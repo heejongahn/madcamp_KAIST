@@ -58,6 +58,9 @@ router.route('/shops')
   });
 
 router.route('/signin')
+  .get(function(req, res, next) {
+    res.render('users/signin', {title: 'Sign In' });
+  })
   .post(function(req, res, next) {
     User.findOne({username: req.body.username},
       function (err, user) {
@@ -90,7 +93,7 @@ router.route('/signout')
 
 router.route('/signup')
   .get(function(req, res, next) {
-    res.render('shop/signup', { title: 'Sign Up' });
+    res.render('users/signup', { title: 'Sign Up' });
   })
   .post(function(req, res, next) {
     var user = new User();
