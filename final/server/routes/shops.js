@@ -4,10 +4,12 @@ var User = require('../models/user');
 var Post = require('../models/post');
 var router = express.Router();
 
+var ObjectId = require('mongoose').Types.ObjectId;
+
 // 특정 상점의 포스트
 router.route('/posts')
   .get(function(req, res, next) {
-    var shopId = res.query.shopid;
+    var shopId = ObjectId(req.query.shopid);
 
     Shop.findOne({_id: shopId},
       function(err, shop) {
