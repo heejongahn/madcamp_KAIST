@@ -1,6 +1,6 @@
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    ObjectId = Schema.Types.ObjectId,
+    ObjectId = Schema.Types.ObjectId;
 
 var PostSchema = new Schema({
   date: {type: Date, required: true},
