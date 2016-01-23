@@ -6,6 +6,20 @@ var router = express.Router();
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
+router.route('/test')
+  .get(function(req, res, next) {
+    User.findOne(function (err, user) {
+      Shop.findOne(function (err, shop) {
+        user.subscribe(shop);
+        user.getShops(function (err, shops) {
+          user.getPosts(function (err, posts) {
+            res.json({'shops': shops, 'posts': posts});
+          });
+        });
+      });
+    });
+  });
+
 router.route('/subscribe')
   .post(function(req, res, next) {
     User.findOne({_id: req.session.userId}, function(err, user) {
@@ -58,6 +72,9 @@ router.route('/shops')
   });
 
 router.route('/signin')
+  .get(function(req, res, next) {
+    res.render('users/signin', {title: 'Sign In' });
+  })
   .post(function(req, res, next) {
     User.findOne({username: req.body.username},
       function (err, user) {
@@ -90,7 +107,7 @@ router.route('/signout')
 
 router.route('/signup')
   .get(function(req, res, next) {
-    res.render('shop/signup', { title: 'Sign Up' });
+    res.render('users/signup', { title: 'Sign Up' });
   })
   .post(function(req, res, next) {
     var user = new User();

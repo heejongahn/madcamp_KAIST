@@ -11,7 +11,7 @@ var PostSchema = new Schema({
 
 var ShopSchema = new Schema({
   accountid: { type: String, required: true, index: { unique: true } },
-  password: { type: String, required: true },
+  password: { type: String, required: true, select: false },
   shopname: { type: String, required: true },
   phonenum: { type: String, required: true },
   /*

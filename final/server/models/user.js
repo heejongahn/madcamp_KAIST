@@ -6,9 +6,11 @@ var mongoose = require('mongoose'),
 
 var UserSchema = new Schema({
   email: { type: String, required: true, index: { unique: true } },
-  password: { type: String, required: true },
+  password: { type: String, required: true, select: false },
   shopIds: [{type: ObjectId, ref: 'Shop', default: []}]
 });
+
+var Shop = require('./shop');
 
 UserSchema.pre('save', function(next) {
     var user = this;
@@ -65,15 +67,15 @@ UserSchema.methods.getPosts = function(cb) {
   var posts = [];
   this.getShops(function (err, shops) {
     if (err) { cb(err); }
+
     for (i=0; i<shops.length; i++) {
       var shop = shops[i];
       for (j=0; j<shop.posts.length; j++) {
         posts.push(shop.posts[j]);
       }
     }
+    cb(null, posts);
   });
-
-  cb(null, posts);
 };
 
 module.exports = mongoose.model('User', UserSchema);
