@@ -54,8 +54,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/', routes);
-app.use('/users', users);
-app.use('/shops/', shops);
+app.use('/user/', users);
+app.use('/shop/', shops);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

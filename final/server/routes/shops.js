@@ -1,8 +1,10 @@
 var express = require('express');
 var Shop = require('../models/shop');
 var User = require('../models/user');
+var Post = require('../models/post');
 var router = express.Router();
 
+// 특정 상점의 포스트
 router.route('/posts')
   .get(function(req, res, next) {
     var shopId = res.query.shopid;
@@ -15,6 +17,28 @@ router.route('/posts')
           res.json({'ok': true, 'posts': shop.posts});
         }
       });
+  });
+
+
+router.route('/feed')
+  .get(function(req, res, next) {
+    var shop = req.session.user;
+    res.render('shops/feed', { posts: shop.posts });
+  })
+  .post(function(req, res, next) {
+    var shop = req.session.user;
+
+    var body = req.body.body;
+    var post = new Post();
+    post.body = body;
+    post.date = new Date;
+
+    shop.posts.push(post);
+    shop.save(function (err) {
+      if (err) { res.send({'error': err}); }
+    });
+
+    res.redirect('/shop/posts/');
   });
 
 router.route('/signin')
@@ -33,7 +57,7 @@ router.route('/signin')
               req.session.user = shop;
               res.redirect('/');
             } else {
-              res.redirect('/shops/signin');
+              res.redirect('/shop/signin');
             }
           });
         }
@@ -71,7 +95,7 @@ router.route('/signup')
         if (err) { res.json({'error' : err}); }
     });
 
-    res.redirect('/shops/signin');
+    res.redirect('/shop/signin');
   });
 
 
