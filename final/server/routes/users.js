@@ -4,41 +4,56 @@ var Shop = require('../models/shop');
 var User = require('../models/user');
 var router = express.Router();
 
+var ObjectId = require('mongoose').Types.ObjectId;
+
 router.route('/subscribe')
   .post(function(req, res, next) {
-    var user = req.session.user;
-    Shop.findOne({_id: req.body.shopid}, function(err, shop) {
+    User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
-      user.subscribe(shop);
-      res.json({'ok': true});
+
+      Shop.findOne({_id: new ObjectId(req.body.shopid)}, function(err, shop) {
+        if (err) { res.json({'error': err}); }
+
+        user.subscribe(shop);
+        res.json({'ok': true});
+      });
     });
   });
 
 router.route('/unsubscribe')
   .post(function(req, res, next) {
-    var user = req.session.user;
-    Shop.findOne({_id: req.body.shopid}, function(err, shop) {
+    User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
-      user.unsubscribe(shop);
-      res.json({'ok': true});
+
+      Shop.findOne({_id: new ObjectId(req.body.shopid)}, function(err, shop) {
+        if (err) { res.json({'error': err}); }
+
+        user.unsubscribe(shop);
+        res.json({'ok': true});
+      });
     });
   });
 
 router.route('/posts')
   .get(function(req, res, next) {
-    var user = req.session.user;
-    user.getPosts(function (err, posts) {
+    User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
-      else { res.json({'ok': true, 'posts': posts}); }
+
+      user.getPosts(function (err, posts) {
+        if (err) { res.json({'error': err}); }
+        else { res.json({'ok': true, 'posts': posts}); }
+      });
     });
   });
 
 router.route('/shops')
   .get(function(req, res, next) {
-    var user = req.session.user;
-    user.getShops(function (err, shops) {
+    User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
-      else { res.json({'ok': true, 'shops': shops}); }
+      user.getShops(function (err, shops) {
+        if (err) { res.json({'error': err}); }
+        else { res.json({'ok': true, 'shops': shops}); }
+      });
     });
   });
 
@@ -52,7 +67,7 @@ router.route('/signin')
           user.comparePassword(req.body.password, function(err, isMatch) {
             if (err) { res.json({'error': err}); }
             else if (isMatch) { // Login success
-              req.session.user = user;
+              req.session.userId = user.id;
               res.json(
                 {'ok': true,
                  'connect.sid': 's:' + signature.sign(req.session.id, 'supersecret')
@@ -80,7 +95,7 @@ router.route('/signup')
   .post(function(req, res, next) {
     var user = new User();
 
-    user.username = req.body.username;
+    user.email = req.body.email;
     user.password = req.body.password;
 
     user.save(function (err) {
