@@ -8,7 +8,7 @@ block style
 
 block content
   .col-md-6.col-lg-6.col-md-offset-3.col-lg-offset-3
-    h1 환영합니다!
+    h1 유저 로그인
     form(action="/user/signin", method="POST").signin
       .form-group
         label(for="email") 이메일
@@ -17,4 +17,4 @@ block content
         label(for="password") 비밀번호
         input(type="password", name="password")#password.form-control
       input(type="submit", value="로그인").btn.btn-default
-    a(href="/shop/signup") 아이디가 없다면 회원가입하세요!
+    a(href="/user/signup") 아이디가 없다면 회원가입하세요!

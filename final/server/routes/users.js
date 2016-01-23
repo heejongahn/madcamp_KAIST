@@ -6,31 +6,22 @@ var router = express.Router();
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
-router.route('/test')
-  .get(function(req, res, next) {
-    User.findOne(function (err, user) {
-      Shop.findOne(function (err, shop) {
-        user.subscribe(shop);
-        user.getShops(function (err, shops) {
-          user.getPosts(function (err, posts) {
-            res.json({'shops': shops, 'posts': posts});
-          });
-        });
-      });
-    });
-  });
-
 router.route('/subscribe')
   .post(function(req, res, next) {
     User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
 
-      Shop.findOne({_id: new ObjectId(req.body.shopid)}, function(err, shop) {
-        if (err) { res.json({'error': err}); }
-
-        user.subscribe(shop);
-        res.json({'ok': true});
-      });
+      else if (shop) {
+        Shop.findOne({_id: new ObjectId(req.body.shopid)}, function(err, shop) {
+          if (err) { res.json({'error': err}); }
+          else {
+            user.subscribe(shop);
+            res.json({'ok': true});
+          }
+        });
+      } else {
+        res.json({'ok': false, 'reason': 'no such shop'});
+      }
     });
   });
 
@@ -39,12 +30,17 @@ router.route('/unsubscribe')
     User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
 
-      Shop.findOne({_id: new ObjectId(req.body.shopid)}, function(err, shop) {
-        if (err) { res.json({'error': err}); }
-
-        user.unsubscribe(shop);
-        res.json({'ok': true});
-      });
+      else if (shop) {
+        Shop.findOne({_id: new ObjectId(req.body.shopid)}, function(err, shop) {
+          if (err) { res.json({'error': err}); }
+          else {
+            user.unsubscribe(shop);
+            res.json({'ok': true});
+          }
+        });
+      } else {
+        res.json({'ok': false, 'reason': 'no such subscribed shop'});
+      }
     });
   });
 
@@ -53,10 +49,12 @@ router.route('/posts')
     User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
 
-      user.getPosts(function (err, posts) {
-        if (err) { res.json({'error': err}); }
-        else { res.json({'ok': true, 'posts': posts}); }
-      });
+      else {
+        user.getPosts(function (err, posts) {
+          if (err) { res.json({'error': err}); }
+          else { res.json({'ok': true, 'posts': posts}); }
+        });
+      }
     });
   });
 
@@ -64,10 +62,13 @@ router.route('/shops')
   .get(function(req, res, next) {
     User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
-      user.getShops(function (err, shops) {
-        if (err) { res.json({'error': err}); }
-        else { res.json({'ok': true, 'shops': shops}); }
-      });
+
+      else {
+        user.getShops(function (err, shops) {
+          if (err) { res.json({'error': err}); }
+          else { res.json({'ok': true, 'shops': shops}); }
+        });
+      }
     });
   });
 
@@ -76,23 +77,28 @@ router.route('/signin')
     res.render('users/signin', {title: 'Sign In' });
   })
   .post(function(req, res, next) {
-    User.findOne({username: req.body.username},
+    User.findOne({ 'email': req.body.email},
       function (err, user) {
         if (err) { // Error
+          console.log(err);
           res.json({'error': err});
         } else if (user) {
           user.comparePassword(req.body.password, function(err, isMatch) {
-            if (err) { res.json({'error': err}); }
-            else if (isMatch) { // Login success
+            if (err) {
+              console.log(err);
+              res.json({'error': err});
+            } else if (isMatch) { // Login success
               req.session.userId = user.id;
               res.json(
                 {'ok': true,
                  'connect.sid': 's:' + signature.sign(req.session.id, 'supersecret')
                 });
             } else { // Login failure
-              res.json({'ok': false});
+              res.json({'ok': false, 'reason': 'invalid password'});
             }
           });
+        } else {
+          res.json({'ok': false, 'reason': 'no such user'});
         }
       });
   });
@@ -100,8 +106,8 @@ router.route('/signin')
 router.route('/signout')
   .get(function(req, res, next) {
     req.session.destroy(function(err) {
-      if (err) { res.json({'error': err}) };
-      res.json({'ok': true});
+      if (err) { res.json({'error': err}) }
+      else { res.json({'ok': true}); }
     });
   });
 
@@ -116,10 +122,13 @@ router.route('/signup')
     user.password = req.body.password;
 
     user.save(function (err) {
-        if (err) { res.json({'error' : err}); }
+        if (err) {
+          console.log(err);
+          res.json({'error' : err});
+        } else {
+          res.json({'ok': true});
+        }
     });
-
-    res.json({'ok': true});
   });
 
 

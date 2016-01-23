@@ -13,11 +13,9 @@ router.route('/posts')
 
     Shop.findOne({_id: shopId},
       function(err, shop) {
-        if (err) { res.json({'error': err}); }
-        else if (shop == undefined) { res.json({'ok': false}); }
-        else {
-          res.json({'ok': true, 'posts': shop.posts});
-        }
+        if (err) { res.json({'error': err}); } // error
+        else if (shop) { res.json({'ok': true, 'posts': shop.posts}); } // ok
+        else { res.json({'ok': false, 'reason': 'no such shop'}); } // no such shop
       });
   });
 
@@ -26,26 +24,27 @@ router.route('/feed')
   .get(function(req, res, next) {
     Shop.findOne({_id: req.session.shopId}, function(err, shop) {
       if (err) { res.send({'error': err}); }
-      res.render('shops/feed', { posts: shop.posts });
+      else { res.render('shops/feed', { posts: shop.posts }); }
     });
   })
   .post(function(req, res, next) {
     Shop.findOne({_id: req.session.shopId}, function(err, shop) {
       if (err) { res.send({'error': err}); }
 
-      var body = req.body.body;
-      var post = new Post();
-      post.body = body;
-      post.date = new Date;
+      else {
+        var body = req.body.body;
+        var post = new Post();
+        post.body = body;
+        post.date = new Date;
 
-      if (shop.posts) { shop.posts.push(post); }
-      else { shop.posts = [post]; }
+        if (shop.posts) { shop.posts.push(post); }
+        else { shop.posts = [post]; }
 
-      shop.save(function(err) {
-        if (err) { res.send({'error': err}); }
-      });
-
-      res.redirect('/shop/feed/');
+        shop.save(function(err) {
+          if (err) { res.send({'error': err}); }
+          else {res.redirect('/shop/feed/'); }
+        });
+      }
     });
   });
 
@@ -75,8 +74,8 @@ router.route('/signin')
 router.route('/signout')
   .get(function(req, res, next) {
     req.session.destroy(function(err) {
-      if (err) { console.log(err) };
-      res.redirect('/');
+      if (err) { console.log(err); res.send({'error': err});}
+      else { res.redirect('/'); }
     });
   });
 
@@ -101,9 +100,8 @@ router.route('/signup')
 
     shop.save(function (err) {
         if (err) { res.json({'error' : err}); }
+        else { res.redirect('/shop/signin'); }
     });
-
-    res.redirect('/shop/signin');
   });
 
 

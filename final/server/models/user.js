@@ -57,7 +57,7 @@ UserSchema.methods.unsubscribe = function(shop, cb) {
 
 UserSchema.methods.getShops = function(cb) {
   Shop.find({_id: { $in: this.shopIds }}, function (err, shops) {
-    if (err) { cb(err); }
+    if (err) { return cb(err); }
     cb(null, shops);
   });
 };
@@ -66,7 +66,7 @@ UserSchema.methods.getShops = function(cb) {
 UserSchema.methods.getPosts = function(cb) {
   var posts = [];
   this.getShops(function (err, shops) {
-    if (err) { cb(err); }
+    if (err) { return cb(err); }
 
     for (i=0; i<shops.length; i++) {
       var shop = shops[i];
