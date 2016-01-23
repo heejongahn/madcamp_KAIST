@@ -4,6 +4,11 @@ var mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;
 
+var PostSchema = new Schema({
+  date: {type: Date, required: true},
+  body: {type: String, required: true}
+});
+
 var ShopSchema = new Schema({
   accountid: { type: String, required: true, index: { unique: true } },
   password: { type: String, required: true },
@@ -16,7 +21,7 @@ var ShopSchema = new Schema({
     required: true},
   */
   userIds: [{type: ObjectId, ref: 'User', default: []}],
-  posts: [{type: postSchema, default: []}]
+  posts: [PostSchema]
 });
 
 ShopSchema.pre('save', function(next) {

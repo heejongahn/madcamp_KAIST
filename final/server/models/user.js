@@ -65,9 +65,10 @@ UserSchema.methods.getPosts = function(cb) {
   var posts = [];
   this.getShops(function (err, shops) {
     if (err) { cb(err); }
-    for each (shop in shops) {
-      for each (post in shop.posts) {
-        posts.push(post);
+    for (i=0; i<shops.length; i++) {
+      var shop = shops[i];
+      for (j=0; j<shop.posts.length; j++) {
+        posts.push(shop.posts[j]);
       }
     }
   });
