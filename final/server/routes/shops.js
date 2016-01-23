@@ -19,26 +19,32 @@ router.route('/posts')
       });
   });
 
-
+// 내 상점의 포스트
 router.route('/feed')
   .get(function(req, res, next) {
-    var shop = req.session.user;
-    res.render('shops/feed', { posts: shop.posts });
+    Shop.findOne({_id: req.session.shopId}, function(err, shop) {
+      if (err) { res.send({'error': err}); }
+      res.render('shops/feed', { posts: shop.posts });
+    });
   })
   .post(function(req, res, next) {
-    var shop = req.session.user;
-
-    var body = req.body.body;
-    var post = new Post();
-    post.body = body;
-    post.date = new Date;
-
-    shop.posts.push(post);
-    shop.save(function (err) {
+    Shop.findOne({_id: req.session.shopId}, function(err, shop) {
       if (err) { res.send({'error': err}); }
-    });
 
-    res.redirect('/shop/posts/');
+      var body = req.body.body;
+      var post = new Post();
+      post.body = body;
+      post.date = new Date;
+
+      if (shop.posts) { shop.posts.push(post); }
+      else { shop.posts = [post]; }
+
+      shop.save(function(err) {
+        if (err) { res.send({'error': err}); }
+      });
+
+      res.redirect('/shop/feed/');
+    });
   });
 
 router.route('/signin')
@@ -54,7 +60,7 @@ router.route('/signin')
           shop.comparePassword(req.body.password, function(err, isMatch) {
             if (err) { res.json({'error': err}); }
             else if (isMatch) {
-              req.session.user = shop;
+              req.session.shopId = shop.id;
               res.redirect('/');
             } else {
               res.redirect('/shop/signin');

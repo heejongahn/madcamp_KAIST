@@ -1,4 +1,4 @@
-- var user = session.user
+- var user = session.shopId
 doctype html
 html
   head
@@ -17,7 +17,7 @@ html
         ul.nav.navbar-nav
           if user
             li
-              a 나의 상점
+              a(href="/shop/feed") 나의 피드
             li
               a 유저 관리
             li
