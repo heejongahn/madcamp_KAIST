@@ -3,7 +3,6 @@ package com.example.nobell.project4;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
@@ -19,6 +18,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -28,6 +28,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +49,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
 
     private String mEmail;
     private String mPassword;
+
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -314,9 +319,26 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
                 return false;
             }
 
+            try {
+                JSONObject input = new JSONObject();
+                input.put("email", mEmail);
+                input.put("password", mPassword);
+                JSONObject output = ServerConnector.uploadToServer(input, "/user/signup");
+                Log.e("output", output.toString());
+                if (output.getBoolean("ok")==true) {
+                    return true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+
 
             // TODO: register the new account here.
-            return true;
+            return false;
         }
 
         @Override
@@ -325,11 +347,16 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             showProgress(false);
 
             if (success) {
+                /*
                 sharedPref = getSharedPreferences("new_account", Activity.MODE_PRIVATE);
                 sharedEditor = sharedPref.edit();
                 sharedEditor.putString("ID", mEmail);
                 sharedEditor.putString("PWD", mPassword);
                 sharedEditor.commit();
+                */
+
+
+
 
                 finish();
             } else {

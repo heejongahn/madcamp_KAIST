@@ -30,6 +30,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +50,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
 
     private String mEmail;
     private String mPassword;
+    private String mSid;
     /**
      * Id to identity READ_CONTACTS permission request.
      */
@@ -106,16 +111,14 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 Intent register_intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivity(register_intent);
 
+                /*
                 sharedPref = getSharedPreferences("new_account", Activity.MODE_PRIVATE);
                 sharedEditor = sharedPref.edit();
                 String new_ID = sharedPref.getString("ID", "");
                 String new_PWD = sharedPref.getString("PWD", "");
+                DUMMY_CREDENTIALS.add(new_ID + ":" + new_PWD);
 
-                /**
-                 * stores to dummy authentication arraylist
-                 * TODO: modify after connecting to a real authentication system.
-                 */
-                DUMMY_CREDENTIALS.add(new_ID+":"+new_PWD);
+                */
 
             }
         });
@@ -345,6 +348,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
 
+            /*
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
                 if (pieces[0].equals(mEmail)) {
@@ -352,9 +356,28 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     return pieces[1].equals(mPassword);
                 }
             }
+            */
+
+
+            try {
+                JSONObject input = new JSONObject();
+                input.put("email", mEmail);
+                input.put("password", mPassword);
+                JSONObject output = ServerConnector.uploadToServer(input, "/user/signin");
+                if (output.getBoolean("ok")==true) {
+                    mSid = output.getString("connect.sid");
+                    return true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
 
             // TODO: register the new account here.
-            return true;
+            return false;
         }
 
         @Override
@@ -363,10 +386,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
+
                 sharedPref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
                 sharedEditor = sharedPref.edit();
                 sharedEditor.putString("ID", mEmail);
                 sharedEditor.putString("PWD", mPassword);
+                sharedEditor.commit();
+
+                sharedPref = getSharedPreferences("sid", Activity.MODE_PRIVATE);
+                sharedEditor = sharedPref.edit();
+                sharedEditor.putString("connect.sid", mSid);
                 sharedEditor.commit();
 
                 finish();
