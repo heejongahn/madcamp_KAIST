@@ -1,16 +1,27 @@
 extends ../layout
 
+block style
+  style.
+    img.photo {
+      width: 100%;
+    }
+
 block content
   .col-md-6.col-lg-6.col-md-offset-3.col-lg-offset-3
     h1 My Posts
-    form(action="/shop/feed", method="POST").newpost
+    form(action="/shop/feed", method="POST", enctype="multipart/form-data").newpost
       .form-group
         label(for="body") 새 글 작성
         textarea(name="body")#body.form-control
+      .form-group
+        input(type="file", name="photo")#photo
       input(type="submit", value="작성").btn.btn-default
     br
     if posts
       each post in posts
         .panel.panel-default
           .panel-heading= post.date
-          .panel-body= post.body
+          .panel-body
+            if post.photo
+              img(src="/uploads/" + post.photo).photo
+            p= post.body

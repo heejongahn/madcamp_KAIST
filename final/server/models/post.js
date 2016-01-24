@@ -5,6 +5,7 @@ var mongoose = require('mongoose'),
 var PostSchema = new Schema({
   date: {type: Date, required: true},
   body: {type: String, required: true},
+  photo: {type: String},
   shopId: {type: ObjectId, ref: 'Shop', required: true}
 });
 
