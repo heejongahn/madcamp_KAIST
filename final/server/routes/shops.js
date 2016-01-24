@@ -6,7 +6,7 @@ var router = express.Router();
 var multer = require('multer');
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, './uploads')
+    cb(null, './public/uploads')
   },
   filename: function (req, file, cb) {
     cb(null, Date.now() + file.originalname);
@@ -47,7 +47,7 @@ router.route('/feed')
       } else { res.json({'ok': false, 'reason': 'not logged in as a shop'}); }
     });
   })
-  .post(function(req, res, next) {
+  .post(upload.single('photo'), function(req, res, next) {
     Shop.findOne({_id: req.session.shopId}, function(err, shop) {
       if (err) { res.send({'error': err}); }
 
@@ -57,6 +57,7 @@ router.route('/feed')
         var post = new Post();
         post.body = body;
         post.date = new Date;
+        post.photo = req.file.filename;
         post.shopId = shop._id;
 
         post.save(function(err) {
@@ -133,5 +134,32 @@ router.route('/signup')
     });
   });
 
+router.route('/mypage')
+  .get(function(req, res, next) {
+    Shop.findOne({_id: req.session.shopId}, function(err, shop) {
+      if (err) { return res.json({'error': err}); }
+      res.render('shops/mypage', { title: 'My page', shop: shop});
+    });
+  })
+  .post(upload.single('photo'), function(req, res, next) {
+    Shop.findOne({_id: req.session.shopId}, function(err, shop) {
+      if (err) { return res.json({'error': err}); }
+      else {
+        if (req.body.password) {
+          shop.password = req.body.password;
+        }
+        shop.shopname = req.body.shopname;
+        shop.phonenum = req.body.phonenum;
+        if (req.file) {
+          shop.photo = req.file.filename;
+        }
+
+        shop.save(function (err) {
+            if (err) { res.json({'error' : err}); }
+            else { res.redirect('/shop/signin'); }
+        });
+      }
+    });
+  });
 
 module.exports = router;
