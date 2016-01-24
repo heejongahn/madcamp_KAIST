@@ -1,18 +1,24 @@
 package com.example.nobell.project4;
 
+import android.content.Intent;
+import android.location.Location;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+    private ImageView mMyLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +28,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        mMyLocation = (ImageView) findViewById(R.id.myLocation);
+        mMyLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MyLocation.LocationResult locationResult = new MyLocation.LocationResult() {
+                    @Override
+                    public void gotLocation(Location location) {
+                        drawMarker(location);
+                    }
+                };
+
+                MyLocation myLocation = new MyLocation();
+                myLocation.getLocation(getApplicationContext(), locationResult);
+            }
+        });
     }
 
 
@@ -39,8 +61,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        Intent i = getIntent();
+        LatLng location = new LatLng(i.getDoubleExtra("latitude", 0), i.getDoubleExtra("longitude", 0));
+        mMap.addMarker(new MarkerOptions().position(location).title(i.getStringExtra("shopname")));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 10));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+    }
+
+    private void drawMarker(Location location) {
+
+        //기존 마커 지우기
+//        mMap.clear();
+        LatLng currentPosition = new LatLng(location.getLatitude(), location.getLongitude());
+
+        //currentPosition 위치로 카메라 중심을 옮기고 화면 줌을 조정한다. 줌범위는 2~21, 숫자클수록 확대
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom( currentPosition, 10));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+
+        //마커 추가
+        mMap.addMarker(new MarkerOptions()
+                .position(currentPosition)
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))
+                .title("Current Location"));
     }
 }

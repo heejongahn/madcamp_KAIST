@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
@@ -56,6 +57,9 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             @Override
             public void onClick (View v) {
                 Intent i = new Intent(context, MapsActivity.class);
+                i.putExtra("shopname", item.getName());
+                i.putExtra("latitude", item.getLatitude());
+                i.putExtra("longitude", item.getLongitude());
                 context.startActivity(i);
             }
         });
@@ -69,12 +73,13 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
                 i.putExtra("shopcategory", item.getCategory());
                 i.putExtra("shopphone", item.getPhone());
                 i.putExtra("location", item.getLocation());
+                i.putExtra("latitude", item.getLatitude());
+                i.putExtra("longitude", item.getLongitude());
                 context.startActivity(i);
-
-                Toast.makeText(context, item.getName(), Toast.LENGTH_SHORT).show();
-
             }
         });
+
+
     }
 
     @Override
@@ -86,6 +91,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         TextView mShopname, mShopcategory, mShopphone, mLocation;
         ImageView mLogo, mMap;
         CardView cardview;
+        CheckBox mStar;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -96,7 +102,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             mLogo = (ImageView) itemView.findViewById(R.id.logo_imageview3);
             mLocation = (TextView) itemView.findViewById(R.id.shoploc_textview3);
             mMap = (ImageView) itemView.findViewById(R.id.map_imageView3);
-
+            mStar = (CheckBox) itemView.findViewById(R.id.star_checkbox);
             cardview=(CardView)itemView.findViewById(R.id.cardview);
         }
     }

@@ -2,6 +2,7 @@ package com.example.nobell.project4;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,8 +24,10 @@ public class ShopPageActivity extends AppCompatActivity {
     List<Feed_item> items;
     private SwipeRefreshLayout swipeRefreshLayout;
     private TextView mShopname, mShopcategory, mShopphone, mShoploc;
-    private ImageView mLogo;
+    private ImageView mLogo, mMap;
+    private CheckBox mStar;
     Shop_item shop;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,13 +47,29 @@ public class ShopPageActivity extends AppCompatActivity {
         mShopphone = (TextView) findViewById(R.id.shopphone_textview);
         mShoploc = (TextView) findViewById(R.id.shoploc_textview);
         mLogo = (ImageView) findViewById(R.id.logo_imageview);
+        mMap = (ImageView) findViewById(R.id.map_imageView3);
+        mStar = (CheckBox) findViewById(R.id.star_checkbox2);
 
         Intent i = getIntent();
         shop = new Shop_item(i.getIntExtra("logo", -1),
                 i.getStringExtra("shopname"),
                 i.getStringExtra("shopcategory"),
                 i.getStringExtra("shopphone"),
-                i.getStringExtra("location"));
+                i.getStringExtra("location"),
+                i.getDoubleExtra("latitude", 0),
+                i.getDoubleExtra("longitude", 0));
+
+        mMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v) {
+                Intent i = new Intent(getApplication(), MapsActivity.class);
+                i.putExtra("shopname", shop.getName());
+                i.putExtra("latitude", shop.getLatitude());
+                i.putExtra("longitude", shop.getLongitude());
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplication().startActivity(i);
+            }
+        });
 
         mShopname.setText(shop.getName());
         mShopcategory.setText(shop.getCategory());
