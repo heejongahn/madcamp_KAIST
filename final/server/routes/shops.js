@@ -25,8 +25,12 @@ router.route('/posts')
     Shop.findOne({_id: shopId},
       function(err, shop) {
         if (err) { res.json({'error': err}); } // error
-        else if (shop) { res.json({'ok': true, 'posts': shop.posts}); } // ok
-        else { res.json({'ok': false, 'reason': 'no such shop'}); } // no such shop
+        else if (shop) {
+          shop.getPosts(function (err, posts) {
+            if (err) { res.send({'error': err}); }
+            else { res.json({'ok': true, 'posts': posts}); } // ok
+          });
+        } else { res.json({'ok': false, 'reason': 'no such shop'}); } // no such shop
       });
   });
 
@@ -35,8 +39,12 @@ router.route('/feed')
   .get(function(req, res, next) {
     Shop.findOne({_id: req.session.shopId}, function(err, shop) {
       if (err) { res.send({'error': err}); }
-      else if (shop) { res.render('shops/feed', { posts: shop.posts }); }
-      else { res.json({'ok': false, 'reason': 'not logged in as a shop'}); }
+      else if (shop) {
+        shop.getPosts(function (err, posts) {
+          if (err) { res.send({'error': err}); }
+          else { res.render('shops/feed', { posts: posts }); }
+        });
+      } else { res.json({'ok': false, 'reason': 'not logged in as a shop'}); }
     });
   })
   .post(function(req, res, next) {
@@ -45,14 +53,13 @@ router.route('/feed')
 
       else if (shop) {
         var body = req.body.body;
+
         var post = new Post();
         post.body = body;
         post.date = new Date;
+        post.shopId = shop._id;
 
-        if (shop.posts) { shop.posts.push(post); }
-        else { shop.posts = [post]; }
-
-        shop.save(function(err) {
+        post.save(function(err) {
           if (err) { res.send({'error': err}); }
           else {res.redirect('/shop/feed/'); }
         });

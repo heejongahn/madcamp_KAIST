@@ -69,13 +69,15 @@ UserSchema.methods.getPosts = function(cb) {
     if (err) { return cb(err); }
 
     for (i=0; i<shops.length; i++) {
-      var shop = shops[i];
-      for (j=0; j<shop.posts.length; j++) {
-        posts.push(shop.posts[j]);
-      }
+      shops[i].getPosts(function(err, postsOfShop) {
+        if (err) { return cb(err); }
+        for (j=0; j<postsOfShop.length; j++) {
+          posts.push(postsOfShop[j]);
+        }
+      });
     }
     cb(null, posts);
   });
-};
+}
 
 module.exports = mongoose.model('User', UserSchema);

@@ -4,10 +4,7 @@ var mongoose = require('mongoose'),
     bcrypt = require('bcrypt'),
     SALT_WORK_FACTOR = 10;
 
-var PostSchema = new Schema({
-  date: {type: Date, required: true},
-  body: {type: String, required: true}
-});
+var Post = require('./post');
 
 var ShopSchema = new Schema({
   accountid: { type: String, required: true, index: { unique: true } },
@@ -22,7 +19,6 @@ var ShopSchema = new Schema({
     required: true},
   */
   userIds: [{type: ObjectId, ref: 'User', default: []}],
-  posts: [PostSchema]
 });
 
 ShopSchema.pre('save', function(next) {
@@ -53,6 +49,13 @@ ShopSchema.methods.comparePassword = function(candidatePassword, cb) {
         }
         cb(null, isMatch);
     });
+};
+
+ShopSchema.methods.getPosts = function(cb) {
+  Post.find({ shopId: this._id }, function(err, posts) {
+    if (err) { return cb(err); }
+    cb(null, posts);
+  });
 };
 
 module.exports = mongoose.model('Shop', ShopSchema);

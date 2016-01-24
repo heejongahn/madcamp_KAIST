@@ -9,7 +9,8 @@ block content
         textarea(name="body")#body.form-control
       input(type="submit", value="작성").btn.btn-default
     br
-    each post in posts
-      .panel.panel-default
-        .panel-heading= post.date
-        .panel-body= post.body
+    if posts
+      each post in posts
+        .panel.panel-default
+          .panel-heading= post.date
+          .panel-body= post.body
