@@ -52,6 +52,14 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         holder.mShopphone.setText(item.getPhone());
         holder.mLocation.setText(item.getLocation());
 
+        holder.mMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick (View v) {
+                Intent i = new Intent(context, MapsActivity.class);
+                context.startActivity(i);
+            }
+        });
+
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,7 +84,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mShopname, mShopcategory, mShopphone, mLocation;
-        ImageView mLogo;
+        ImageView mLogo, mMap;
         CardView cardview;
 
         public ViewHolder(View itemView) {
@@ -87,6 +95,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             mShopphone = (TextView) itemView.findViewById(R.id.shopphone_textview3);
             mLogo = (ImageView) itemView.findViewById(R.id.logo_imageview3);
             mLocation = (TextView) itemView.findViewById(R.id.shoploc_textview3);
+            mMap = (ImageView) itemView.findViewById(R.id.map_imageView3);
 
             cardview=(CardView)itemView.findViewById(R.id.cardview);
         }

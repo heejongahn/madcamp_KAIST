@@ -108,7 +108,7 @@
                     <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:id="@+id/imageView3"
+                    android:id="@+id/map_imageView3"
                     android:src="@drawable/location"
                     android:foregroundGravity="right"
                     android:layout_gravity="center_vertical" />
