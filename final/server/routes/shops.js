@@ -3,6 +3,17 @@ var Shop = require('../models/shop');
 var User = require('../models/user');
 var Post = require('../models/post');
 var router = express.Router();
+var multer = require('multer');
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + file.originalname);
+  }
+});
+
+var upload = multer({ storage: storage });
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
@@ -91,13 +102,16 @@ router.route('/signup')
   .get(function(req, res, next) {
     res.render('shops/signup', { title: 'Sign Up' });
   })
-  .post(function(req, res, next) {
+  .post(upload.single('photo'), function(req, res, next) {
     var shop = new Shop();
+    console.log(req.body);
+    console.log(req.file);
 
     shop.accountid = req.body.accountid;
     shop.password = req.body.password;
     shop.shopname = req.body.shopname;
     shop.phonenum = req.body.phonenum;
+    shop.photo = req.file.filename;
 
     /*
       'accountid': req.body.accountid,

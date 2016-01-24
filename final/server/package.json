@@ -17,6 +17,7 @@
     "mongodb": "^2.1.4",
     "mongoose": "^4.3.6",
     "morgan": "~1.6.1",
+    "multer": "^1.1.0",
     "node-sass-middleware": "^0.9.7",
     "serve-favicon": "~2.3.0",
     "session-file-store": "0.0.24"

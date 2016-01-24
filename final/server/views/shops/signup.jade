@@ -3,7 +3,7 @@ extends ../layout
 block content
   .col-md-6.col-lg-6.col-md-offset-3.col-lg-offset-3
     h1 상점 회원가입
-    form(action="/shop/signup", method="POST")
+    form(action="/shop/signup", method="POST", enctype="multipart/form-data")
       .form-group
         label(for="accountid") 계정 이름
         input(type="text", name="accountid")#accountid.form-control
@@ -16,5 +16,8 @@ block content
       .form-group
         label(for="phonenum") 전화번호
         input(type="text", name="phonenum")#phonenum.form-control
+      .form-group
+        label(for="photo") 사진
+        input(type="file", name="photo")#photo
 
       input(type="submit", value="회원가입").btn.btn-default
