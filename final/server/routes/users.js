@@ -105,10 +105,14 @@ router.route('/signin')
 
 router.route('/signout')
   .get(function(req, res, next) {
-    req.session.destroy(function(err) {
-      if (err) { res.json({'error': err}) }
-      else { res.json({'ok': true}); }
-    });
+    if (req.session) {
+      req.session.destroy(function(err) {
+        if (err) { res.json({'error': err}) }
+        else { res.json({'ok': true}); }
+      });
+    } else {
+      res.json({'ok': false, 'reason': 'session already expired'});
+    }
   });
 
 router.route('/signup')

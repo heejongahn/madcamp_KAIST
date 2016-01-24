@@ -24,14 +24,15 @@ router.route('/feed')
   .get(function(req, res, next) {
     Shop.findOne({_id: req.session.shopId}, function(err, shop) {
       if (err) { res.send({'error': err}); }
-      else { res.render('shops/feed', { posts: shop.posts }); }
+      else if (shop) { res.render('shops/feed', { posts: shop.posts }); }
+      else { res.json({'ok': false, 'reason': 'not logged in as a shop'}); }
     });
   })
   .post(function(req, res, next) {
     Shop.findOne({_id: req.session.shopId}, function(err, shop) {
       if (err) { res.send({'error': err}); }
 
-      else {
+      else if (shop) {
         var body = req.body.body;
         var post = new Post();
         post.body = body;
@@ -45,6 +46,7 @@ router.route('/feed')
           else {res.redirect('/shop/feed/'); }
         });
       }
+      else { res.json({'ok': false, 'reason': 'not logged in as a shop'}); }
     });
   });
 
@@ -67,16 +69,22 @@ router.route('/signin')
               res.redirect('/shop/signin');
             }
           });
+        } else {
+          res.json({'ok': false, 'reason': 'no such shop'});
         }
       });
   });
 
 router.route('/signout')
   .get(function(req, res, next) {
-    req.session.destroy(function(err) {
-      if (err) { console.log(err); res.send({'error': err});}
-      else { res.redirect('/'); }
-    });
+    if (req.session) {
+      req.session.destroy(function(err) {
+        if (err) { res.json({'error': err}) }
+        else { res.redirect('/'); }
+      });
+    } else {
+      res.json({'ok': false, 'reason': 'session already expired'});
+    }
   });
 
 router.route('/signup')
