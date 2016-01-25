@@ -357,7 +357,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 JSONObject input = new JSONObject();
                 input.put("email", mEmail);
                 input.put("password", mPassword);
-                JSONObject output = ServerConnector.uploadToServer(input, "/user/signin");
+                JSONObject output = ServerConnector.uploadToServer(input, "/user/signin", null);
                 if (output.getBoolean("ok")==true) {
                     mSid = output.getString("connect.sid");
                     return true;

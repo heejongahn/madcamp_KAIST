@@ -4,6 +4,7 @@ public class Feed_item {
     Shop_item shop;
     String body;
     String date;
+    String feedid;
 
 
     Shop_item get_shop () {
@@ -18,9 +19,15 @@ public class Feed_item {
         return date;
     }
 
-    Feed_item(Shop_item shop, String body, String date){
+    String get_feedid () {
+        return feedid;
+    }
+
+
+    Feed_item(Shop_item shop, String body, String date, String feedid){
         this.shop = shop;
         this.body = body;
         this.date = date;
+        this.feedid = feedid;
     }
 }
