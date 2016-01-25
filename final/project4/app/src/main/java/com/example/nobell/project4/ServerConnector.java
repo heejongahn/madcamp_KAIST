@@ -1,5 +1,7 @@
 package com.example.nobell.project4;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,9 +19,13 @@ import java.net.URL;
  */
 public class ServerConnector {
 
-    public static JSONObject uploadToServer(String json) throws IOException, JSONException {
-        String server_address = "https://example.com";
+    public static JSONObject uploadToServer(JSONObject jsonobj, String url_tail) throws IOException, JSONException {
+        String server_address = "http://hjlog.me:3000" +url_tail;
+        Log.e("address", server_address);
+
+
         //String json = "{\"key\":1}";
+        String json = jsonobj.toString();
 
         URL url = new URL(server_address);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();

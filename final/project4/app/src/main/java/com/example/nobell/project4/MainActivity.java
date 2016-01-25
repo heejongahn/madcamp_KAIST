@@ -19,7 +19,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,24 +31,35 @@ public class MainActivity extends AppCompatActivity
 
     private String ID="";
     private String PWD="";
+    private String SID ="";
 
     private Menu option_menu;
     private SearchFragment fragment_search;
     private int isSearch=0;
-    public String userID;
-    private String userPWD;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent i = new Intent(this , LoginActivity.class);
-        startActivity(i);
+        startActivityForResult(i, 0);
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
         sharedPref = getSharedPreferences("pref", Activity.MODE_PRIVATE);
         sharedEditor = sharedPref.edit();
-        userID = sharedPref.getString("ID", "");
-        userPWD = sharedPref.getString("PWD", "");
-        Log.d("ID", userID);
+        ID = sharedPref.getString("ID", "");
+        PWD = sharedPref.getString("PWD", "");
+        Log.d("ID", ID);
+
+        sharedPref = getSharedPreferences("sid", Activity.MODE_PRIVATE);
+        sharedEditor = sharedPref.edit();
+        SID = sharedPref.getString("connect.sid", "");
+        Log.d("SID", SID);
 
 
         setContentView(R.layout.activity_main);
@@ -57,13 +69,23 @@ public class MainActivity extends AppCompatActivity
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                TextView email_text = (TextView) findViewById(R.id.textView);
+                email_text.setText(ID);
+
+            }
+        };
+
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
