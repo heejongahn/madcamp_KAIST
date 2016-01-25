@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +39,10 @@ public class SearchFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
+        items = new ArrayList<>();
+
+        GetAllShopTask task = new GetAllShopTask();
+        task.execute();
 
         swipeRefreshLayout= (SwipeRefreshLayout) rootView.findViewById(R.id.refreshView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -59,11 +64,6 @@ public class SearchFragment extends Fragment {
     }
 
     public void get_list (List<Shop_item> target_items) {
-        items = new ArrayList<>();
-
-        GetAllShopTask task = new GetAllShopTask();
-        task.execute();
-
         recyclerView.setAdapter(new ShopAdapter(getContext(),target_items,R.layout.fragment_shop_list));
     }
 
@@ -109,9 +109,9 @@ public class SearchFragment extends Fragment {
 
             try {
                 JSONObject json = ServerConnector.GetFromServer("/shop/all", null);
-                if (json.getBoolean("ok")==true) {
-                    return json.getJSONArray("shops");
-                }
+
+                return json.getJSONArray("shops");
+
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
@@ -119,9 +119,6 @@ public class SearchFragment extends Fragment {
                 e.printStackTrace();
                 return null;
             }
-
-            // TODO: register the new account here.
-            return null;
         }
 
         @Override
@@ -132,7 +129,8 @@ public class SearchFragment extends Fragment {
                         JSONObject shop = shops.getJSONObject(i);
                         Shop_item shopi = new Shop_item(shop.getString("photo"),
                                 shop.getString("shopname"),
-                                shop.getString("category"),
+//                                shop.getString("category"),
+                                "Example category",
                                 shop.getString("phonenum"),
                                 shop.getJSONObject("location").getString("address"),
                                 shop.getJSONObject("location").getDouble("lat"),

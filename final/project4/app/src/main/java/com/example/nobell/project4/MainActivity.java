@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        MYSHOPLIST = new ArrayList<>();
         UserGetShopsTask task = new UserGetShopsTask();
         task.execute();
     }
@@ -299,7 +300,8 @@ public class MainActivity extends AppCompatActivity
                         JSONObject shop = shops.getJSONObject(i);
                         Shop_item shopi = new Shop_item(shop.getString("photo"),
                                 shop.getString("shopname"),
-                                shop.getString("category"),
+//                                shop.getString("category"),
+                                "Example category",
                                 shop.getString("phonenum"),
                                 shop.getJSONObject("location").getString("address"),
                                 shop.getJSONObject("location").getDouble("lat"),

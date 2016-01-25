@@ -53,7 +53,8 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Shop_item item=items.get(position);
-        holder.mLogo.setImageResource(item.getImage());
+//        holder.mLogo.setImageResource(item.getImage());
+        holder.mLogo.setImageResource(R.drawable.starbucks);
         holder.mShopname.setText(item.getName());
         holder.mShopcategory.setText(item.getCategory());
         holder.mShopphone.setText(item.getPhone());

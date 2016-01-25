@@ -69,7 +69,7 @@ public class ShopPageActivity extends AppCompatActivity {
 
         mMap.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View v) {
+            public void onClick(View v) {
                 Intent i = new Intent(getApplication(), MapsActivity.class);
                 i.putExtra("shopname", shop.getName());
                 i.putExtra("latitude", shop.getLatitude());
@@ -83,7 +83,8 @@ public class ShopPageActivity extends AppCompatActivity {
         mShopcategory.setText(shop.getCategory());
         mShopphone.setText(shop.getPhone());
         mShoploc.setText(shop.getLocation());
-        mLogo.setImageResource(shop.getImage());
+//        mLogo.setImageResource(shop.getImage());
+        mLogo.setImageResource(R.drawable.starbucks);
         mStar.setChecked(i.getBooleanExtra("issubscribed", false));
 
         mStar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
