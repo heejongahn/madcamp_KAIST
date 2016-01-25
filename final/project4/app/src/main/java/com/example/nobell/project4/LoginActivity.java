@@ -329,14 +329,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-
-
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
         }
-
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
@@ -357,8 +353,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
             */
-
-
             try {
                 JSONObject input = new JSONObject();
                 input.put("email", mEmail);
@@ -412,6 +406,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
         }
     }
+
+
+
+
 
 
 

@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -22,6 +23,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -44,6 +50,12 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         Intent i = new Intent(this , LoginActivity.class);
         startActivityForResult(i, 0);
+
+        /*
+        Allow networking in main thread
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+        */
 
     }
 
@@ -84,7 +96,9 @@ public class MainActivity extends AppCompatActivity
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        recreate();
+                            UserLogoutTask logout = new UserLogoutTask(SID);
+                            logout.execute((Void)null);
+                            recreate();
                     }
                 });
 
@@ -222,5 +236,45 @@ public class MainActivity extends AppCompatActivity
 
     public static String get_SID () {
         return SID;
+    }
+
+    public class UserLogoutTask extends AsyncTask<Void, Void, Boolean> {
+        private String logged_in_sid;
+        UserLogoutTask(String sid) {
+            logged_in_sid = sid;
+        }
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return false;
+            }
+
+            try {
+                JSONObject logout_result = ServerConnector.GetFromServer("/user/signout", logged_in_sid);
+                Log.e("logout_result", logout_result.toString());
+                if (logout_result.getBoolean("ok")==true) {
+                    return true;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return false;
+        }
+        @Override
+        protected void onPostExecute(final Boolean success) {
+        }
+        @Override
+        protected void onCancelled() {
+        }
     }
 }

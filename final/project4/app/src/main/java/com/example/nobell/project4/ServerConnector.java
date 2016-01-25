@@ -15,7 +15,6 @@ import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder;
 
 /**
  * Created by user on 1/22/2016.
@@ -72,7 +71,7 @@ public class ServerConnector {
         conn.setConnectTimeout(5000);
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         conn.setRequestProperty("Cookie", "connect.sid=" + cookie );
-        conn.setDoOutput(false);
+        conn.setDoOutput(true);
         conn.setDoInput(true);
         conn.setRequestMethod("GET");
 
