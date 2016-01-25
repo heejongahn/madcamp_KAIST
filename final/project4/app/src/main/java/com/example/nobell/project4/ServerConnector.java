@@ -22,9 +22,14 @@ import java.net.URLEncoder;
  */
 public class ServerConnector {
 
-    public static JSONObject uploadToServer(JSONObject jsonobj, String url_tail) throws IOException, JSONException {
+    public static JSONObject uploadToServer(JSONObject jsonobj, String url_tail, String cookie) throws IOException, JSONException {
         String server_address = "http://hjlog.me:3000" + url_tail;
         Log.e("address", server_address);
+
+        if (cookie != null) {
+            CookieManager cookieManager = new CookieManager();
+            CookieHandler.setDefault(cookieManager);
+        }
 
         //String json = "{\"key\":1}";
         String json = jsonobj.toString();
@@ -33,6 +38,9 @@ public class ServerConnector {
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(5000);
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+        if (cookie != null) {
+            conn.setRequestProperty("Cookie", "connect.sid=" + cookie);
+        }
         conn.setDoOutput(true);
         conn.setDoInput(true);
         conn.setRequestMethod("POST");
@@ -62,43 +70,36 @@ public class ServerConnector {
         String server_address = "http://hjlog.me:3000" + url_tail;
         Log.e("address", server_address);
 
-        CookieManager cookieManager = new CookieManager();
-        CookieHandler.setDefault(cookieManager);
-
-        System.out.println("########## 1");
+        if (cookie != null) {
+            CookieManager cookieManager = new CookieManager();
+            CookieHandler.setDefault(cookieManager);
+        }
 
         URL url = new URL(server_address);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(5000);
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-        conn.setRequestProperty("Cookie", "connect.sid=" + cookie );
+        if (cookie != null) {
+            conn.setRequestProperty("Cookie", "connect.sid=" + cookie);
+        }
         conn.setDoOutput(false);
         conn.setDoInput(true);
         conn.setRequestMethod("GET");
 
-        System.out.println("########## 2");
-
         // read the response
         InputStream in = new BufferedInputStream(conn.getInputStream());
 
-        System.out.println("########## 3");
-
         BufferedReader streamReader = new BufferedReader(new InputStreamReader(in, "UTF-8"));
         StringBuilder responseStrBuilder = new StringBuilder();
-
-        System.out.println("########## 4");
 
         String inputStr;
         while ((inputStr = streamReader.readLine()) != null)
             responseStrBuilder.append(inputStr);
         JSONObject result = new JSONObject(responseStrBuilder.toString());
 
-        System.out.println("########## 5");
-
         in.close();
         conn.disconnect();
 
-        System.out.println("########## 6");
         return result;
     }
 }

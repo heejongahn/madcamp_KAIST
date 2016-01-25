@@ -323,7 +323,7 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
                 JSONObject input = new JSONObject();
                 input.put("email", mEmail);
                 input.put("password", mPassword);
-                JSONObject output = ServerConnector.uploadToServer(input, "/user/signup");
+                JSONObject output = ServerConnector.uploadToServer(input, "/user/signup", null);
                 Log.e("output", output.toString());
                 if (output.getBoolean("ok")==true) {
                     return true;

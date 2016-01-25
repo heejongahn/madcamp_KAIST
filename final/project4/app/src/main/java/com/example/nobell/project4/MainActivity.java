@@ -5,6 +5,7 @@ import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -37,6 +45,7 @@ public class MainActivity extends AppCompatActivity
     private Menu option_menu;
     private SearchFragment fragment_search;
     private int isSearch=0;
+    private static ArrayList<Shop_item> MYSHOPLIST;
 
 
     @Override
@@ -101,6 +110,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        UserGetShopsTask task = new UserGetShopsTask();
+        task.execute();
     }
 
     @Override
@@ -222,5 +233,90 @@ public class MainActivity extends AppCompatActivity
 
     public static String get_SID () {
         return SID;
+    }
+
+    public static ArrayList<Shop_item> get_MYSHOPLIST () {
+        UserGetShopsTask task = new UserGetShopsTask();
+        task.execute();
+
+        return MYSHOPLIST;
+    }
+
+    public static Shop_item get_SHOP (String shopid) {
+        get_MYSHOPLIST();
+
+        for (int i=0; i<MYSHOPLIST.size(); i++) {
+            Shop_item shop = MYSHOPLIST.get(i);
+            if (shop.getShopid().equals(shopid)) {
+                return shop;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public static class UserGetShopsTask extends AsyncTask<Void, Void, JSONArray> {
+        UserGetShopsTask () {
+
+        }
+
+        @Override
+        protected JSONArray doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return null;
+            }
+
+            try {
+                String sid = get_SID();
+                JSONObject json = ServerConnector.GetFromServer("/user/shops", sid);
+                if (json.getBoolean("ok")==true) {
+                    return json.getJSONArray("shops");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            // TODO: register the new account here.
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final JSONArray shops) {
+            if (shops != null) {
+                for (int i=0; i<shops.length(); i++) {
+                    try {
+                        JSONObject shop = shops.getJSONObject(i);
+                        Shop_item shopi = new Shop_item(shop.getString("photo"),
+                                shop.getString("shopname"),
+                                shop.getString("category"),
+                                shop.getString("phonenum"),
+                                shop.getJSONObject("location").getString("address"),
+                                shop.getJSONObject("location").getDouble("lat"),
+                                shop.getJSONObject("location").getDouble("lon"),
+                                shop.getString("_id"));
+                        MYSHOPLIST.add(shopi);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
     }
 }
