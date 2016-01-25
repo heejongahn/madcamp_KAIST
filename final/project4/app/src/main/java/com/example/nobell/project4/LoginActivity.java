@@ -405,11 +405,19 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
 
+
         @Override
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+
+
+    @Override
+    public void onBackPressed() {
+        return;
     }
 }
 
