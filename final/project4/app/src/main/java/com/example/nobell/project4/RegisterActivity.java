@@ -347,16 +347,6 @@ public class RegisterActivity extends AppCompatActivity implements LoaderManager
             showProgress(false);
 
             if (success) {
-                /*
-                sharedPref = getSharedPreferences("new_account", Activity.MODE_PRIVATE);
-                sharedEditor = sharedPref.edit();
-                sharedEditor.putString("ID", mEmail);
-                sharedEditor.putString("PWD", mPassword);
-                sharedEditor.commit();
-                */
-
-
-
 
                 finish();
             } else {

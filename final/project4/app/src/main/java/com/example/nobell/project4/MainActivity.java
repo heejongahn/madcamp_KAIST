@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity
 
     private String ID="";
     private String PWD="";
-    private String SID ="";
+    private static String SID ="";
 
     private Menu option_menu;
     private SearchFragment fragment_search;
@@ -218,5 +218,9 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public static String get_SID () {
+        return SID;
     }
 }
