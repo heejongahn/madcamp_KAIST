@@ -154,9 +154,16 @@ router.route('/mypage')
           shop.photo = req.file.filename;
         }
 
+        var location = {};
+        location.address = req.body.address;
+        location.lon = Number(req.body.lon);
+        location.lat = Number(req.body.lat);
+
+        shop.location = location;
+
         shop.save(function (err) {
-            if (err) { res.json({'error' : err}); }
-            else { res.redirect('/shop/signin'); }
+          if (err) { res.json({'error': err}); }
+          else { res.redirect('/shop/mypage'); }
         });
       }
     });

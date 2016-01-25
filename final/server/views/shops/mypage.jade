@@ -5,11 +5,14 @@ block style
     img.profile {
       width: 100%;
     }
+    .result-item {
+      display: block;
+      }
 
 block content
   .col-md-6.col-lg-6.col-md-offset-3.col-lg-offset-3
     h1 내 정보 수정
-    form(action="/shop/signup", method="POST", enctype="multipart/form-data")
+    form(action="/shop/mypage", method="POST", enctype="multipart/form-data")
       .form-group
         label(for="accountid") 계정 이름
         input(type="text", name="accountid", value=shop.accountid, disabled)#accountid.form-control
@@ -17,14 +20,49 @@ block content
         label(for="password") 비밀번호
         input(type="password", name="password")#password.form-control
       .form-group
-        label(for="shopname") 상호명
-        input(type="text", name="shopname", value=shop.shopname)#shopname.form-control
-      .form-group
         label(for="phonenum") 전화번호
         input(type="text", name="phonenum", value=shop.phonenum)#phonenum.form-control
+      .form-group
+        label(for="address") 주소
+        .row
+          .col-md-9
+            input(type="text", name="address", value=shop.location.address)#address.form-control
+          .col-md-3
+            button.btn.btn-primary.btn-sm(type="button", data-toggle="modal", data-target="#search-address") 주소 검색
+        br
+        .row
+          .col-md-4
+            label(for="shopname") 상호명
+            input(type="text", name="shopname", value=shop.shopname)#shopname.form-control
+          .col-md-4
+            label(for="lat") 위도
+            input(type="number", name="lat", step="any", value=shop.location.lat)#lat.form-control
+          .col-md-4
+            label(for="lon") 경도
+            input(type="number", name="lon", step="any", value=shop.location.lon)#lon.form-control
       .form-group
         label(for="photo") 사진
         img(src="/uploads/" + shop.photo, alt="no photo", class="profile")
         input(type="file", name="photo")#photo
 
-      input(type="submit", value="회원가입").btn.btn-default
+      input(type="submit", value="저장").btn.btn-default
+
+  .modal.fade#search-address(tabindex="-1", role="dialog",
+    aria-labelledby="search-modal-label")
+    .modal-dialog(role="document")
+      .modal-content
+        .modal-header
+          button(type="button", data-dismiss="modal", aria-label="Close").close
+            span(aria-hidden="true")
+          h4.modal-title#search-modal-label 주소 선택
+        .modal-body
+          .row
+            .col-md-10
+              input(type="text")#search-query.form-control
+            .col-md-2
+              a.btn.btn-default#search-button 검색
+          #search-result
+
+
+block script
+  script(src="/javascripts/addressSearch.js")

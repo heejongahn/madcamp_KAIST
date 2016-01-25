@@ -18,7 +18,6 @@ $(document).ready(function() {
 
           var list = document.createElement('a');
           list.classList.add('result-item');
-          list.href="#";
           list.innerHTML = shop.name + " | " + shop.formatted_address;
 
           list.dataset.shopname = shop.name;
