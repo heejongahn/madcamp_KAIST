@@ -49,6 +49,7 @@ router.route('/posts')
     User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
 
+      else if (!user) { res.json({'ok': false, 'reason': 'not logged in as an user'}); }
       else {
         user.getPosts(function (err, posts) {
           if (err) { res.json({'error': err}); }
@@ -63,6 +64,7 @@ router.route('/shops')
     User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
 
+      else if (!user) { res.json({'ok': false, 'reason': 'not logged in as an user'}); }
       else {
         user.getShops(function (err, shops) {
           if (err) { res.json({'error': err}); }

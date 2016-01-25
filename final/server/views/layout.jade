@@ -10,7 +10,7 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     block style
   body
-    nav.navbar.navbar-fixed-top
+    nav.navbar.navbar-fixed-top.navbar-inverse
       .container
         .navber-header
           a.navbar-brand(href="/") # to #
@@ -18,8 +18,6 @@ html
           if user
             li
               a(href="/shop/feed") 나의 피드
-            li
-              a 유저 관리
             li
               a(href="/shop/mypage") 내 정보 관리
             li
