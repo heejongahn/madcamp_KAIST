@@ -18,11 +18,20 @@ $(document).ready(function() {
 
           var list = document.createElement('a');
           list.classList.add('result-item');
+          list.href="#";
           list.innerHTML = shop.name + " | " + shop.formatted_address;
 
-          list.dataset.name = shop.name;
+          list.dataset.shopname = shop.name;
+          list.dataset.address = shop.formatted_address;
           list.dataset.lon = shop.geometry.location.lng;
           list.dataset.lat = shop.geometry.location.lat;
+          list.onclick = function() {
+            document.getElementById('address').value = this.dataset.address;
+            document.getElementById('shopname').value = this.dataset.shopname;
+            document.getElementById('lon').value = this.dataset.lon;
+            document.getElementById('lat').value = this.dataset.lat;
+            $("#search-address").modal('toggle');
+          }
 
           searchResult.appendChild(list);
         }
@@ -32,4 +41,5 @@ $(document).ready(function() {
         console.log(data);
       }});
   });
+
 });

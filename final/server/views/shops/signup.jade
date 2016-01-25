@@ -17,15 +17,26 @@ block content
         label(for="password") 비밀번호
         input(type="password", name="password")#password.form-control
       .form-group
-        label(for="shopname") 상호명
-        input(type="text", name="shopname")#shopname.form-control
-      .form-group
         label(for="phonenum") 전화번호
         input(type="text", name="phonenum")#phonenum.form-control
       .form-group
         label(for="address") 주소
-        input(type="text", name="address")#address.form-control
-        button.btn.btn-primary.btn-sm(type="button", data-toggle="modal", data-target="#search-address") 주소 검색
+        .row
+          .col-md-9
+            input(type="text", name="address")#address.form-control
+          .col-md-3
+            button.btn.btn-primary.btn-sm(type="button", data-toggle="modal", data-target="#search-address") 주소 검색
+        br
+        .row
+          .col-md-4
+            label(for="shopname") 상호명
+            input(type="text", name="shopname" disabled)#shopname.form-control
+          .col-md-4
+            label(for="lat") 위도
+            input(type="number", name="lat" disabled)#lat.form-control
+          .col-md-4
+            label(for="lon") 경도
+            input(type="number", name="lon" disabled)#lon.form-control
       .form-group
         label(for="photo") 사진
         input(type="file", name="photo")#photo
