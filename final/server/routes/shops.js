@@ -112,21 +112,21 @@ router.route('/signup')
   })
   .post(upload.single('photo'), function(req, res, next) {
     var shop = new Shop();
-    console.log(req.body);
-    console.log(req.file);
 
     shop.accountid = req.body.accountid;
     shop.password = req.body.password;
     shop.shopname = req.body.shopname;
     shop.phonenum = req.body.phonenum;
-    shop.photo = req.file.filename;
+    if (req.file) {
+      shop.photo = req.file.filename;
+    }
 
-    /*
-      'accountid': req.body.accountid,
-      'password': req.body.password,
-      'shopname': req.body.shopname,
-      'phonenum': req.body.phonenum});
-    */
+    var location = {};
+    location.address = req.body.address;
+    location.lon = Number(req.body.lon);
+    location.lat = Number(req.body.lat);
+
+    shop.location = location;
 
     shop.save(function (err) {
         if (err) { res.json({'error' : err}); }

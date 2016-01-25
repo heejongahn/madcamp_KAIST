@@ -12,12 +12,11 @@ var ShopSchema = new Schema({
   shopname: { type: String, required: true },
   phonenum: { type: String, required: true },
   photo: { type: String },
-  /*
   location: {
-    lon: {type: Number},
-    lat: {type: Number},
-    required: true},
-  */
+    lon: {type: Number, required: true},
+    lat: {type: Number, required: true},
+    address: {type: String, required: true},
+    },
   userIds: [{type: ObjectId, ref: 'User', default: []}],
 });
 

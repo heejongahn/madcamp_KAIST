@@ -30,13 +30,13 @@ block content
         .row
           .col-md-4
             label(for="shopname") 상호명
-            input(type="text", name="shopname" disabled)#shopname.form-control
+            input(type="text", name="shopname")#shopname.form-control
           .col-md-4
             label(for="lat") 위도
-            input(type="number", name="lat" disabled)#lat.form-control
+            input(type="number", name="lat", step="any")#lat.form-control
           .col-md-4
             label(for="lon") 경도
-            input(type="number", name="lon" disabled)#lon.form-control
+            input(type="number", name="lon", step="any")#lon.form-control
       .form-group
         label(for="photo") 사진
         input(type="file", name="photo")#photo
