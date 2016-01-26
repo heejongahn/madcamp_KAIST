@@ -37,7 +37,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Feed_item item=items.get(position);
 
-        holder.mLogo.setImageResource(item.get_shop().getImage());
+//        holder.mLogo.setImageResource(item.get_shop().getImage());
+        holder.mLogo.setImageResource(R.drawable.starbucks);
         holder.mShopname.setText(item.get_shop().getName());
         holder.mFeeddate.setText(item.get_date());
 //        holder.mShopphone.setText(item.get_shop().getPhone());

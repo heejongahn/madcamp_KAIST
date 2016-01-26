@@ -1,15 +1,22 @@
 package com.example.nobell.project4;
 
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,15 +40,9 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         items = new ArrayList<>();
-        Shop_item[] shop = new Shop_item[6];
-        shop[0] = new Shop_item(R.drawable.starbucks, "Starbucks", "Cafe", "010-3062-4019", "대전광역시 유성구 구성동 한국과학기술원", 36.373863, 127.358183);
-        shop[1] = new Shop_item(R.drawable.apple, "Apple Store", "Appliance", "010-4494-4019", "부산광역시 남구 수영동 39-24", 35.170475, 129.116091);
-        shop[2] = new Shop_item(R.drawable.dell, "Dell", "Computer", "010-2730-4522", "강원도 삼척시 사직로 4-11", 37.432341, 129.165854);
-        shop[3] = new Shop_item(R.drawable.hnm, "H&M", "Fashion", "042-141-4395", "인천광역시 부평구 항동로 46번길 38-3", 37.481814, 126.740523);
-        shop[4] = new Shop_item(R.drawable.kfc, "KFC", "Chicken", "123-4566-7875", "우리은하 태양계 화성 마아션", 36.374100, 127.365249);
-        shop[5] = new Shop_item(R.drawable.twitter, "Twitter", "SNS", "421-124-4214", "미쿡 샌프란시스코 어딘가", 36.373711, 127.363758);
 
-        for(int i=0;i<6;i++) items.add(shop[i]);
+        GetAllShopTask task = new GetAllShopTask();
+        task.execute();
 
         swipeRefreshLayout= (SwipeRefreshLayout) rootView.findViewById(R.id.refreshView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -87,4 +88,66 @@ public class SearchFragment extends Fragment {
         get_list(items);
     }
 
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public class GetAllShopTask extends AsyncTask<Void, Void, JSONArray> {
+        GetAllShopTask () {
+
+        }
+
+        @Override
+        protected JSONArray doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return null;
+            }
+
+            try {
+                JSONObject json = ServerConnector.GetFromServer("/shop/all", null);
+
+                return json.getJSONArray("shops");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(final JSONArray shops) {
+            if (shops != null) {
+                for (int i=0; i<shops.length(); i++) {
+                    try {
+                        JSONObject shop = shops.getJSONObject(i);
+                        Shop_item shopi = new Shop_item(shop.getString("photo"),
+                                shop.getString("shopname"),
+//                                shop.getString("category"),
+                                "Example category",
+                                shop.getString("phonenum"),
+                                shop.getJSONObject("location").getString("address"),
+                                shop.getJSONObject("location").getDouble("lat"),
+                                shop.getJSONObject("location").getDouble("lon"),
+                                shop.getString("_id"));
+                        items.add(shopi);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
+    }
 }

@@ -329,14 +329,10 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
      * the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-
-
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
         }
-
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
@@ -357,13 +353,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 }
             }
             */
-
-
             try {
                 JSONObject input = new JSONObject();
                 input.put("email", mEmail);
                 input.put("password", mPassword);
-                JSONObject output = ServerConnector.uploadToServer(input, "/user/signin");
+                JSONObject output = ServerConnector.uploadToServer(input, "/user/signin", null);
                 if (output.getBoolean("ok")==true) {
                     mSid = output.getString("connect.sid");
                     return true;
@@ -405,11 +399,23 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             }
         }
 
+
         @Override
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+
+
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        return;
     }
 }
 

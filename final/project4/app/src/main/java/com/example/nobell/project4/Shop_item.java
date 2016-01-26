@@ -1,13 +1,10 @@
 package com.example.nobell.project4;
 
 public class Shop_item {
-    int image;
-    String name, category, phone, location;
+    String image, name, category, phone, location, shopid;
     double latitude, longitude;
 
-    int getImage(){
-        return this.image;
-    }
+    String getImage(){ return this.image; }
     String getName(){
         return this.name;
     }
@@ -22,8 +19,9 @@ public class Shop_item {
     }
     double getLatitude() {return this.latitude;}
     double getLongitude() {return this.longitude;}
+    String getShopid() {return this.shopid;}
 
-    Shop_item(int image, String name, String category, String phone, String location, double latitude, double longitude){
+    Shop_item(String image, String name, String category, String phone, String location, double latitude, double longitude, String shopid){
         this.image=image;
         this.name = name;
         this.category = category;
@@ -31,5 +29,6 @@ public class Shop_item {
         this.location = location;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.shopid = shopid;
     }
 }

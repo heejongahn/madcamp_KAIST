@@ -3,6 +3,7 @@ package com.example.nobell.project4;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,9 +14,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,17 +58,18 @@ public class ShopPageActivity extends AppCompatActivity {
         mStar = (CheckBox) findViewById(R.id.star_checkbox2);
 
         Intent i = getIntent();
-        shop = new Shop_item(i.getIntExtra("logo", -1),
+        shop = new Shop_item(i.getStringExtra("logo"),
                 i.getStringExtra("shopname"),
                 i.getStringExtra("shopcategory"),
                 i.getStringExtra("shopphone"),
                 i.getStringExtra("location"),
                 i.getDoubleExtra("latitude", 0),
-                i.getDoubleExtra("longitude", 0));
+                i.getDoubleExtra("longitude", 0),
+                i.getStringExtra("shopid"));
 
         mMap.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick (View v) {
+            public void onClick(View v) {
                 Intent i = new Intent(getApplication(), MapsActivity.class);
                 i.putExtra("shopname", shop.getName());
                 i.putExtra("latitude", shop.getLatitude());
@@ -75,7 +83,26 @@ public class ShopPageActivity extends AppCompatActivity {
         mShopcategory.setText(shop.getCategory());
         mShopphone.setText(shop.getPhone());
         mShoploc.setText(shop.getLocation());
-        mLogo.setImageResource(shop.getImage());
+//        mLogo.setImageResource(shop.getImage());
+        mLogo.setImageResource(R.drawable.starbucks);
+        mStar.setChecked(i.getBooleanExtra("issubscribed", false));
+
+        mStar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                if (buttonView.getId() == R.id.star_checkbox) {
+                    if (isChecked) {
+                        UserSubscribeTask task = new UserSubscribeTask(shop.getShopid());
+                        task.execute();
+                    } else {
+                        UserUnsubscribeTask task = new UserUnsubscribeTask(shop.getShopid());
+                        task.execute();
+                    }
+                }
+            }
+        });
 
         swipeRefreshLayout= (SwipeRefreshLayout) findViewById(R.id.refreshView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -96,13 +123,177 @@ public class ShopPageActivity extends AppCompatActivity {
 
     public void get_list () {
         items = new ArrayList<>();
-        Feed_item[] item = new Feed_item[3];
-        item[0] = new Feed_item(shop, "20% 할인 진행 중입니다.\n사랑은 점!점!점!점! 그렇게!\n떠나가 버렸지만!!!\n눈물은 가슴속에 묻었다!\n슬픈 체리보이!", "2016.1.21 10:10");
-        item[1] = new Feed_item(shop, "삼성보다 싸게 파는 중 \n세상에 많고 많은 인연도\n나만은 비켜간다 믿었다\n하지만 니가 날린 아픈 실연에\n두눈을 감았다\n마음을 닫았다\n베이베", "2016.1.22 3:00");
-        item[2] = new Feed_item(shop, "모니터 할인 판매 중\n날 데리러 오거든\n못 간다고 전해라", "2016.1.23 16:42");
-
-        for (int i=0; i<3; i++) items.add(item[i]);
+        ShopGetPostTask task = new ShopGetPostTask(shop.getShopid());
+        task.execute();
 
         recyclerView.setAdapter(new FeedAdapter(this,items, R.id.recyclerview2));
+    }
+
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public class UserSubscribeTask extends AsyncTask<Void, Void, JSONObject> {
+        String shopid;
+
+        UserSubscribeTask (String shopId) {
+            shopid = shopId;
+        }
+
+        @Override
+        protected JSONObject doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return null;
+            }
+
+            try {
+                String sid = MainActivity.get_SID();
+                JSONObject json = new JSONObject();
+                json.put("shopid", shopid);
+                JSONObject result = ServerConnector.uploadToServer(json, "/user/subscribe/", sid);
+                if (result.getBoolean("ok")==true) {
+                    return result;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            // TODO: register the new account here.
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final JSONObject result) {
+
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
+    }
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public class UserUnsubscribeTask extends AsyncTask<Void, Void, JSONObject> {
+        String shopid;
+
+        UserUnsubscribeTask (String shopId) {
+            shopid = shopId;
+        }
+
+        @Override
+        protected JSONObject doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return null;
+            }
+
+            try {
+                String sid = MainActivity.get_SID();
+                JSONObject json = new JSONObject();
+                json.put("shopid", shopid);
+                JSONObject result = ServerConnector.uploadToServer(json, "/user/unsubscribe/", sid);
+                if (result.getBoolean("ok")==true) {
+                    return result;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            // TODO: register the new account here.
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final JSONObject result) {
+
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
+    }
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public class ShopGetPostTask extends AsyncTask<Void, Void, JSONArray> {
+        String shopid;
+
+        ShopGetPostTask (String shopId) {
+            shopid = shopId;
+        }
+
+        @Override
+        protected JSONArray doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return null;
+            }
+
+            try {
+                JSONObject result = ServerConnector.GetFromServer("/shop/post?shopid="+shopid, null);
+                if (result.getBoolean("ok")==true) {
+                    return result.getJSONArray("posts");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            // TODO: register the new account here.
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final JSONArray posts) {
+            if (posts != null) {
+                try {
+                    for (int i=0; i<posts.length(); i++) {
+                        JSONObject post = posts.getJSONObject(i);
+                        String shopid = post.getString("shopid");
+                        Feed_item feed = new Feed_item(MainActivity.get_SHOP(shopid),
+                                post.getString("body"),
+                                post.getString("date"),
+                                post.getString("_id"));
+                        items.add(feed);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
     }
 }

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +16,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,9 +51,10 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Shop_item item=items.get(position);
-        holder.mLogo.setImageResource(item.getImage());
+//        holder.mLogo.setImageResource(item.getImage());
+        holder.mLogo.setImageResource(R.drawable.starbucks);
         holder.mShopname.setText(item.getName());
         holder.mShopcategory.setText(item.getCategory());
         holder.mShopphone.setText(item.getPhone());
@@ -75,10 +82,32 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
                 i.putExtra("location", item.getLocation());
                 i.putExtra("latitude", item.getLatitude());
                 i.putExtra("longitude", item.getLongitude());
+                i.putExtra("shopid", item.getShopid());
+                i.putExtra("issubscribed", holder.mStar.isChecked());
                 context.startActivity(i);
             }
         });
 
+        if (MainActivity.get_SHOP(item.shopid) != null) {
+            holder.mStar.setChecked(true);
+        }
+
+        holder.mStar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,
+                                         boolean isChecked) {
+                if (buttonView.getId() == R.id.star_checkbox) {
+                    if (isChecked) {
+                        UserSubscribeTask task = new UserSubscribeTask(item.getShopid());
+                        task.execute();
+                    } else {
+                        UserUnsubscribeTask task = new UserUnsubscribeTask(item.getShopid());
+                        task.execute();
+                    }
+                }
+            }
+        });
 
     }
 
@@ -104,6 +133,110 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             mMap = (ImageView) itemView.findViewById(R.id.map_imageView3);
             mStar = (CheckBox) itemView.findViewById(R.id.star_checkbox);
             cardview=(CardView)itemView.findViewById(R.id.cardview);
+        }
+    }
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public static class UserSubscribeTask extends AsyncTask<Void, Void, JSONObject> {
+        String shopid;
+
+        UserSubscribeTask (String shopId) {
+            shopid = shopId;
+        }
+
+        @Override
+        protected JSONObject doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return null;
+            }
+
+            try {
+                String sid = MainActivity.get_SID();
+                JSONObject json = new JSONObject();
+                json.put("shopid", shopid);
+                JSONObject result = ServerConnector.uploadToServer(json, "/user/subscribe/", sid);
+                if (result.getBoolean("ok")==true) {
+                    return result;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            // TODO: register the new account here.
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final JSONObject result) {
+
+        }
+
+        @Override
+        protected void onCancelled() {
+
+        }
+    }
+
+    /**
+     * Represents an asynchronous login/registration task used to authenticate
+     * the user.
+     */
+    public static class UserUnsubscribeTask extends AsyncTask<Void, Void, JSONObject> {
+        String shopid;
+
+        UserUnsubscribeTask (String shopId) {
+            shopid = shopId;
+        }
+
+        @Override
+        protected JSONObject doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            try {
+                // Simulate network access.
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                return null;
+            }
+
+            try {
+                String sid = MainActivity.get_SID();
+                JSONObject json = new JSONObject();
+                json.put("shopid", shopid);
+                JSONObject result = ServerConnector.uploadToServer(json, "/user/unsubscribe/", sid);
+                if (result.getBoolean("ok")==true) {
+                    return result;
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            } catch (JSONException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            // TODO: register the new account here.
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(final JSONObject result) {
+
+        }
+
+        @Override
+        protected void onCancelled() {
+
         }
     }
 }
