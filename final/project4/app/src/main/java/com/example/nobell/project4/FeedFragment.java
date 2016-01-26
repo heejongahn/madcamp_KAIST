@@ -110,6 +110,7 @@ public class FeedFragment extends Fragment {
                                         break;
                                     }
                                 }
+                                shop.setSubscribed();
 
                                 Feed_item feed = new Feed_item(shop,
                                         post.getString("body"),

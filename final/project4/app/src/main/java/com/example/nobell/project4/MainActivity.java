@@ -56,14 +56,7 @@ public class MainActivity extends AppCompatActivity
         Intent i = new Intent(this, LoginActivity.class);
         startActivityForResult(i, 0);
 
-        /*
-        Allow networking in main thread
-        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-        StrictMode.setThreadPolicy(policy);
-        */
-
         FileManager.initialize();
-
     }
 
     @Override
@@ -115,9 +108,18 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        isSearch = 0;
+        this.invalidateOptionsMenu();
+
+        Fragment fragment;
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragment = new FeedFragment();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
     }
 
     @Override

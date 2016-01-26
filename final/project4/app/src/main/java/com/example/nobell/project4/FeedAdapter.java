@@ -2,6 +2,7 @@ package com.example.nobell.project4;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,7 +39,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Feed_item item=items.get(position);
+        final Feed_item item = items.get(position);
+        final Shop_item shop = item.get_shop();
 
 //        holder.mLogo.setImageResource(item.get_shop().getImage());
 //        Bitmap logo = BitmapFactory.decodeFile(FileManager.getFile(item.get_shop().getImage()).getAbsolutePath());
@@ -46,14 +49,33 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         holder.mShopname.setText(item.get_shop().getName());
         holder.mFeeddate.setText(item.get_date());
         holder.mBody.setText(item.get_body());
-        holder.cardview.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(context,item.get_shop().getName(),Toast.LENGTH_SHORT).show();
-            }
-        });
+//        holder.cardview.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(context,item.get_shop().getName(),Toast.LENGTH_SHORT).show();
+//            }
+//        });
         if (item.get_image()!=null) {
             FileManager.getImage(item.get_image(), holder.mPhoto);
+        }
+
+        if (item_layout==R.layout.fragment_feed) {
+            holder.mShop.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(context, ShopPageActivity.class);
+                    i.putExtra("logo", shop.getImage());
+                    i.putExtra("shopname", shop.getName());
+                    i.putExtra("shopcategory", shop.getCategory());
+                    i.putExtra("shopphone", shop.getPhone());
+                    i.putExtra("location", shop.getLocation());
+                    i.putExtra("latitude", shop.getLatitude());
+                    i.putExtra("longitude", shop.getLongitude());
+                    i.putExtra("shopid", shop.getShopid());
+                    i.putExtra("issubscribed", shop.isSubscribed());
+                    context.startActivity(i);
+                }
+            });
         }
     }
 
@@ -66,6 +88,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         TextView mShopname, mFeeddate, mBody;
         ImageView mLogo, mPhoto;
         CardView cardview;
+        LinearLayout mShop;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -77,6 +100,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             mPhoto = (ImageView) itemView.findViewById(R.id.feed_photo);
 
             cardview=(CardView)itemView.findViewById(R.id.cardview);
+            mShop = (LinearLayout) itemView.findViewById(R.id.shop_layout);
         }
     }
 }
