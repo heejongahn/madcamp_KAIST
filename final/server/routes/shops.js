@@ -130,6 +130,7 @@ router.route('/signup')
     if (req.file) {
       shop.photo = req.file.filename;
     }
+    shop.category = req.body.category;
 
     var location = {};
     location.address = req.body.address;
@@ -163,6 +164,7 @@ router.route('/mypage')
         if (req.file) {
           shop.photo = req.file.filename;
         }
+        shop.category = req.body.category;
 
         var location = {};
         location.address = req.body.address;

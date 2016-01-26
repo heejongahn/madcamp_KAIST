@@ -12,6 +12,7 @@ var ShopSchema = new Schema({
   shopname: { type: String, required: true },
   phonenum: { type: String, required: true },
   photo: { type: String },
+  category: { type: String, required: true },
   location: {
     lon: {type: Number, required: true},
     lat: {type: Number, required: true},

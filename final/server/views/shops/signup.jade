@@ -38,6 +38,23 @@ block content
             label(for="lon") 경도
             input(type="number", name="lon", step="any")#lon.form-control
       .form-group
+        label(for="category") 카테고리
+        select.form-control(name="category")#category
+          option(value="카페") 카페
+          option(value="한식") 한식
+          option(value="중식") 중식
+          option(value="양식") 양식
+          option(value="야식") 야식
+          option(value="분식") 분식
+          option(value="잡화점") 잡화점
+          option(value="옷가게") 옷가게
+          option(value="전자제품") 가전제품
+          option(value="악세사리") 악세사리
+          option(value="마트") 마트
+          option(value="베이커리") 베이커리
+          option(value="술집") 술집
+
+      .form-group
         label(for="photo") 사진
         input(type="file", name="photo")#photo
 
