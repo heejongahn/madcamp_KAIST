@@ -52,6 +52,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
                 Toast.makeText(context,item.get_shop().getName(),Toast.LENGTH_SHORT).show();
             }
         });
+        if (item.get_image()!=null) {
+            FileManager.getImage(item.get_image(), holder.mPhoto);
+        }
     }
 
     @Override
@@ -61,7 +64,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView mShopname, mFeeddate, mBody;
-        ImageView mLogo;
+        ImageView mLogo, mPhoto;
         CardView cardview;
 
         public ViewHolder(View itemView) {
@@ -71,6 +74,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             mFeeddate = (TextView) itemView.findViewById(R.id.feeddate_textview2);
             mLogo = (ImageView) itemView.findViewById(R.id.logo_imageview2);
             mBody = (TextView) itemView.findViewById(R.id.body_textView2);
+            mPhoto = (ImageView) itemView.findViewById(R.id.feed_photo);
 
             cardview=(CardView)itemView.findViewById(R.id.cardview);
         }

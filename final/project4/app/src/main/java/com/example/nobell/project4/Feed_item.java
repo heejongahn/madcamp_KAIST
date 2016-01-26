@@ -31,6 +31,11 @@ public class Feed_item {
         this.body = body;
         this.date = date;
         this.feedid = feedid;
-        this.image = image;
+        if (image=="") {
+            this.image = null;
+        }
+        else {
+            this.image = image;
+        }
     }
 }
