@@ -58,7 +58,10 @@ block content
           option(value="술집") 술집
       .form-group
         label(for="photo") 사진
-        img(src="/uploads/" + shop.photo, alt="no photo", class="profile")
+        if shop.photo
+          img(src="/uploads/" + shop.photo, alt="profile photo").profile
+        else
+          div no photo
         input(type="file", name="photo")#photo
 
       input(type="submit", value="저장").btn.btn-default
