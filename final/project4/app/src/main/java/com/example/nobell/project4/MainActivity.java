@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity
                     public void onClick(View v) {
                         UserLogoutTask logout = new UserLogoutTask(SID);
                         logout.execute((Void) null);
-                        recreate();
+
                     }
                 });
 
@@ -270,6 +270,7 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(final Boolean success) {
+            recreate();
         }
 
         @Override

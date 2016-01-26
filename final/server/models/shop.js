@@ -12,6 +12,7 @@ var ShopSchema = new Schema({
   shopname: { type: String, required: true },
   phonenum: { type: String, required: true },
   photo: { type: String },
+  category: { type: String, required: true },
   location: {
     lon: {type: Number, required: true},
     lat: {type: Number, required: true},
@@ -23,22 +24,26 @@ var ShopSchema = new Schema({
 ShopSchema.pre('save', function(next) {
     var shop = this;
 
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-        if (err) {
-          console.log('Error saving password');
-          return next(err);
-        }
+    if (shop.isModified('password')) {
+      bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+          if (err) {
+            console.log('Error saving password');
+            return next(err);
+          }
 
-        bcrypt.hash(shop.password, salt, function(err, hash) {
-            if (err) {
-              console.log('Error saving password');
-              return next(err);
-            }
+          bcrypt.hash(shop.password, salt, function(err, hash) {
+              if (err) {
+                console.log('Error saving password');
+                return next(err);
+              }
 
-            shop.password = hash;
-            next();
-        });
-    });
+              shop.password = hash;
+              next();
+          });
+      });
+    } else {
+      next();
+    }
 });
 
 ShopSchema.methods.comparePassword = function(candidatePassword, cb) {

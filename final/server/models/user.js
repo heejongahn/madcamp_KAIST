@@ -15,20 +15,26 @@ var Shop = require('./shop');
 UserSchema.pre('save', function(next) {
     var user = this;
 
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-        if (err) {
-          return next(err);
-        }
+    if (user.isModified('password')) {
+      bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+          if (err) {
+            console.log('Error saving password');
+            return next(err);
+          }
 
-        bcrypt.hash(user.password, salt, function(err, hash) {
-            if (err) {
-              return next(err);
-            }
+          bcrypt.hash(user.password, salt, function(err, hash) {
+              if (err) {
+                console.log('Error saving password');
+                return next(err);
+              }
 
-            user.password = hash;
-            next();
-        });
-    });
+              user.password = hash;
+              next();
+          });
+      });
+    } else {
+      next();
+    }
 });
 
 
@@ -43,30 +49,29 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
 
 UserSchema.methods.subscribe = function(shop, cb) {
   this.shopIds.push(shop.id);
-  this.save();
-  shop.userIds.push(this.id);
-  shop.save();
+  this.save(function(err) { if (err) { cb(err); } });
 };
 
 UserSchema.methods.unsubscribe = function(shop, cb) {
   this.shopIds.splice(this.shopIds.indexOf(shop.id), 1);
-  this.save();
-  shop.userIds.splice(shop.userIds.indexOf(this.id), 1);
-  shop.save();
+  this.save(function(err) { if (err) { cb(err); } });
 };
 
 UserSchema.methods.getShops = function(cb) {
-  Shop.find({_id: { $in: this.shopIds }}, function (err, shops) {
+  var query = Shop.find({_id: { $in: this.shopIds }});
+  query.select('-password');
+
+  query.exec(function (err, shops) {
     if (err) { return cb(err); }
     cb(null, shops);
   });
 };
 
-
 UserSchema.methods.getPosts = function(cb) {
   var posts = [];
   this.getShops(function (err, shops) {
     if (err) { return cb(err); }
+    var count = shops.length;
 
     for (i=0; i<shops.length; i++) {
       shops[i].getPosts(function(err, postsOfShop) {
@@ -74,9 +79,13 @@ UserSchema.methods.getPosts = function(cb) {
         for (j=0; j<postsOfShop.length; j++) {
           posts.push(postsOfShop[j]);
         }
+        count--;
+
+        if (count == 0) {
+          cb(null, posts);
+        }
       });
     }
-    cb(null, posts);
   });
 }
 
