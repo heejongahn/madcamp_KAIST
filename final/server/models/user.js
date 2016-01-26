@@ -67,11 +67,11 @@ UserSchema.methods.getShops = function(cb) {
   });
 };
 
-
 UserSchema.methods.getPosts = function(cb) {
   var posts = [];
   this.getShops(function (err, shops) {
     if (err) { return cb(err); }
+    var count = shops.length;
 
     for (i=0; i<shops.length; i++) {
       shops[i].getPosts(function(err, postsOfShop) {
@@ -79,9 +79,13 @@ UserSchema.methods.getPosts = function(cb) {
         for (j=0; j<postsOfShop.length; j++) {
           posts.push(postsOfShop[j]);
         }
+        count--;
+
+        if (count == 0) {
+          cb(null, posts);
+        }
       });
     }
-    cb(null, posts);
   });
 }
 

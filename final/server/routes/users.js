@@ -55,7 +55,6 @@ router.route('/posts')
       else if (!user) { res.json({'ok': false, 'reason': 'not logged in as an user'}); }
       else {
         user.getPosts(function (err, posts) {
-          console.log(posts);
           if (err) { res.json({'error': err}); }
           else { res.json({'ok': true, 'posts': posts}); }
         });
@@ -71,7 +70,7 @@ router.route('/shops')
       else {
         user.getShops(function (err, shops) {
           if (err) { res.json({'error': err}); }
-          else { console.log(shops); res.json({'ok': true, 'shops': shops}); }
+          else { res.json({'ok': true, 'shops': shops}); }
         });
       }
     });
