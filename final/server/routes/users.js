@@ -15,7 +15,7 @@ router.route('/subscribe')
         Shop.findOne({_id: new ObjectId(req.body.shopid)}, function(err, shop) {
           if (err) { res.json({'error': err}); }
           else if (shop) {
-            user.subscribe(shop);
+            user.subscribe(shop, console.log);
             res.json({'ok': true});
           } else {
             res.json({'ok': false, 'reason': 'no such shop'});
@@ -36,7 +36,7 @@ router.route('/unsubscribe')
         Shop.findOne({_id: new ObjectId(req.body.shopid)}, function(err, shop) {
           if (err) { res.json({'error': err}); }
           else if (shop) {
-            user.unsubscribe(shop);
+            user.unsubscribe(shop, console.log);
             res.json({'ok': true});
           } else {
             res.json({'ok': false, 'reason': 'no such shop'});
@@ -52,10 +52,10 @@ router.route('/posts')
   .get(function(req, res, next) {
     User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
-
       else if (!user) { res.json({'ok': false, 'reason': 'not logged in as an user'}); }
       else {
         user.getPosts(function (err, posts) {
+          console.log(posts);
           if (err) { res.json({'error': err}); }
           else { res.json({'ok': true, 'posts': posts}); }
         });
@@ -67,12 +67,11 @@ router.route('/shops')
   .get(function(req, res, next) {
     User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
-
       else if (!user) { res.json({'ok': false, 'reason': 'not logged in as an user'}); }
       else {
         user.getShops(function (err, shops) {
           if (err) { res.json({'error': err}); }
-          else { res.json({'ok': true, 'shops': shops}); }
+          else { console.log(shops); res.json({'ok': true, 'shops': shops}); }
         });
       }
     });

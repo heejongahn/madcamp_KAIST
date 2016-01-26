@@ -32,6 +32,8 @@ UserSchema.pre('save', function(next) {
               next();
           });
       });
+    } else {
+      next();
     }
 });
 
@@ -47,16 +49,12 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
 
 UserSchema.methods.subscribe = function(shop, cb) {
   this.shopIds.push(shop.id);
-  this.save(function(err) { if (err) { console.log(err);} });
-  shop.userIds.push(this.id);
-  shop.save(function(err) { if (err) { console.log(err);} });
+  this.save(function(err) { if (err) { cb(err); } });
 };
 
 UserSchema.methods.unsubscribe = function(shop, cb) {
   this.shopIds.splice(this.shopIds.indexOf(shop.id), 1);
-  this.save(function(err) { if (err) { console.log(err);} });
-  shop.userIds.splice(shop.userIds.indexOf(this.id), 1);
-  shop.save(function(err) { if (err) { console.log(err);} });
+  this.save(function(err) { if (err) { cb(err); } });
 };
 
 UserSchema.methods.getShops = function(cb) {
