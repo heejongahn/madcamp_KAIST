@@ -31,7 +31,7 @@ public class Feed_item {
         this.body = body;
         this.date = date;
         this.feedid = feedid;
-        if (image=="") {
+        if (image.equals("")) {
             this.image = null;
         }
         else {

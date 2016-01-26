@@ -39,8 +39,8 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         items = new ArrayList<>();
-        GetAllShopTask task = new GetAllShopTask();
-        task.execute();
+//        GetAllShopTask task = new GetAllShopTask();
+//        task.execute();
 
         swipeRefreshLayout= (SwipeRefreshLayout) rootView.findViewById(R.id.refreshView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
