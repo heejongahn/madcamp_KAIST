@@ -82,6 +82,12 @@ UserSchema.methods.getPosts = function(cb) {
         count--;
 
         if (count == 0) {
+          posts.sort(function(a, b){
+            if(a.date < b.date) return 1;
+            if(a.date > b.date) return -1;
+            return 0;
+          });
+
           cb(null, posts);
         }
       });

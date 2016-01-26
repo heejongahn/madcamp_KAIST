@@ -11,7 +11,7 @@ var ShopSchema = new Schema({
   password: { type: String, required: true },
   shopname: { type: String, required: true },
   phonenum: { type: String, required: true },
-  photo: { type: String },
+  photo: { type: String, default: ""},
   category: { type: String, required: true },
   location: {
     lon: {type: Number, required: true},
@@ -58,6 +58,11 @@ ShopSchema.methods.comparePassword = function(candidatePassword, cb) {
 ShopSchema.methods.getPosts = function(cb) {
   Post.find({ shopId: this._id }, function(err, posts) {
     if (err) { return cb(err); }
+    posts.sort(function(a, b){
+      if(a.date < b.date) return 1;
+      if(a.date > b.date) return -1;
+      return 0;
+    });
     cb(null, posts);
   });
 };
