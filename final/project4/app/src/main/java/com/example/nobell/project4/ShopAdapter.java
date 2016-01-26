@@ -90,7 +90,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
                 i.putExtra("latitude", item.getLatitude());
                 i.putExtra("longitude", item.getLongitude());
                 i.putExtra("shopid", item.getShopid());
-                i.putExtra("issubscribed", holder.mStar.isChecked());
+                i.putExtra("issubscribed", item.isSubscribed());
                 context.startActivity(i);
             }
         });
@@ -98,6 +98,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
 //        if (MainActivity.get_SHOP(item.shopid) != null) {
 //            holder.mStar.setChecked(true);
 //        }
+        holder.mStar.setChecked(item.isSubscribed());
 
         holder.mStar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
