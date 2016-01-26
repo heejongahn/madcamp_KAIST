@@ -48,7 +48,6 @@ public class MainActivity extends AppCompatActivity
     private Menu option_menu;
     private SearchFragment fragment_search;
     private int isSearch = 0;
-    private static ArrayList<Shop_item> MYSHOPLIST;
 
 
     @Override
@@ -62,6 +61,8 @@ public class MainActivity extends AppCompatActivity
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
         */
+
+        FileManager.initialize();
 
     }
 
@@ -117,10 +118,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        MYSHOPLIST = new ArrayList<>();
-        UserGetShopsTask task = new UserGetShopsTask();
-        task.execute();
     }
 
     @Override
@@ -243,96 +240,6 @@ public class MainActivity extends AppCompatActivity
     public static String get_SID() {
         return SID;
     }
-
-
-    public static ArrayList<Shop_item> get_MYSHOPLIST() {
-        UserGetShopsTask task = new UserGetShopsTask();
-        task.execute();
-
-        return MYSHOPLIST;
-    }
-
-    public static Shop_item get_SHOP(String shopid) {
-        get_MYSHOPLIST();
-
-        for (int i = 0; i < MYSHOPLIST.size(); i++) {
-            Shop_item shop = MYSHOPLIST.get(i);
-            if (shop.getShopid().equals(shopid)) {
-                return shop;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public static class UserGetShopsTask extends AsyncTask<Void, Void, JSONArray> {
-        UserGetShopsTask() {
-
-        }
-
-        @Override
-        protected JSONArray doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-
-                return null;
-            }
-
-            try {
-                String sid = get_SID();
-                JSONObject json = ServerConnector.GetFromServer("/user/shops", sid);
-                if (json.getBoolean("ok") == true) {
-                    return json.getJSONArray("shops");
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            } catch (JSONException e) {
-                e.printStackTrace();
-                return null;
-            }
-
-            // TODO: register the new account here.
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(final JSONArray shops) {
-            if (shops != null) {
-                for (int i = 0; i < shops.length(); i++) {
-                    try {
-                        JSONObject shop = shops.getJSONObject(i);
-                        Shop_item shopi = new Shop_item(shop.getString("photo"),
-                                shop.getString("shopname"),
-//                                shop.getString("category"),
-                                "Example category",
-                                shop.getString("phonenum"),
-                                shop.getJSONObject("location").getString("address"),
-                                shop.getJSONObject("location").getDouble("lat"),
-                                shop.getJSONObject("location").getDouble("lon"),
-                                shop.getString("_id"));
-                        MYSHOPLIST.add(shopi);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-
-        }
-    }
-
 
     public class UserLogoutTask extends AsyncTask<Void, Void, Boolean> {
         private String logged_in_sid;

@@ -101,13 +101,6 @@ public class SearchFragment extends Fragment {
         protected JSONArray doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return null;
-            }
-
-            try {
                 JSONObject json = ServerConnector.GetFromServer("/shop/all", null);
 
                 return json.getJSONArray("shops");
@@ -129,8 +122,7 @@ public class SearchFragment extends Fragment {
                         JSONObject shop = shops.getJSONObject(i);
                         Shop_item shopi = new Shop_item(shop.getString("photo"),
                                 shop.getString("shopname"),
-//                                shop.getString("category"),
-                                "Example category",
+                                shop.getString("category"),
                                 shop.getString("phonenum"),
                                 shop.getJSONObject("location").getString("address"),
                                 shop.getJSONObject("location").getDouble("lat"),
@@ -140,8 +132,8 @@ public class SearchFragment extends Fragment {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
+                recyclerView.setAdapter(new ShopAdapter(getContext(), items, R.layout.fragment_shop_list));
             }
         }
 

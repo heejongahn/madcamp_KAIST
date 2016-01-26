@@ -2,6 +2,8 @@ package com.example.nobell.project4;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.v7.widget.CardView;
@@ -38,10 +40,11 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         final Feed_item item=items.get(position);
 
 //        holder.mLogo.setImageResource(item.get_shop().getImage());
-        holder.mLogo.setImageResource(R.drawable.starbucks);
+//        Bitmap logo = BitmapFactory.decodeFile(FileManager.getFile(item.get_shop().getImage()).getAbsolutePath());
+//        holder.mLogo.setImageBitmap(logo);
+        FileManager.getImage(item.get_shop().getImage(), holder.mLogo);
         holder.mShopname.setText(item.get_shop().getName());
         holder.mFeeddate.setText(item.get_date());
-//        holder.mShopphone.setText(item.get_shop().getPhone());
         holder.mBody.setText(item.get_body());
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override

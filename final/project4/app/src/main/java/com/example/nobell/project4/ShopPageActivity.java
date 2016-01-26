@@ -1,8 +1,11 @@
 package com.example.nobell.project4;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,11 +15,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -84,7 +89,9 @@ public class ShopPageActivity extends AppCompatActivity {
         mShopphone.setText(shop.getPhone());
         mShoploc.setText(shop.getLocation());
 //        mLogo.setImageResource(shop.getImage());
-        mLogo.setImageResource(R.drawable.starbucks);
+//        Uri uri = Uri.fromFile(FileManager.getFile(shop.getImage()));
+//        mLogo.setImageURI(uri);
+        FileManager.getImage(shop.getImage(), mLogo);
         mStar.setChecked(i.getBooleanExtra("issubscribed", false));
 
         mStar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -92,7 +99,7 @@ public class ShopPageActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
-                if (buttonView.getId() == R.id.star_checkbox) {
+                if (buttonView.getId() == R.id.star_checkbox2) {
                     if (isChecked) {
                         UserSubscribeTask task = new UserSubscribeTask(shop.getShopid());
                         task.execute();
@@ -123,10 +130,8 @@ public class ShopPageActivity extends AppCompatActivity {
 
     public void get_list () {
         items = new ArrayList<>();
-        ShopGetPostTask task = new ShopGetPostTask(shop.getShopid());
+        ShopGetPostTask task = new ShopGetPostTask();
         task.execute();
-
-        recyclerView.setAdapter(new FeedAdapter(this,items, R.id.recyclerview2));
     }
 
 
@@ -144,13 +149,6 @@ public class ShopPageActivity extends AppCompatActivity {
         @Override
         protected JSONObject doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return null;
-            }
-
             try {
                 String sid = MainActivity.get_SID();
                 JSONObject json = new JSONObject();
@@ -197,13 +195,6 @@ public class ShopPageActivity extends AppCompatActivity {
         protected JSONObject doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return null;
-            }
-
-            try {
                 String sid = MainActivity.get_SID();
                 JSONObject json = new JSONObject();
                 json.put("shopid", shopid);
@@ -239,24 +230,14 @@ public class ShopPageActivity extends AppCompatActivity {
      * the user.
      */
     public class ShopGetPostTask extends AsyncTask<Void, Void, JSONArray> {
-        String shopid;
-
-        ShopGetPostTask (String shopId) {
-            shopid = shopId;
+        ShopGetPostTask () {
         }
 
         @Override
         protected JSONArray doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return null;
-            }
-
-            try {
-                JSONObject result = ServerConnector.GetFromServer("/shop/post?shopid="+shopid, null);
+                JSONObject result = ServerConnector.GetFromServer("/shop/posts?shopid="+shop.getShopid(), null);
                 if (result.getBoolean("ok")==true) {
                     return result.getJSONArray("posts");
                 }
@@ -278,16 +259,17 @@ public class ShopPageActivity extends AppCompatActivity {
                 try {
                     for (int i=0; i<posts.length(); i++) {
                         JSONObject post = posts.getJSONObject(i);
-                        String shopid = post.getString("shopid");
-                        Feed_item feed = new Feed_item(MainActivity.get_SHOP(shopid),
+                        Feed_item feed = new Feed_item(shop,
                                 post.getString("body"),
                                 post.getString("date"),
-                                post.getString("_id"));
+                                post.getString("_id"),
+                                post.getString("photo"));
                         items.add(feed);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                recyclerView.setAdapter(new FeedAdapter(getApplicationContext(), items, R.id.recyclerview2));
             }
         }
 

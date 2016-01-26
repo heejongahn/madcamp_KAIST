@@ -5,7 +5,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.widget.CardView;
@@ -54,7 +57,11 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final Shop_item item=items.get(position);
 //        holder.mLogo.setImageResource(item.getImage());
-        holder.mLogo.setImageResource(R.drawable.starbucks);
+//        Bitmap logo = BitmapFactory.decodeFile(FileManager.getFile(item.getImage()).getAbsolutePath());
+//        holder.mLogo.setImageBitmap(logo);
+//        Uri uri = Uri.fromFile(FileManager.getFile(item.getImage()));
+//        holder.mLogo.setImageURI(uri);
+        FileManager.getImage(item.getImage(), holder.mLogo);
         holder.mShopname.setText(item.getName());
         holder.mShopcategory.setText(item.getCategory());
         holder.mShopphone.setText(item.getPhone());
@@ -88,9 +95,9 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
             }
         });
 
-        if (MainActivity.get_SHOP(item.shopid) != null) {
-            holder.mStar.setChecked(true);
-        }
+//        if (MainActivity.get_SHOP(item.shopid) != null) {
+//            holder.mStar.setChecked(true);
+//        }
 
         holder.mStar.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -151,13 +158,6 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         protected JSONObject doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return null;
-            }
-
-            try {
                 String sid = MainActivity.get_SID();
                 JSONObject json = new JSONObject();
                 json.put("shopid", shopid);
@@ -202,13 +202,6 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
         @Override
         protected JSONObject doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return null;
-            }
-
             try {
                 String sid = MainActivity.get_SID();
                 JSONObject json = new JSONObject();

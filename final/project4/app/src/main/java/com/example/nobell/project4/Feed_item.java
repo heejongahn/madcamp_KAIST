@@ -5,7 +5,7 @@ public class Feed_item {
     String body;
     String date;
     String feedid;
-
+    String image;
 
     Shop_item get_shop () {
         return shop;
@@ -23,11 +23,14 @@ public class Feed_item {
         return feedid;
     }
 
+    String get_image () {return image;}
 
-    Feed_item(Shop_item shop, String body, String date, String feedid){
+
+    Feed_item(Shop_item shop, String body, String date, String feedid, String image){
         this.shop = shop;
         this.body = body;
         this.date = date;
         this.feedid = feedid;
+        this.image = image;
     }
 }

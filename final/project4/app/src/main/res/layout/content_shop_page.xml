@@ -19,7 +19,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:id="@+id/logo_imageview"
-            android:src="@drawable/starbucks" />
+            android:src="@drawable/default_shop_photo" />
 
         <LinearLayout
             android:orientation="vertical"
