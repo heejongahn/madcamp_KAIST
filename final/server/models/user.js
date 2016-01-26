@@ -60,7 +60,10 @@ UserSchema.methods.unsubscribe = function(shop, cb) {
 };
 
 UserSchema.methods.getShops = function(cb) {
-  Shop.find({_id: { $in: this.shopIds }}, function (err, shops) {
+  var query = Shop.find({_id: { $in: this.shopIds }});
+  query.select('-password');
+
+  query.exec(function (err, shops) {
     if (err) { return cb(err); }
     cb(null, shops);
   });

@@ -19,7 +19,10 @@ var ObjectId = require('mongoose').Types.ObjectId;
 
 router.route('/all')
   .get(function(req, res, next) {
-    Shop.find(function(err, shops) {
+    var query = Shop.find();
+    query.select('-password');
+
+    query.exec(function(err, shops) {
       if (err) { res.json({'error': err}); }
       else res.json({'shops': shops});
     });
