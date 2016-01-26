@@ -29,7 +29,7 @@ public class Feed_item {
     Feed_item(Shop_item shop, String body, String date, String feedid, String image){
         this.shop = shop;
         this.body = body;
-        this.date = date;
+        this.date = date.substring(0, 16).replace("T", " ");
         this.feedid = feedid;
         if (image.equals("")) {
             this.image = null;
