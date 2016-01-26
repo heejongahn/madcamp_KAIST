@@ -9,13 +9,23 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark" android:orientation="vertical"
     android:gravity="bottom">
 
-    <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
-        android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@android:drawable/sym_def_app_icon" android:id="@+id/imageView" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30dp"
+        android:text="Shop &amp; Shop"
+        android:id="@+id/main_logo"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
+        android:typeface="serif"
+        android:layout_gravity="center_horizontal" />
+
 
     <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing" android:text="User Email"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,7 +34,9 @@
 
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
             android:id="@+id/textView"
-            android:text="android@kaist.ac.kr"/>
+            android:text="android@kaist.ac.kr"
+            android:textSize="20dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
         <Button android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -35,7 +47,8 @@
             android:background="#FFFFFF"
             android:textColor="#27B4E7"
             style="?android:textAppearanceSmall"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
     </RelativeLayout>
 
 
