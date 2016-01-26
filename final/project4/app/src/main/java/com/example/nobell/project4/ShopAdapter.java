@@ -78,7 +78,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.ViewHolder> {
                 i.putExtra("latitude", item.getLatitude());
                 i.putExtra("longitude", item.getLongitude());
                 i.putExtra("shopid", item.getShopid());
-                i.putExtra("issubscribed", item.isSubscribed());
+                i.putExtra("issubscribed", holder.mStar.isChecked());
                 context.startActivity(i);
             }
         });

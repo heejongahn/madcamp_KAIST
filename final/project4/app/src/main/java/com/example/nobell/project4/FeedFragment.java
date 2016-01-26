@@ -84,8 +84,9 @@ public class FeedFragment extends Fragment {
                 try {
                     String sid = MainActivity.get_SID();
                     JSONObject posts = ServerConnector.GetFromServer("/user/posts", sid);
-                    JSONObject shops = ServerConnector.GetFromServer("/user/shops", sid);
                     JSONArray posta = posts.getJSONArray("posts");
+
+                    JSONObject shops = ServerConnector.GetFromServer("/user/shops", sid);
                     JSONArray shopa = shops.getJSONArray("shops");
                     Log.e ("posta", posta.toString());
                     Log.e ("shopa", shopa.toString());

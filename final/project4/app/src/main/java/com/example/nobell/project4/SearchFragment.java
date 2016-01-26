@@ -39,22 +39,27 @@ public class SearchFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
         items = new ArrayList<>();
-
-        GetAllShopTask task = new GetAllShopTask();
-        task.execute();
+//        GetAllShopTask task = new GetAllShopTask();
+//        task.execute();
 
         swipeRefreshLayout= (SwipeRefreshLayout) rootView.findViewById(R.id.refreshView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                get_list(items);
+                items = new ArrayList<>();
+                GetAllShopTask task = new GetAllShopTask();
+                task.execute();
+//                get_list(items);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
         swipeRefreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                get_list(items);
+                items = new ArrayList<>();
+                GetAllShopTask task = new GetAllShopTask();
+                task.execute();
+//                get_list(items);
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
