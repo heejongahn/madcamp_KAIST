@@ -101,6 +101,7 @@ public class ShopListFragment extends Fragment {
                                     shop.getJSONObject("location").getDouble("lat"),
                                     shop.getJSONObject("location").getDouble("lon"),
                                     shop.getString("_id"));
+                            shopi.setSubscribed();
                             items.add(shopi);
                         } catch (JSONException e) {
                             e.printStackTrace();

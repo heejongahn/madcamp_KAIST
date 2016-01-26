@@ -100,9 +100,47 @@ public class SearchFragment extends Fragment {
         protected JSONArray doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
             try {
-                JSONObject json = ServerConnector.GetFromServer("/shop/all", null);
+                JSONObject all = ServerConnector.GetFromServer("/shop/all", null);
+                String sid = MainActivity.get_SID();
+                JSONObject my = ServerConnector.GetFromServer("/user/shops", sid);
 
-                return json.getJSONArray("shops");
+                ArrayList<String> myids = new ArrayList<>();
+
+                if (my.getBoolean("ok")) {
+                    JSONArray mys = my.getJSONArray("shops");
+                    for (int i = 0; i < mys.length(); i++) {
+                        try {
+                            JSONObject shop = mys.getJSONObject(i);
+                            myids.add(shop.getString("_id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    JSONArray alls = all.getJSONArray("shops");
+                    for (int i = 0; i < alls.length(); i++) {
+                        try {
+                            JSONObject shop = alls.getJSONObject(i);
+                            Shop_item shopi = new Shop_item(shop.getString("photo"),
+                                    shop.getString("shopname"),
+                                    shop.getString("category"),
+                                    shop.getString("phonenum"),
+                                    shop.getJSONObject("location").getString("address"),
+                                    shop.getJSONObject("location").getDouble("lat"),
+                                    shop.getJSONObject("location").getDouble("lon"),
+                                    shop.getString("_id"));
+                            if (myids.contains(shopi.getShopid())) {
+                                shopi.setSubscribed();
+                            }
+
+                            items.add(shopi);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    return all.getJSONArray("shops");
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -111,27 +149,12 @@ public class SearchFragment extends Fragment {
                 e.printStackTrace();
                 return null;
             }
+            return null;
         }
 
         @Override
         protected void onPostExecute(final JSONArray shops) {
             if (shops != null) {
-                for (int i=0; i<shops.length(); i++) {
-                    try {
-                        JSONObject shop = shops.getJSONObject(i);
-                        Shop_item shopi = new Shop_item(shop.getString("photo"),
-                                shop.getString("shopname"),
-                                shop.getString("category"),
-                                shop.getString("phonenum"),
-                                shop.getJSONObject("location").getString("address"),
-                                shop.getJSONObject("location").getDouble("lat"),
-                                shop.getJSONObject("location").getDouble("lon"),
-                                shop.getString("_id"));
-                        items.add(shopi);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
                 recyclerView.setAdapter(new ShopAdapter(getContext(), items, R.layout.fragment_shop_list));
             }
         }
