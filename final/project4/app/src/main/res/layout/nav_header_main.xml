@@ -12,11 +12,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
+        android:textSize="35dp"
         android:text="Shop &amp; Shop"
         android:id="@+id/main_logo"
         android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="0dp"
         android:textColor="#ffffff"
         android:textStyle="bold"
         android:typeface="serif"
