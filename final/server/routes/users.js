@@ -11,16 +11,18 @@ router.route('/subscribe')
     User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
 
-      else if (shop) {
+      else if (user) {
         Shop.findOne({_id: new ObjectId(req.body.shopid)}, function(err, shop) {
           if (err) { res.json({'error': err}); }
-          else {
+          else if (shop) {
             user.subscribe(shop);
             res.json({'ok': true});
+          } else {
+            res.json({'ok': false, 'reason': 'no such shop'});
           }
         });
       } else {
-        res.json({'ok': false, 'reason': 'no such shop'});
+        res.json({'ok': false, 'reason': 'not logged in'});
       }
     });
   });
@@ -30,16 +32,18 @@ router.route('/unsubscribe')
     User.findOne({_id: req.session.userId}, function(err, user) {
       if (err) { res.json({'error': err}); }
 
-      else if (shop) {
+      else if (user) {
         Shop.findOne({_id: new ObjectId(req.body.shopid)}, function(err, shop) {
           if (err) { res.json({'error': err}); }
-          else {
+          else if (shop) {
             user.unsubscribe(shop);
             res.json({'ok': true});
+          } else {
+            res.json({'ok': false, 'reason': 'no such shop'});
           }
         });
       } else {
-        res.json({'ok': false, 'reason': 'no such subscribed shop'});
+        res.json({'ok': false, 'reason': 'not logged in'});
       }
     });
   });
@@ -79,6 +83,7 @@ router.route('/signin')
     res.render('users/signin', {title: 'Sign In' });
   })
   .post(function(req, res, next) {
+    console.log(req.body)
     User.findOne({ 'email': req.body.email},
       function (err, user) {
         if (err) { // Error
@@ -96,10 +101,12 @@ router.route('/signin')
                  'connect.sid': 's:' + signature.sign(req.session.id, 'supersecret')
                 });
             } else { // Login failure
+              console.log('casea');
               res.json({'ok': false, 'reason': 'invalid password'});
             }
           });
         } else {
+          console.log('caseb');
           res.json({'ok': false, 'reason': 'no such user'});
         }
       });

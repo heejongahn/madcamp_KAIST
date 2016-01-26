@@ -5,6 +5,9 @@ block style
     img.photo {
       width: 100%;
     }
+    p#body {
+      white-space: pre-wrap;
+    }
 
 block content
   .col-md-6.col-lg-6.col-md-offset-3.col-lg-offset-3
@@ -24,4 +27,4 @@ block content
           .panel-body
             if post.photo
               img(src="/uploads/" + post.photo).photo
-            p= post.body
+            p#body= post.body

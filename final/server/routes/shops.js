@@ -17,6 +17,14 @@ var upload = multer({ storage: storage });
 
 var ObjectId = require('mongoose').Types.ObjectId;
 
+router.route('/all')
+  .get(function(req, res, next) {
+    Shop.find(function(err, shops) {
+      if (err) { res.json({'error': err}); }
+      else res.json({'shops': shops});
+    });
+  });
+
 // 특정 상점의 포스트
 router.route('/posts')
   .get(function(req, res, next) {
@@ -57,7 +65,9 @@ router.route('/feed')
         var post = new Post();
         post.body = body;
         post.date = new Date;
-        post.photo = req.file.filename;
+        if (req.file) {
+          post.photo = req.file.filename;
+        }
         post.shopId = shop._id;
 
         post.save(function(err) {

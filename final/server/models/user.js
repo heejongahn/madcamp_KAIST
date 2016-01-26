@@ -15,20 +15,24 @@ var Shop = require('./shop');
 UserSchema.pre('save', function(next) {
     var user = this;
 
-    bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
-        if (err) {
-          return next(err);
-        }
+    if (user.isModified('password')) {
+      bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
+          if (err) {
+            console.log('Error saving password');
+            return next(err);
+          }
 
-        bcrypt.hash(user.password, salt, function(err, hash) {
-            if (err) {
-              return next(err);
-            }
+          bcrypt.hash(user.password, salt, function(err, hash) {
+              if (err) {
+                console.log('Error saving password');
+                return next(err);
+              }
 
-            user.password = hash;
-            next();
-        });
-    });
+              user.password = hash;
+              next();
+          });
+      });
+    }
 });
 
 
@@ -43,16 +47,16 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
 
 UserSchema.methods.subscribe = function(shop, cb) {
   this.shopIds.push(shop.id);
-  this.save();
+  this.save(function(err) { if (err) { console.log(err);} });
   shop.userIds.push(this.id);
-  shop.save();
+  shop.save(function(err) { if (err) { console.log(err);} });
 };
 
 UserSchema.methods.unsubscribe = function(shop, cb) {
   this.shopIds.splice(this.shopIds.indexOf(shop.id), 1);
-  this.save();
+  this.save(function(err) { if (err) { console.log(err);} });
   shop.userIds.splice(shop.userIds.indexOf(this.id), 1);
-  shop.save();
+  shop.save(function(err) { if (err) { console.log(err);} });
 };
 
 UserSchema.methods.getShops = function(cb) {
